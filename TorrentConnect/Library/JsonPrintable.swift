@@ -22,6 +22,16 @@ extension Int: JsonPrintable {
     }
 }
 
+extension Bool: JsonPrintable {
+    func toJson() -> String {
+        if (self) {
+            return "true"
+        }
+        
+        return "false"
+    }
+}
+
 extension Optional where Wrapped: JsonPrintable {
     func toJson() -> String {
         switch self {

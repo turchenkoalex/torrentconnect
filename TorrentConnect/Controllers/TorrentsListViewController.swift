@@ -17,7 +17,7 @@ class TorrentsListViewController: NSViewController {
     private var _tableController: TableController<TorrentModel>!
     private let _torrentsGroupBy = TorrentsGroupBy()
     private var _sections: Sections<TorrentModel> = Sections<TorrentModel>(sections: [])
-    private var _torrentSelectedDelegate: TorrentSelectedProtocol?
+    private var _selectBehaviour: SelectBehaviourDelegate?
     private var _torrents: [TorrentModel] = [TorrentModel]()
     private let _torrentFilter = TorrentFilter()
     private var filterText = ""
@@ -32,8 +32,8 @@ class TorrentsListViewController: NSViewController {
         TransmissionConnectManager.sharedInstance.connect()
     }
     
-    func setupController(torrentSelected: TorrentSelectedProtocol) {
-        _torrentSelectedDelegate = torrentSelected
+    func setupController(selectBehaviour: SelectBehaviourDelegate) {
+        _selectBehaviour = selectBehaviour
     }
     
     func prepeareTorrents(torrents: [TorrentModel]) -> [TorrentModel] {
@@ -113,7 +113,7 @@ class TorrentsListViewController: NSViewController {
         let selection = tableView.selectedRowIndexes
         if (selection.count == 1) {
             if let torrent = self._sections.elementAt(selection.firstIndex) {
-                _torrentSelectedDelegate?.select(torrent)
+                _selectBehaviour?.open(torrent)
             }
             return
         }
@@ -186,9 +186,12 @@ extension TorrentsListViewController: NSTableViewDelegate, NSTableViewDataSource
     
     func tableViewSelectionDidChange(notification: NSNotification) {
         let selection = tableView.selectedRowIndexes
-        if (selection.count > 1) {
-            _torrentSelectedDelegate?.select([])
-            return
+        var items = [TorrentModel]()
+        for index in selection {
+            if let torrent = _sections.elementAt(index) {
+                items.append(torrent)
+            }
         }
+        _selectBehaviour?.select(items)
     }
 }

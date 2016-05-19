@@ -8,38 +8,68 @@
 
 import Cocoa
 
-protocol TorrentSelectedProtocol {
-    func select(model: TorrentModel)
+protocol SelectBehaviourDelegate {
+    func open(model: TorrentModel)
     func select(models: [TorrentModel])
-    func close()
+    func deselect()
 }
 
-class TorrentSplitViewController: NSSplitViewController, TorrentSelectedProtocol {
-
-    private var _torrentsListController: TorrentsListViewController?
-    private var _torrentDetailsController: TorrentDetailsViewController?
+class TorrentSplitViewController: NSSplitViewController, SelectBehaviourDelegate {
 
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do view setup here.
-        _torrentsListController = splitViewItems[0].viewController as? TorrentsListViewController
-        _torrentDetailsController = splitViewItems[1].viewController as? TorrentDetailsViewController
-
-        _torrentsListController?.setupController(self)
-        _torrentDetailsController?.torrentSelectedDelegate = self
+        
+        setupListController()
     }
     
-    func select(model: TorrentModel) {
-        _torrentDetailsController?.setupController(model)
+    func detailsHided() -> Bool {
+        return splitViewItems[1].animator().collapsed
+    }
+    
+    func showDetails() {
         splitViewItems[1].animator().collapsed = false
+    }
+    
+    func hideDetails() {
+        splitViewItems[1].animator().collapsed = true
+    }
+    
+    func setupListController() {
+        let listController = splitViewItems[0].viewController as? TorrentsListViewController
+        listController?.setupController(self)
+    }
+    
+    func setupDetailsController(models: [TorrentModel]) {
+        let detailsController = splitViewItems[1].viewController as? TorrentDetailsViewController
+        detailsController?.selectBehaviour = self
+        if (models.count == 1) {
+            detailsController?.setupController(models[0])
+        } else {
+            detailsController?.setupController(models)
+        }
+    }
+    
+    func open(model: TorrentModel) {
+        setupDetailsController([model])
+        showDetails()
     }
     
     func select(models: [TorrentModel]) {
-        _torrentDetailsController?.setupController(models)
-        splitViewItems[1].animator().collapsed = false
+        if models.isEmpty {
+            hideDetails()
+            return
+        }
+        
+        if models.count == 1 && detailsHided() {
+            return
+        }
+        
+        setupDetailsController(models)
+        showDetails()
     }
     
-    func close() {
-        splitViewItems[1].animator().collapsed = true
+    func deselect() {
+        hideDetails()
     }
 }

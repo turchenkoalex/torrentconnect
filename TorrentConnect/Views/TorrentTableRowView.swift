@@ -22,7 +22,7 @@ class TorrentTableRowView: NSTableRowView {
         NSColor.lightGrayColor().setFill()
         
         let selectionPath = NSBezierPath(rect: bounds)
-        selectionPath.lineWidth = 0.5
+        selectionPath.lineWidth = 0.05
         selectionPath.fill()
         selectionPath.stroke()
     }

@@ -13,8 +13,8 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSUserNotificationCenterDele
 
     private let _badgeController = BadgeController()
     private let _downloadedController = DownloadedController()
-    
-    
+    private let _urlHandler = UrlHandler()
+    private let _filesHandler = FilesHandler()
     
     func applicationDidFinishLaunching(aNotification: NSNotification) {
         // Insert code here to initialize your application
@@ -25,6 +25,11 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSUserNotificationCenterDele
         
         _badgeController.inject()
         _downloadedController.inject()
+    }
+    
+    func applicationWillFinishLaunching(notification: NSNotification) {
+        let eventManager = NSAppleEventManager.sharedAppleEventManager()
+        eventManager.setEventHandler(_urlHandler, andSelector: #selector(UrlHandler.openUrlEvent), forEventClass: AEEventClass(kInternetEventClass), andEventID: AEEventID(kAEGetURL))
     }
 
     func applicationWillTerminate(aNotification: NSNotification) {
@@ -42,5 +47,13 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSUserNotificationCenterDele
     
     func userNotificationCenter(center: NSUserNotificationCenter, didActivateNotification notification: NSUserNotification) {
         center.removeDeliveredNotification(notification)
+    }
+    
+    func application(sender: NSApplication, openFile filename: String) -> Bool {
+        return _filesHandler.openFile(filename)
+    }
+    
+    func application(sender: NSApplication, openFiles filenames: [String]) {
+        _filesHandler.openFiles(filenames)
     }
 }

@@ -14,7 +14,7 @@ class TorrentDetailsViewController: NSViewController {
     @IBOutlet weak var manyTorrentsImage: NSImageView!
     
     private var _model: TorrentModel?
-    var torrentSelectedDelegate: TorrentSelectedProtocol?
+    var selectBehaviour: SelectBehaviourDelegate?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -41,6 +41,16 @@ class TorrentDetailsViewController: NSViewController {
     }
     
     @IBAction func closeClick(sender: AnyObject) {
-        self.torrentSelectedDelegate?.close()
+        self.selectBehaviour?.deselect()
+    }
+    
+    @IBAction func deleteTorrent(sender: AnyObject) {
+        if let model = _model {
+            TransmissionConnectManager.sharedInstance.deleteTorrent(model.id) {
+                dispatch_async(dispatch_get_main_queue()) {
+                    self.selectBehaviour?.deselect()
+                }
+            }
+        }
     }
 }

@@ -17,6 +17,7 @@ class TorrentTableCellView: NSTableCellView {
     
     private var _id: Int = 0
     private var _status: TorrentStatus = TorrentStatus.Stopped
+    private var _previousStatus: TorrentStatus = TorrentStatus.Stopped
     private var _progress: Double = 0
     
     func initializeView() {
@@ -71,6 +72,7 @@ class TorrentTableCellView: NSTableCellView {
         
         _id = torrent.id
         _status = torrent.status
+        _previousStatus = torrent.status
         _progress = torrent.progress
         
         textField!.stringValue = torrent.name
@@ -129,12 +131,26 @@ class TorrentTableCellView: NSTableCellView {
     @IBAction func startStopClick(sender: AnyObject) {
         switch(_status) {
         case .Stopped:
-            TransmissionConnectManager.sharedInstance.startTorrents([_id])
-            _status = .Download
+            TransmissionConnectManager.sharedInstance.startTorrents([_id]) {
+                if (self._progress < 100) {
+                    self._status = .Download
+                } else {
+                    self._status = .Seed
+                }
+                dispatch_async(dispatch_get_main_queue()) {
+                    self.imageButton.image = self.torrentActionImage()
+                }
+            }
+            
         default:
-            TransmissionConnectManager.sharedInstance.stopTorrents([_id])
-            _status = .Stopped
+            _previousStatus = _status
+            TransmissionConnectManager.sharedInstance.stopTorrents([_id]) {
+                self._status = .Stopped
+                dispatch_async(dispatch_get_main_queue()) {
+                    self.imageButton.image = self.torrentActionImage()
+                }
+            }
         }
-        imageButton.image = torrentActionImage()
+        
     }
 }

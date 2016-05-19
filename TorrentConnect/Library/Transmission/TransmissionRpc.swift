@@ -36,4 +36,16 @@ struct TransmissionRpc {
     func startTorrents(ids: [Int]) -> String {
         return RpcRequest(method: "torrent-start", arguments: ["ids": ids]).toJson()
     }
+    
+    func addTorrent(url url: String, paused: Bool) -> String {
+        return RpcRequest(method: "torrent-add", arguments: ["paused": paused, "filename": url]).toJson()
+    }
+    
+    func addTorrent(metainfo metainfo: String, paused: Bool) -> String {
+        return RpcRequest(method: "torrent-add", arguments: ["paused": paused, "metainfo": metainfo]).toJson()
+    }
+    
+    func deleteTorrents(ids: [Int], deleteLocalData: Bool) -> String {
+        return RpcRequest(method: "torrent-remove", arguments: ["ids": ids, "delete-local-data": deleteLocalData]).toJson()
+    }
 }

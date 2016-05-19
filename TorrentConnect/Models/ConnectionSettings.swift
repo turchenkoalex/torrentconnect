@@ -18,6 +18,11 @@ struct ConnectionSettings {
 
 extension ConnectionSettings {
     func getServerUrl() -> NSURL {
-        return NSURL(scheme: scheme, host: "\(host):\(port)", path: path)!
+        let component = NSURLComponents()
+        component.scheme = scheme
+        component.host = host
+        component.port = port
+        component.path = path
+        return component.URL!
     }
 }

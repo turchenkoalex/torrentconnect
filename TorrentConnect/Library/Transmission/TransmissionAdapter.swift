@@ -8,6 +8,12 @@
 
 import Foundation
 
+enum RequestError {
+    case AuthorizationError
+    case ParseError
+    case FileError(String)
+}
+
 struct TransmissionAdapter {
     let parser = TransmissionParser()
     let rpc = TransmissionRpc()
@@ -44,9 +50,7 @@ struct TransmissionAdapter {
     }
 }
 
-extension TransmissionAdapter: TorrentAdapter {
-    typealias ServerConnection = TransmissionServerConnection
-    
+extension TransmissionAdapter {
     func connect(settings: ConnectionSettings, success: (TransmissionServerConnection) -> (), error: (RequestError) -> ()) {
         let url = settings.getServerUrl()
         request(url, body: rpc.getSessionId()) { _, response, _ in
@@ -68,11 +72,30 @@ extension TransmissionAdapter: TorrentAdapter {
         }, error: error)
     }
     
-    func stop(connection: TransmissionServerConnection, ids: [Int], error: (RequestError) -> ()) {
-        self.authorizedRequest(connection, body: rpc.stopTorrents(ids), success: { _ in }, error: error)
+    func stop(connection: TransmissionServerConnection, ids: [Int], success: () -> (), error: (RequestError) -> ()) {
+        self.authorizedRequest(connection, body: rpc.stopTorrents(ids), success: { _ in success() }, error: error)
     }
     
-    func start(connection: TransmissionServerConnection, ids: [Int], error: (RequestError) -> ()) {
-        self.authorizedRequest(connection, body: rpc.startTorrents(ids), success: { _ in }, error: error)
+    func start(connection: TransmissionServerConnection, ids: [Int], success: () -> (), error: (RequestError) -> ()) {
+        self.authorizedRequest(connection, body: rpc.startTorrents(ids), success: { _ in success() }, error: error)
+    }
+    
+    func add(connection: TransmissionServerConnection, url: String, paused: Bool, success: () -> (), error: (RequestError) -> ()) {
+        self.authorizedRequest(connection, body: rpc.addTorrent(url: url, paused: paused), success: { _ in success() }, error: error)
+    }
+    
+    func add(connection: TransmissionServerConnection, filename: String, paused: Bool, success: () -> (), error: (RequestError) -> ()) {
+        let trydata = NSData(contentsOfFile: filename)
+        
+        if let data = trydata {
+            let metainfo = data.base64EncodedStringWithOptions(NSDataBase64EncodingOptions.EncodingEndLineWithLineFeed)
+            self.authorizedRequest(connection, body: rpc.addTorrent(metainfo: metainfo, paused: paused), success: { _ in success() }, error: error)
+            return
+        }
+        error(.FileError(filename))
+    }
+    
+    func delete(connection: TransmissionServerConnection, ids: [Int], deleteLocalData: Bool, success: () -> (), error: (RequestError) -> ()) {
+        authorizedRequest(connection, body: rpc.deleteTorrents(ids, deleteLocalData: deleteLocalData), success: { _ in success() }, error: error)
     }
 }
