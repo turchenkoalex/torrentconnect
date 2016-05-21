@@ -9,48 +9,55 @@
 import Cocoa
 
 class TorrentDetailsViewController: NSViewController {
-
-    @IBOutlet weak var labelField: NSTextField!
-    @IBOutlet weak var manyTorrentsImage: NSImageView!
-    
-    private var _model: TorrentModel?
     var selectBehaviour: SelectBehaviourDelegate?
+    var oneTorrentController: OneTorrentDetailController!
+    var manyTorrentsController: ManyTorrentsDetailController!
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do view setup here.
+        self.view.autoresizesSubviews = true
+    }
+    
+    func showOneTorrent(torrent: TorrentModel) {
+        let ctrl = makeController("oneTorrent") as! OneTorrentDetailController
+        ctrl.hide = self.hide
+        ctrl.setupModel(torrent)
+    }
+    
+    func showManyTorrents(torrents: [TorrentModel]) {
+        let ctrl = makeController("manyTorrents") as! ManyTorrentsDetailController
+        ctrl.hide = self.hide
+        ctrl.setupModel(torrents)
+    }
+    
+    func makeController(identifier: String) -> NSViewController {
+        let controller = self.storyboard?.instantiateControllerWithIdentifier(identifier) as! NSViewController
         
-        if _model != nil {
-            setupController(_model!)
+        self.insertChildViewController(controller, atIndex: 0)
+        
+        if (self.view.subviews.count > 1) {
+            self.view.replaceSubview(self.view.subviews[1], with: controller.view)
+        } else {
+            self.view.addSubview(controller.view)
         }
-    }
-    
-    func setupController(model: TorrentModel) {
-        self._model = model
         
-        labelField?.stringValue = model.name
-        labelField?.hidden = false
-        manyTorrentsImage?.hidden = true
-    }
-    
-    func setupController(models: [TorrentModel]) {
-        self._model = nil
+        if (self.childViewControllers.count > 1) {
+            self.removeChildViewControllerAtIndex(1)
+        }
         
-        labelField?.hidden = true
-        manyTorrentsImage?.hidden = false
+        self.view.frame = controller.view.frame
+        
+        controller.view.autoresizingMask = [.ViewHeightSizable, .ViewWidthSizable]
+        
+        return controller
     }
     
-    @IBAction func closeClick(sender: AnyObject) {
+    func hide() {
         self.selectBehaviour?.deselect()
     }
     
-    @IBAction func deleteTorrent(sender: AnyObject) {
-        if let model = _model {
-            TransmissionConnectManager.sharedInstance.deleteTorrent(model.id) {
-                dispatch_async(dispatch_get_main_queue()) {
-                    self.selectBehaviour?.deselect()
-                }
-            }
-        }
+    @IBAction func closeDetails(sender: AnyObject) {
+        self.selectBehaviour?.deselect()
     }
 }

@@ -118,10 +118,6 @@ struct EventQueue {
         return true
     }
     
-    public func deleteTorrent(id: Int, success: () -> ()) {
-        deleteTorrents([id], success: success)
-    }
-    
     public func deleteTorrents(ids: [Int], success: () -> ()) {
         if let connection = _connection {
             self._adapter.delete(connection, ids: ids, deleteLocalData: isDeleteLocalData(), success: {

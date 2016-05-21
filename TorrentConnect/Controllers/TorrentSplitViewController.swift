@@ -28,11 +28,15 @@ class TorrentSplitViewController: NSSplitViewController, SelectBehaviourDelegate
     }
     
     func showDetails() {
-        splitViewItems[1].animator().collapsed = false
+        dispatch_async(dispatch_get_main_queue()) {
+            self.splitViewItems[1].animator().collapsed = false
+        }
     }
     
     func hideDetails() {
-        splitViewItems[1].animator().collapsed = true
+        dispatch_async(dispatch_get_main_queue()) {
+            self.splitViewItems[1].animator().collapsed = true
+        }
     }
     
     func setupListController() {
@@ -44,9 +48,9 @@ class TorrentSplitViewController: NSSplitViewController, SelectBehaviourDelegate
         let detailsController = splitViewItems[1].viewController as? TorrentDetailsViewController
         detailsController?.selectBehaviour = self
         if (models.count == 1) {
-            detailsController?.setupController(models[0])
+            detailsController?.showOneTorrent(models[0])
         } else {
-            detailsController?.setupController(models)
+            detailsController?.showManyTorrents(models)
         }
     }
     

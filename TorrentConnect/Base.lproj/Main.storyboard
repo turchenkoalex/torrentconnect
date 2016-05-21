@@ -3,6 +3,7 @@
     <dependencies>
         <deployment identifier="macosx"/>
         <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="10117"/>
+        <capability name="stacking Non-gravity area distributions on NSStackView" minToolsVersion="7.0" minSystemVersion="10.11"/>
     </dependencies>
     <scenes>
         <!--Application-->
@@ -914,26 +915,18 @@
                                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                                             <subviews>
                                                                 <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="NSc-bF-dBd">
-                                                                    <rect key="frame" x="46" y="15" width="270" height="17"/>
+                                                                    <rect key="frame" x="50" y="15" width="264" height="17"/>
+                                                                    <constraints>
+                                                                        <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="230" id="kPi-aG-5JX"/>
+                                                                    </constraints>
                                                                     <textFieldCell key="cell" lineBreakMode="truncatingTail" sendsActionOnEndEditing="YES" title="Title" id="SPK-bU-PDB">
                                                                         <font key="font" size="13" name=".HelveticaNeueDeskInterface-Bold"/>
                                                                         <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
                                                                         <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                                                     </textFieldCell>
                                                                 </textField>
-                                                                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="8Yx-K4-o3u">
-                                                                    <rect key="frame" x="320" y="-1" width="74" height="50"/>
-                                                                    <constraints>
-                                                                        <constraint firstAttribute="width" constant="70" id="NHm-A9-OCc"/>
-                                                                    </constraints>
-                                                                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="99%" id="z7Y-Pu-VAf">
-                                                                        <font key="font" size="38" name="Monaco"/>
-                                                                        <color key="textColor" red="0.95426682692307696" green="0.95426682692307696" blue="0.95426682692307696" alpha="0.84999999999999998" colorSpace="calibratedRGB"/>
-                                                                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
-                                                                    </textFieldCell>
-                                                                </textField>
                                                                 <button translatesAutoresizingMaskIntoConstraints="NO" id="WzN-vh-hoe">
-                                                                    <rect key="frame" x="8" y="8" width="32" height="32"/>
+                                                                    <rect key="frame" x="10" y="8" width="32" height="32"/>
                                                                     <constraints>
                                                                         <constraint firstAttribute="height" constant="32" id="MWf-fo-Ji7"/>
                                                                         <constraint firstAttribute="width" constant="32" id="SDB-JC-yiK"/>
@@ -946,14 +939,25 @@
                                                                         <action selector="startStopClick:" target="a4z-jO-6WW" id="lfy-Xh-rW2"/>
                                                                     </connections>
                                                                 </button>
+                                                                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="8Yx-K4-o3u">
+                                                                    <rect key="frame" x="315" y="1" width="79" height="46"/>
+                                                                    <constraints>
+                                                                        <constraint firstAttribute="width" relation="lessThanOrEqual" constant="75" id="QOO-U1-rjt"/>
+                                                                    </constraints>
+                                                                    <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" alignment="right" title="99%" id="z7Y-Pu-VAf">
+                                                                        <font key="font" metaFont="system" size="38"/>
+                                                                        <color key="textColor" red="0.95426682692307696" green="0.95426682692307696" blue="0.95426682692307696" alpha="0.84999999999999998" colorSpace="calibratedRGB"/>
+                                                                        <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                                                    </textFieldCell>
+                                                                </textField>
                                                             </subviews>
                                                             <constraints>
-                                                                <constraint firstAttribute="trailing" secondItem="8Yx-K4-o3u" secondAttribute="trailing" constant="5" id="0Jq-1F-eK1"/>
+                                                                <constraint firstItem="8Yx-K4-o3u" firstAttribute="leading" secondItem="NSc-bF-dBd" secondAttribute="trailing" constant="5" id="0IL-Gl-qgD"/>
                                                                 <constraint firstItem="NSc-bF-dBd" firstAttribute="centerY" secondItem="a4z-jO-6WW" secondAttribute="centerY" id="EcK-Xm-4sf"/>
                                                                 <constraint firstItem="8Yx-K4-o3u" firstAttribute="centerY" secondItem="a4z-jO-6WW" secondAttribute="centerY" id="Oss-f6-Be6"/>
-                                                                <constraint firstItem="WzN-vh-hoe" firstAttribute="leading" secondItem="a4z-jO-6WW" secondAttribute="leading" constant="8" id="dhu-EK-qjU"/>
-                                                                <constraint firstItem="8Yx-K4-o3u" firstAttribute="leading" secondItem="NSc-bF-dBd" secondAttribute="trailing" constant="8" id="eOa-49-qvi"/>
-                                                                <constraint firstItem="NSc-bF-dBd" firstAttribute="leading" secondItem="WzN-vh-hoe" secondAttribute="trailing" constant="8" id="yWm-Et-jxg"/>
+                                                                <constraint firstItem="WzN-vh-hoe" firstAttribute="leading" secondItem="a4z-jO-6WW" secondAttribute="leading" constant="10" id="dhu-EK-qjU"/>
+                                                                <constraint firstAttribute="trailing" secondItem="8Yx-K4-o3u" secondAttribute="trailing" constant="5" id="o4K-HF-NIr"/>
+                                                                <constraint firstItem="NSc-bF-dBd" firstAttribute="leading" secondItem="WzN-vh-hoe" secondAttribute="trailing" constant="10" id="yWm-Et-jxg"/>
                                                                 <constraint firstItem="WzN-vh-hoe" firstAttribute="centerY" secondItem="a4z-jO-6WW" secondAttribute="centerY" id="zSF-Vk-Zi4"/>
                                                             </constraints>
                                                             <connections>
@@ -1053,73 +1057,194 @@
         <scene sceneID="S33-hu-psT">
             <objects>
                 <viewController title="Torrent Detail" id="P1A-Vp-M8c" customClass="TorrentDetailsViewController" customModule="TorrentConnect" customModuleProvider="target" sceneMemberID="viewController">
-                    <view key="view" id="eWp-9N-oeV">
-                        <rect key="frame" x="0.0" y="0.0" width="457" height="299"/>
+                    <view key="view" id="7zU-bl-HOt">
+                        <rect key="frame" x="0.0" y="0.0" width="257" height="454"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <subviews>
-                            <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="QW9-WG-BqX">
-                                <rect key="frame" x="164" y="85" width="128" height="128"/>
+                            <button translatesAutoresizingMaskIntoConstraints="NO" id="l6C-cf-X1B">
+                                <rect key="frame" x="225" y="422" width="20" height="20"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="128" id="6Z1-bX-fPm"/>
-                                    <constraint firstAttribute="width" constant="128" id="wSb-Vt-cHx"/>
+                                    <constraint firstAttribute="width" constant="20" id="FGe-RJ-EKB"/>
+                                    <constraint firstAttribute="height" constant="20" id="gyz-E2-Ae8"/>
                                 </constraints>
-                                <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" image="NSTrashFull" id="gpA-at-282"/>
-                            </imageView>
-                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="iOP-ss-u20">
-                                <rect key="frame" x="191" y="64" width="75" height="17"/>
-                                <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="Any Torrent" id="IUe-Ea-UBg">
-                                    <font key="font" metaFont="system"/>
-                                    <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
-                                    <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
-                                </textFieldCell>
-                            </textField>
-                            <button translatesAutoresizingMaskIntoConstraints="NO" id="4Zy-dA-Pd0">
-                                <rect key="frame" x="425" y="267" width="20" height="20"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="20" id="4cK-YE-LCr"/>
-                                    <constraint firstAttribute="height" constant="20" id="hXQ-8c-bTl"/>
-                                </constraints>
-                                <buttonCell key="cell" type="square" bezelStyle="shadowlessSquare" image="close" imagePosition="only" alignment="center" imageScaling="proportionallyUpOrDown" inset="2" id="Uuh-8S-15b">
+                                <buttonCell key="cell" type="square" bezelStyle="shadowlessSquare" image="close" imagePosition="only" alignment="center" imageScaling="proportionallyUpOrDown" inset="2" id="PG1-pd-SbC">
                                     <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
                                     <font key="font" metaFont="system"/>
                                 </buttonCell>
                                 <connections>
-                                    <action selector="closeClick:" target="P1A-Vp-M8c" id="6Wa-2j-4av"/>
-                                </connections>
-                            </button>
-                            <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Vry-h6-7Ka">
-                                <rect key="frame" x="160" y="13" width="136" height="32"/>
-                                <buttonCell key="cell" type="push" title="Remove Torrent" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="bdd-vZ-EaZ">
-                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                                    <font key="font" metaFont="system"/>
-                                </buttonCell>
-                                <connections>
-                                    <action selector="deleteTorrent:" target="P1A-Vp-M8c" id="5Zi-nC-WvQ"/>
+                                    <action selector="closeDetails:" target="P1A-Vp-M8c" id="q4T-Mn-QdZ"/>
                                 </connections>
                             </button>
                         </subviews>
                         <constraints>
-                            <constraint firstItem="QW9-WG-BqX" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="eWp-9N-oeV" secondAttribute="leading" constant="164" id="3Ob-9A-Ydf"/>
-                            <constraint firstItem="iOP-ss-u20" firstAttribute="top" secondItem="QW9-WG-BqX" secondAttribute="bottom" constant="4" id="Efy-7P-sYe"/>
-                            <constraint firstItem="QW9-WG-BqX" firstAttribute="centerX" secondItem="eWp-9N-oeV" secondAttribute="centerX" id="P6R-Ug-NQs"/>
-                            <constraint firstAttribute="trailing" secondItem="4Zy-dA-Pd0" secondAttribute="trailing" constant="12" id="PA7-cs-c2F"/>
-                            <constraint firstItem="4Zy-dA-Pd0" firstAttribute="top" secondItem="eWp-9N-oeV" secondAttribute="top" constant="12" id="j3K-8V-34O"/>
-                            <constraint firstItem="iOP-ss-u20" firstAttribute="centerX" secondItem="QW9-WG-BqX" secondAttribute="centerX" id="lko-H5-rd4"/>
-                            <constraint firstItem="QW9-WG-BqX" firstAttribute="centerY" secondItem="eWp-9N-oeV" secondAttribute="centerY" id="sqd-Vg-Wwx"/>
+                            <constraint firstAttribute="trailing" secondItem="l6C-cf-X1B" secondAttribute="trailing" constant="12" id="cWQ-xj-aek"/>
+                            <constraint firstItem="l6C-cf-X1B" firstAttribute="top" secondItem="7zU-bl-HOt" secondAttribute="top" constant="12" id="nRe-qQ-Edh"/>
                         </constraints>
                     </view>
-                    <connections>
-                        <outlet property="labelField" destination="iOP-ss-u20" id="Gso-A1-vRO"/>
-                        <outlet property="manyTorrentsImage" destination="QW9-WG-BqX" id="1u7-fA-Ut1"/>
-                    </connections>
                 </viewController>
                 <customObject id="Bm9-Em-Di3" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="157.5" y="1191.5"/>
+            <point key="canvasLocation" x="-18.5" y="1229"/>
+        </scene>
+        <!--One Torrent Detail Controller-->
+        <scene sceneID="OSR-J3-XoM">
+            <objects>
+                <viewController storyboardIdentifier="oneTorrent" id="LmU-to-Ggx" customClass="OneTorrentDetailController" customModule="TorrentConnect" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" id="1uM-jf-h6Z">
+                        <rect key="frame" x="0.0" y="0.0" width="410" height="454"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <subviews>
+                            <stackView distribution="fill" orientation="horizontal" alignment="top" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Yiy-5N-DFm">
+                                <rect key="frame" x="135" y="20" width="141" height="21"/>
+                                <subviews>
+                                    <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="t2Y-eq-T7M">
+                                        <rect key="frame" x="-6" y="-7" width="80" height="32"/>
+                                        <buttonCell key="cell" type="push" title="Delete" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="BBI-hC-nm9">
+                                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                            <font key="font" metaFont="system"/>
+                                        </buttonCell>
+                                        <connections>
+                                            <action selector="deleteClick:" target="LmU-to-Ggx" id="3i9-m1-LIz"/>
+                                        </connections>
+                                    </button>
+                                    <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="2au-8N-MZr">
+                                        <rect key="frame" x="70" y="-7" width="77" height="32"/>
+                                        <buttonCell key="cell" type="push" title="Pause" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="w6l-I7-VC8">
+                                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                            <font key="font" metaFont="system"/>
+                                        </buttonCell>
+                                        <connections>
+                                            <action selector="startStopClick:" target="LmU-to-Ggx" id="Dz0-GJ-ot3"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                                <visibilityPriorities>
+                                    <integer value="1000"/>
+                                    <integer value="1000"/>
+                                </visibilityPriorities>
+                                <customSpacing>
+                                    <real value="3.4028234663852886e+38"/>
+                                    <real value="3.4028234663852886e+38"/>
+                                </customSpacing>
+                            </stackView>
+                            <textField autoresizesSubviews="NO" horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="601-MN-ugI">
+                                <rect key="frame" x="18" y="400" width="354" height="34"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="350" id="Lsp-xj-Xhf"/>
+                                    <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="34" id="Zrl-bw-fI3"/>
+                                </constraints>
+                                <textFieldCell key="cell" lineBreakMode="charWrapping" sendsActionOnEndEditing="YES" alignment="center" title="Torrent Name" id="Dmt-Hf-JMQ">
+                                    <font key="font" metaFont="systemBold" size="20"/>
+                                    <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
+                                    <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                </textFieldCell>
+                            </textField>
+                        </subviews>
+                        <constraints>
+                            <constraint firstItem="601-MN-ugI" firstAttribute="leading" secondItem="1uM-jf-h6Z" secondAttribute="leading" constant="20" id="2sZ-3b-LLO"/>
+                            <constraint firstItem="601-MN-ugI" firstAttribute="top" secondItem="1uM-jf-h6Z" secondAttribute="top" constant="20" id="BYk-yN-P2g"/>
+                            <constraint firstAttribute="trailing" secondItem="601-MN-ugI" secondAttribute="trailing" constant="40" id="HlV-jE-h7r"/>
+                            <constraint firstItem="Yiy-5N-DFm" firstAttribute="centerX" secondItem="1uM-jf-h6Z" secondAttribute="centerX" id="WiQ-h0-Dlv"/>
+                            <constraint firstAttribute="bottom" secondItem="Yiy-5N-DFm" secondAttribute="bottom" constant="20" id="baW-oK-PjF"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="startStopButton" destination="2au-8N-MZr" id="ICe-ai-1YJ"/>
+                        <outlet property="torrentName" destination="601-MN-ugI" id="RXX-uZ-DmK"/>
+                    </connections>
+                </viewController>
+                <customObject id="o4N-cF-c1x" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-52" y="1730"/>
+        </scene>
+        <!--Many Torrents Detail Controller-->
+        <scene sceneID="ozj-ez-6N3">
+            <objects>
+                <viewController storyboardIdentifier="manyTorrents" id="oRF-IZ-6Mh" customClass="ManyTorrentsDetailController" customModule="TorrentConnect" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" id="2Zx-h5-XEG">
+                        <rect key="frame" x="0.0" y="0.0" width="311" height="459"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <subviews>
+                            <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="kuw-Su-XOi">
+                                <rect key="frame" x="14" y="13" width="98" height="32"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="86" id="qDd-WF-P6Z"/>
+                                </constraints>
+                                <buttonCell key="cell" type="push" title="Delete All" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="xCS-X9-8b3">
+                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                    <font key="font" metaFont="system"/>
+                                </buttonCell>
+                                <connections>
+                                    <action selector="deleteAllClick:" target="oRF-IZ-6Mh" id="YRJ-Yc-qcp"/>
+                                </connections>
+                            </button>
+                            <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="7AA-OA-fe0">
+                                <rect key="frame" x="112" y="13" width="96" height="32"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="84" id="KNP-nz-J4f"/>
+                                </constraints>
+                                <buttonCell key="cell" type="push" title="Pause All" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="Due-Zy-xkU">
+                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                    <font key="font" metaFont="system"/>
+                                </buttonCell>
+                                <connections>
+                                    <action selector="pauseAllClick:" target="oRF-IZ-6Mh" id="W6j-FO-Jz1"/>
+                                </connections>
+                            </button>
+                            <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="YEW-Oa-i95">
+                                <rect key="frame" x="208" y="13" width="89" height="32"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="77" id="tju-yv-LaO"/>
+                                </constraints>
+                                <buttonCell key="cell" type="push" title="Start All" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="RLe-Cd-52y">
+                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                    <font key="font" metaFont="system"/>
+                                </buttonCell>
+                                <connections>
+                                    <action selector="startAllClick:" target="oRF-IZ-6Mh" id="y8W-ZN-9Jf"/>
+                                </connections>
+                            </button>
+                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Bin-fb-3yK">
+                                <rect key="frame" x="71" y="321" width="169" height="24"/>
+                                <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="torrents selected" id="0vb-wA-qwe">
+                                    <font key="font" metaFont="systemBold" size="20"/>
+                                    <color key="textColor" name="gridColor" catalog="System" colorSpace="catalog"/>
+                                    <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                </textFieldCell>
+                            </textField>
+                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="ly3-0b-Hh2">
+                                <rect key="frame" x="112" y="353" width="86" height="86"/>
+                                <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="10" id="aJ7-zS-Trz">
+                                    <font key="font" metaFont="systemBold" size="72"/>
+                                    <color key="textColor" name="gridColor" catalog="System" colorSpace="catalog"/>
+                                    <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                </textFieldCell>
+                            </textField>
+                        </subviews>
+                        <constraints>
+                            <constraint firstItem="YEW-Oa-i95" firstAttribute="bottom" secondItem="7AA-OA-fe0" secondAttribute="bottom" id="4ZR-rd-O1k"/>
+                            <constraint firstItem="7AA-OA-fe0" firstAttribute="bottom" secondItem="kuw-Su-XOi" secondAttribute="bottom" id="4q1-Pa-cm7"/>
+                            <constraint firstItem="kuw-Su-XOi" firstAttribute="leading" secondItem="2Zx-h5-XEG" secondAttribute="leading" constant="20" id="4zl-Dz-geH"/>
+                            <constraint firstItem="ly3-0b-Hh2" firstAttribute="centerX" secondItem="2Zx-h5-XEG" secondAttribute="centerX" id="Be4-R7-5xv"/>
+                            <constraint firstItem="Bin-fb-3yK" firstAttribute="centerX" secondItem="ly3-0b-Hh2" secondAttribute="centerX" id="BjP-Mr-Lco"/>
+                            <constraint firstAttribute="bottom" secondItem="kuw-Su-XOi" secondAttribute="bottom" constant="20" id="IHj-Gv-xrq"/>
+                            <constraint firstItem="YEW-Oa-i95" firstAttribute="leading" secondItem="7AA-OA-fe0" secondAttribute="trailing" constant="12" id="UoT-IA-l9i"/>
+                            <constraint firstAttribute="trailing" secondItem="YEW-Oa-i95" secondAttribute="trailing" constant="20" id="aIt-D7-2nR"/>
+                            <constraint firstItem="7AA-OA-fe0" firstAttribute="leading" secondItem="kuw-Su-XOi" secondAttribute="trailing" constant="12" id="hpw-zL-xf2"/>
+                            <constraint firstItem="Bin-fb-3yK" firstAttribute="top" secondItem="ly3-0b-Hh2" secondAttribute="bottom" constant="8" id="lbs-CZ-Atd"/>
+                            <constraint firstItem="ly3-0b-Hh2" firstAttribute="top" secondItem="2Zx-h5-XEG" secondAttribute="top" constant="20" id="vOJ-aQ-77V"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="torrentCountLabel" destination="ly3-0b-Hh2" id="FGf-L6-Gei"/>
+                    </connections>
+                </viewController>
+                <customObject id="95r-9p-gCM" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="362.5" y="1732.5"/>
         </scene>
     </scenes>
     <resources>
-        <image name="NSTrashFull" width="32" height="32"/>
         <image name="box-disabled" width="16" height="16"/>
         <image name="close" width="32" height="32"/>
         <image name="folder" width="16" height="16"/>
