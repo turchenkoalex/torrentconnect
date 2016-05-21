@@ -1127,6 +1127,14 @@
                                     <real value="3.4028234663852886e+38"/>
                                 </customSpacing>
                             </stackView>
+                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="VVA-r0-a2H">
+                                <rect key="frame" x="30" y="345" width="37" height="17"/>
+                                <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="100%" id="RnP-Ib-C8d">
+                                    <font key="font" metaFont="system"/>
+                                    <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                    <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                </textFieldCell>
+                            </textField>
                             <textField autoresizesSubviews="NO" horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="601-MN-ugI">
                                 <rect key="frame" x="18" y="400" width="354" height="34"/>
                                 <constraints>
@@ -1149,6 +1157,7 @@
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="progressLabel" destination="VVA-r0-a2H" id="urL-vA-OFX"/>
                         <outlet property="startStopButton" destination="2au-8N-MZr" id="ICe-ai-1YJ"/>
                         <outlet property="torrentName" destination="601-MN-ugI" id="RXX-uZ-DmK"/>
                     </connections>
@@ -1212,6 +1221,14 @@
                                     <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                 </textFieldCell>
                             </textField>
+                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Tly-a0-Prb">
+                                <rect key="frame" x="95" y="235" width="64" height="17"/>
+                                <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="100%" id="RO6-Js-Wjq">
+                                    <font key="font" metaFont="system"/>
+                                    <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                    <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                                </textFieldCell>
+                            </textField>
                             <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="ly3-0b-Hh2">
                                 <rect key="frame" x="112" y="353" width="86" height="86"/>
                                 <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="10" id="aJ7-zS-Trz">
@@ -1236,6 +1253,7 @@
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="progressLabel" destination="Tly-a0-Prb" id="VZG-18-3pQ"/>
                         <outlet property="torrentCountLabel" destination="ly3-0b-Hh2" id="FGf-L6-Gei"/>
                     </connections>
                 </viewController>

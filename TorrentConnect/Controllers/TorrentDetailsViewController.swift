@@ -10,9 +10,32 @@ import Cocoa
 
 class TorrentDetailsViewController: NSViewController {
     var selectBehaviour: SelectBehaviourDelegate?
-    var oneTorrentController: OneTorrentDetailController!
-    var manyTorrentsController: ManyTorrentsDetailController!
+    var oneTorrentController: OneTorrentDetailController?
+    var manyTorrentsController: ManyTorrentsDetailController?
+    var injectedType: Int = 0
     
+    func getManyTorrentsController() -> ManyTorrentsDetailController {
+        if (manyTorrentsController != nil) {
+            return manyTorrentsController!
+        }
+        
+        manyTorrentsController = self.storyboard?.instantiateControllerWithIdentifier("manyTorrents") as? ManyTorrentsDetailController
+        manyTorrentsController?.view.autoresizingMask = [.ViewHeightSizable, .ViewWidthSizable]
+        manyTorrentsController?.hide = self.hide
+        return manyTorrentsController!
+    }
+    
+    func getOneTorrentController() -> OneTorrentDetailController {
+        if (oneTorrentController != nil) {
+            return oneTorrentController!
+        }
+        
+        oneTorrentController = self.storyboard?.instantiateControllerWithIdentifier("oneTorrent") as? OneTorrentDetailController
+        oneTorrentController?.view.autoresizingMask = [.ViewHeightSizable, .ViewWidthSizable]
+        oneTorrentController?.hide = self.hide
+        return oneTorrentController!
+        
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -20,37 +43,36 @@ class TorrentDetailsViewController: NSViewController {
     }
     
     func showOneTorrent(torrent: TorrentModel) {
-        let ctrl = makeController("oneTorrent") as! OneTorrentDetailController
-        ctrl.hide = self.hide
+        let ctrl = getOneTorrentController()
         ctrl.setupModel(torrent)
+        injectController(ctrl, type: 1)
     }
     
     func showManyTorrents(torrents: [TorrentModel]) {
-        let ctrl = makeController("manyTorrents") as! ManyTorrentsDetailController
-        ctrl.hide = self.hide
+        let ctrl = getManyTorrentsController()
         ctrl.setupModel(torrents)
+        injectController(ctrl, type: 2)
     }
     
-    func makeController(identifier: String) -> NSViewController {
-        let controller = self.storyboard?.instantiateControllerWithIdentifier(identifier) as! NSViewController
-        
-        self.insertChildViewController(controller, atIndex: 0)
-        
-        if (self.view.subviews.count > 1) {
-            self.view.replaceSubview(self.view.subviews[1], with: controller.view)
-        } else {
-            self.view.addSubview(controller.view)
+    func injectController(controller: NSViewController, type: Int) {
+        if (type == injectedType) {
+            return
         }
         
+        injectedType = type
+        
+        self.insertChildViewController(controller, atIndex: 0)
+        if (self.view.subviews.count > 1) {
+            self.view.subviews.removeAtIndex(1)
+        }
+        
+        self.view.frame = controller.view.frame
+        self.view.addSubview(controller.view)
+
         if (self.childViewControllers.count > 1) {
             self.removeChildViewControllerAtIndex(1)
         }
         
-        self.view.frame = controller.view.frame
-        
-        controller.view.autoresizingMask = [.ViewHeightSizable, .ViewWidthSizable]
-        
-        return controller
     }
     
     func hide() {

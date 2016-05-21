@@ -11,9 +11,13 @@ import Cocoa
 class OneTorrentDetailController: NSViewController {
     @IBOutlet weak var torrentName: NSTextField!
     @IBOutlet weak var startStopButton: NSButton!
+    @IBOutlet weak var progressLabel: NSTextField!
+    
     var hide: () -> () = { }
     var id: Int = 0
     var state: TorrentStatus = .Stopped
+    var progress: Double = 0
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -25,7 +29,13 @@ class OneTorrentDetailController: NSViewController {
         id = torrent.id
         torrentName.stringValue = torrent.name
         state = torrent.status
+        progress = torrent.progress
         updateStartStopButton()
+        updateProgress()
+    }
+    
+    func updateProgress() {
+        progressLabel.stringValue =  String(progress) + "%"
     }
     
     func updateStartStopButton() {

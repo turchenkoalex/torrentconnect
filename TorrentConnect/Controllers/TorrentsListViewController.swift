@@ -103,6 +103,8 @@ class TorrentsListViewController: NSViewController {
                 }
             }
             
+            self.tableViewSelectionDidChange(NSNotification(name: "updates", object: nil))
+            
             if (self._sections.totalCount == 0 || self._sections.totalCount == self._sections.sectionsCount) {
                 self.tableView.reloadData()
             }
