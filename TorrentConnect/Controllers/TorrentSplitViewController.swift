@@ -9,8 +9,8 @@
 import Cocoa
 
 protocol SelectBehaviourDelegate {
-    func open(model: TorrentModel)
-    func select(models: [TorrentModel])
+    func open(model: Torrent)
+    func select(models: [Torrent])
     func deselect()
 }
 
@@ -44,7 +44,7 @@ class TorrentSplitViewController: NSSplitViewController, SelectBehaviourDelegate
         listController?.setupController(self)
     }
     
-    func setupDetailsController(models: [TorrentModel]) {
+    func setupDetailsController(models: [Torrent]) {
         let detailsController = splitViewItems[1].viewController as? TorrentDetailsViewController
         detailsController?.selectBehaviour = self
         if (models.count == 1) {
@@ -54,12 +54,12 @@ class TorrentSplitViewController: NSSplitViewController, SelectBehaviourDelegate
         }
     }
     
-    func open(model: TorrentModel) {
+    func open(model: Torrent) {
         setupDetailsController([model])
         showDetails()
     }
     
-    func select(models: [TorrentModel]) {
+    func select(models: [Torrent]) {
         if models.isEmpty {
             hideDetails()
             return
@@ -75,5 +75,8 @@ class TorrentSplitViewController: NSSplitViewController, SelectBehaviourDelegate
     
     func deselect() {
         hideDetails()
+        if let listController = splitViewItems[0].viewController as? TorrentsListViewController {
+            listController.onDeselectTorrents()
+        }
     }
 }

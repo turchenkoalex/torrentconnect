@@ -58,7 +58,7 @@ class TorrentTableCellView: NSTableCellView {
         case .Seed:
             imageAsset = .Upload
         default:
-            if (_progress < 100) {
+            if (_progress < 1) {
                 imageAsset = .Wait
             } else {
                 imageAsset = .Completed
@@ -67,7 +67,7 @@ class TorrentTableCellView: NSTableCellView {
         return NSImage(assetIdentifier: imageAsset)
     }
     
-    func setupView(torrent: TorrentModel) {
+    func setupView(torrent: Torrent) {
         initializeView()
         
         _id = torrent.id
@@ -76,7 +76,13 @@ class TorrentTableCellView: NSTableCellView {
         _progress = torrent.progress
         
         textField!.stringValue = torrent.name
-        progressLabel!.stringValue = (torrent.progress < 100) ? String(Int(torrent.progress)) + "%" : ""
+        if (torrent.progress < 1) {
+            progressLabel.doubleValue = torrent.progress
+            progressLabel.hidden = false
+        } else {
+            progressLabel.stringValue = ""
+            progressLabel.hidden = true
+        }
         imageButton.image = torrentStateImage()
     }
     
@@ -108,11 +114,11 @@ class TorrentTableCellView: NSTableCellView {
             return
         }
         
-        if (_progress < 100) {
+        if (_progress < 1) {
             NSColor.applicationHighlightedTableBackground().setStroke()
             NSColor.applicationHighlightedTableBackground().setFill()
             
-            let x = dirtyRect.size.width / 100 * CGFloat(_progress)
+            let x = dirtyRect.size.width * CGFloat(_progress)
             let progressRect = NSRect(
                 x: dirtyRect.origin.x,
                 y: dirtyRect.origin.y,
@@ -132,7 +138,7 @@ class TorrentTableCellView: NSTableCellView {
         switch(_status) {
         case .Stopped:
             TransmissionConnectManager.sharedInstance.startTorrents([_id]) {
-                if (self._progress < 100) {
+                if (self._progress < 1) {
                     self._status = .Download
                 } else {
                     self._status = .Seed

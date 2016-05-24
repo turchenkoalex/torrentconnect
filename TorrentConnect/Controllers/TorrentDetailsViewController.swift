@@ -42,13 +42,13 @@ class TorrentDetailsViewController: NSViewController {
         self.view.autoresizesSubviews = true
     }
     
-    func showOneTorrent(torrent: TorrentModel) {
+    func showOneTorrent(torrent: Torrent) {
         let ctrl = getOneTorrentController()
         ctrl.setupModel(torrent)
         injectController(ctrl, type: 1)
     }
     
-    func showManyTorrents(torrents: [TorrentModel]) {
+    func showManyTorrents(torrents: [Torrent]) {
         let ctrl = getManyTorrentsController()
         ctrl.setupModel(torrents)
         injectController(ctrl, type: 2)

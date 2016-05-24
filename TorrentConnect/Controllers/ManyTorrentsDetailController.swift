@@ -12,30 +12,31 @@ class ManyTorrentsDetailController: NSViewController {
 
     var hide: () -> () = { }
     var ids: [Int] = []
-    var progress: Double = 0
     
     @IBOutlet weak var torrentCountLabel: NSTextField!
     @IBOutlet weak var progressLabel: NSTextField!
+    @IBOutlet weak var activedLabel: NSTextField!
+    @IBOutlet weak var stoppedLabel: NSTextField!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do view setup here.
     }
     
-    func setupModel(torrents: [TorrentModel]) {
+    func setupModel(torrents: [Torrent]) {
         ids = torrents.map { $0.id }
-        torrentCountLabel.stringValue = String(torrents.count)
-        progress = calcProgress(torrents.map { $0.progress })
-        updateProgressLabel()
+        progressLabel.doubleValue = totalProgress(torrents.map { $0.progress })
+        
+        let stoppedCount = torrents.filter({ $0.status == .Stopped }).count
+        
+        torrentCountLabel.integerValue = torrents.count
+        activedLabel.integerValue = torrents.count - stoppedCount
+        stoppedLabel.integerValue = stoppedCount
     }
     
-    func calcProgress(items: [Double]) -> Double {
+    func totalProgress(items: [Double]) -> Double {
         let sum = items.reduce(0, combine: (+))
         return sum / Double(items.count)
-    }
-    
-    func updateProgressLabel() {
-        progressLabel.stringValue = String(progress) + "%"
     }
     
     @IBAction func deleteAllClick(sender: AnyObject) {

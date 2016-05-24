@@ -25,8 +25,13 @@ struct TransmissionRpc {
     }
     
     func getTorrents() -> String {
-        let fields = ["id", "name", "status", "comment", "percentDone", "downloadDir"]
+        let fields = ["id", "name", "status", "comment", "percentDone", "downloadDir", "rateDownload", "rateUpload", "totalSize", "leftUntilDone", "queuePosition"]
         return RpcRequest(method: "torrent-get", arguments: ["fields": fields]).toJson()
+    }
+    
+    func getTorrentFiles(ids: [Int]) -> String {
+        let fields = ["id", "files", "fileStats"]
+        return RpcRequest(method: "torrent-get", arguments: ["ids": ids, "fields": fields]).toJson()
     }
     
     func stopTorrents(ids: [Int]) -> String {

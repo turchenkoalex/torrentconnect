@@ -14,11 +14,11 @@ class TorrentsListViewController: NSViewController {
     @IBOutlet weak var searchField: NSSearchField!
     @IBOutlet weak var segmentedController: NSSegmentedControl!
 
-    private var _tableController: TableController<TorrentModel>!
+    private var _tableController: TableController<Torrent>!
     private let _torrentsGroupBy = TorrentsGroupBy()
-    private var _sections: Sections<TorrentModel> = Sections<TorrentModel>(sections: [])
+    private var _sections = Sections<Torrent>(sections: [])
     private var _selectBehaviour: SelectBehaviourDelegate?
-    private var _torrents: [TorrentModel] = [TorrentModel]()
+    private var _torrents = [Torrent]()
     private let _torrentFilter = TorrentFilter()
     private var filterText = ""
     
@@ -36,13 +36,13 @@ class TorrentsListViewController: NSViewController {
         _selectBehaviour = selectBehaviour
     }
     
-    func prepeareTorrents(torrents: [TorrentModel]) -> [TorrentModel] {
+    func prepeareTorrents(torrents: [Torrent]) -> [Torrent] {
         let filtered = self._torrentFilter.filter(filterText, torrents: torrents)
         let sorted = filtered.sort { $0.0.name < $0.1.name }
         return sorted
     }
     
-    func fetchTorrents(torrents: [TorrentModel]) {
+    func fetchTorrents(torrents: [Torrent]) {
         self._torrents = torrents
         self.showTorrents()
     }
@@ -53,12 +53,12 @@ class TorrentsListViewController: NSViewController {
         applySections(sections)
     }
     
-    func toggleSection(section: Section<TorrentModel>) {
+    func toggleSection(section: Section<Torrent>) {
         let sections = _sections.toggleSection(section.title)
         applySections(sections)
     }
     
-    func applySections(sections: Sections<TorrentModel>) {
+    func applySections(sections: Sections<Torrent>) {
         let changes = SectionsDiff.getChanges(_sections, right: sections)
         _sections = sections
         
@@ -188,12 +188,18 @@ extension TorrentsListViewController: NSTableViewDelegate, NSTableViewDataSource
     
     func tableViewSelectionDidChange(notification: NSNotification) {
         let selection = tableView.selectedRowIndexes
-        var items = [TorrentModel]()
+        var items = [Torrent]()
         for index in selection {
             if let torrent = _sections.elementAt(index) {
                 items.append(torrent)
             }
         }
         _selectBehaviour?.select(items)
+    }
+    
+    func onDeselectTorrents() {
+        dispatch_async(dispatch_get_main_queue()) {
+            self.tableView.deselectAll(self)
+        }
     }
 }

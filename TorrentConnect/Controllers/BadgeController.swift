@@ -16,7 +16,7 @@ class BadgeController {
         TransmissionConnectManager.sharedInstance.fetchTorrentsEvent.addHandler(self, handler: BadgeController.fetchTorrents)
     }
     
-    func fetchTorrents(torrents: [TorrentModel]) {
+    func fetchTorrents(torrents: [Torrent]) {
         let downloadCount = torrents.filter { $0.status == .Download }.count
         if (downloadCount > 0) {
             _dockTile.badgeLabel = String(downloadCount)

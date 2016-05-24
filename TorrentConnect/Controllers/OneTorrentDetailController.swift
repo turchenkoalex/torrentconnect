@@ -25,21 +25,25 @@ class OneTorrentDetailController: NSViewController {
         
     }
     
-    func setupModel(torrent: TorrentModel) {
+    func setupModel(torrent: Torrent) {
         id = torrent.id
         torrentName.stringValue = torrent.name
         state = torrent.status
         progress = torrent.progress
         updateStartStopButton()
         updateProgress()
+        
+        TransmissionConnectManager.sharedInstance.getFiles([id]) { files in
+            print(files)
+        }
     }
     
     func updateProgress() {
-        progressLabel.stringValue =  String(progress) + "%"
+        progressLabel.doubleValue = progress
     }
     
     func updateStartStopButton() {
-        let title = (self.state == .Stopped) ? "Start" : "Pause"
+        let title = (self.state == .Stopped) ? "Start" : "Stop"
         dispatch_async(dispatch_get_main_queue()) {
             self.startStopButton.title = title
         }

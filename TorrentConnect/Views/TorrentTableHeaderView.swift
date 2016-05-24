@@ -19,7 +19,7 @@ class TorrentTableHeaderView: NSTableCellView {
     private var _collapsed: Bool = false
     private var _count: Int = 0
     
-    func setupView(model: Section<TorrentModel>, toggleSection: () -> ()) {
+    func setupView(model: Section<Torrent>, toggleSection: () -> ()) {
         _title = model.title
         _collapsed = model.collapsed
         _toggleSection = toggleSection

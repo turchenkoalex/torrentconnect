@@ -15,8 +15,8 @@ class DownloadedController {
         TransmissionConnectManager.sharedInstance.fetchTorrentsEvent.addHandler(self, handler: DownloadedController.fetchTorrents)
     }
     
-    func fetchTorrents(torrents: [TorrentModel]) {
-        let downloaded = torrents.filter { $0.progress == 100 }.map { $0.id }
+    func fetchTorrents(torrents: [Torrent]) {
+        let downloaded = torrents.filter { $0.progress == 1 }.map { $0.id }
         for id in downloaded {
             if _active.contains(id) {
                 let torrent = torrents.filter { $0.id == id }.first
@@ -25,10 +25,10 @@ class DownloadedController {
                 }
             }
         }
-        _active = torrents.filter { $0.progress < 100 }.map { $0.id }
+        _active = torrents.filter { $0.progress < 1 }.map { $0.id }
     }
     
-    func notify(torrent: TorrentModel) {
+    func notify(torrent: Torrent) {
         let notification = NSUserNotification()
         notification.subtitle = "Download complete";
         notification.informativeText = "Torrent " + torrent.name + " already downloaded!";

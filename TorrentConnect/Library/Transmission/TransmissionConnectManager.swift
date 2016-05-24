@@ -31,7 +31,7 @@ struct EventQueue {
     private let _adapter = TransmissionAdapter()
     private var _timer: NSTimer?
     
-    public let fetchTorrentsEvent = Event<[TorrentModel]>()
+    public let fetchTorrentsEvent = Event<[Torrent]>()
     
     func getSettings() -> ConnectionSettings {
         
@@ -65,7 +65,7 @@ struct EventQueue {
         }
     }
     
-    func fetchTorrentsSuccess(torrents: [TorrentModel]) {
+    func fetchTorrentsSuccess(torrents: [Torrent]) {
         fetchTorrentsEvent.raise(torrents)
     }
     
@@ -114,6 +114,12 @@ struct EventQueue {
         }
     }
     
+    public func getFiles(ids: [Int], success: ([TorrentFile]) -> ()) {
+        if let connection = _connection {
+            self._adapter.files(connection, ids: ids, success: success, error: requestError)
+        }
+    }
+    
     private func isDeleteLocalData() -> Bool {
         return true
     }
@@ -121,8 +127,8 @@ struct EventQueue {
     public func deleteTorrents(ids: [Int], success: () -> ()) {
         if let connection = _connection {
             self._adapter.delete(connection, ids: ids, deleteLocalData: isDeleteLocalData(), success: {
-                self.fetchTorrents()
                 success()
+                self.fetchTorrents()
             }, error: requestError)
         }
     }

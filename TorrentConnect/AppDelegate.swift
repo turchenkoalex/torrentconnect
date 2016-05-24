@@ -19,6 +19,8 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSUserNotificationCenterDele
     func applicationDidFinishLaunching(aNotification: NSNotification) {
         // Insert code here to initialize your application
         
+        NSUserNotificationCenter.defaultUserNotificationCenter().delegate = self
+        
         NSUserDefaults.standardUserDefaults().registerDefaults([
             "host": "localhost",
             "port": 9091])

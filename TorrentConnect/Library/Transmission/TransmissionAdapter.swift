@@ -61,12 +61,12 @@ extension TransmissionAdapter {
         }
     }
     
-    func torrents(connection: TransmissionServerConnection, success: ([TorrentModel]) -> (), error: (RequestError) -> ()) {
+    func torrents(connection: TransmissionServerConnection, success: ([Torrent]) -> (), error: (RequestError) -> ()) {
         self.authorizedRequest(connection, body: rpc.getTorrents(), success: { data in
             switch self.parser.getTorrents(data) {
-            case let .First(torrents):
+            case .First(let torrents):
                 success(torrents)
-            case let .Second(requestError):
+            case .Second(let requestError):
                 error(requestError)
             }
         }, error: error)
@@ -97,5 +97,16 @@ extension TransmissionAdapter {
     
     func delete(connection: TransmissionServerConnection, ids: [Int], deleteLocalData: Bool, success: () -> (), error: (RequestError) -> ()) {
         authorizedRequest(connection, body: rpc.deleteTorrents(ids, deleteLocalData: deleteLocalData), success: { _ in success() }, error: error)
+    }
+    
+    func files(connection: TransmissionServerConnection, ids: [Int], success: ([TorrentFile]) -> (), error: (RequestError) -> ()) {
+        authorizedRequest(connection, body: rpc.getTorrentFiles(ids), success: { data in
+            switch self.parser.getTorrentFiles(data) {
+            case .First(let files):
+                success(files)
+            case .Second(let requestError):
+                error(requestError)
+            }
+        }, error: error)
     }
 }

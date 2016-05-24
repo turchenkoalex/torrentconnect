@@ -26,11 +26,11 @@ extension String {
 struct TorrentFilter {
     let levinstain = Levinstain()
     
-    func containsFilter(value: String) -> (TorrentModel -> Bool) {
+    func containsFilter(value: String) -> (Torrent -> Bool) {
         return { torrent in return torrent.name.lowercaseString.containsString(value) }
     }
     
-    func fuzzyFilter(value: String) -> (TorrentModel -> Bool) {
+    func fuzzyFilter(value: String) -> (Torrent -> Bool) {
         let valueLength = value.utf8.count
         let left = value.characters.map { $0 }
         
@@ -51,7 +51,7 @@ struct TorrentFilter {
         }
     }
     
-    func filter(value: String, torrents: [TorrentModel]) -> [TorrentModel] {
+    func filter(value: String, torrents: [Torrent]) -> [Torrent] {
         let lowerValue = value.lowercaseString
         if (value.isEmpty) {
             return torrents

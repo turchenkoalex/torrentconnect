@@ -12,7 +12,7 @@ struct TorrentsGroupBy {
     let shows = "Shows"
     let music = "Music"
  
-    private func byDownloadDirKeySelector(element: TorrentModel) -> String {
+    private func byDownloadDirKeySelector(element: Torrent) -> String {
         if (element.downloadDir == "/downloads/movies") {
             return movies
         }
@@ -28,11 +28,11 @@ struct TorrentsGroupBy {
         return other
     }
     
-    func byDownloadDir() -> (([TorrentModel]) -> [(String, [TorrentModel])]) {
+    func byDownloadDir() -> (([Torrent]) -> [(String, [Torrent])]) {
         return GroupBy(keySelector: self.byDownloadDirKeySelector).groupBy
     }
     
-    private func byStateKeySelector(element: TorrentModel) -> String {
+    private func byStateKeySelector(element: Torrent) -> String {
         switch element.status {
         case .Download:
             return "Download"
@@ -47,7 +47,7 @@ struct TorrentsGroupBy {
         }
     }
     
-    func byState() -> (([TorrentModel]) -> [(String, [TorrentModel])]) {
+    func byState() -> (([Torrent]) -> [(String, [Torrent])]) {
         return GroupBy(keySelector: self.byStateKeySelector).groupBy
     }
 }
