@@ -36,6 +36,7 @@
 		EE21D9721CEE47F00038588B /* torrent-256.png in Resources */ = {isa = PBXBuildFile; fileRef = EE21D9711CEE47F00038588B /* torrent-256.png */; };
 		EE21D9771CEE495C0038588B /* FilesHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE21D9751CEE495C0038588B /* FilesHandler.swift */; };
 		EE21D9781CEE495C0038588B /* UrlHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE21D9761CEE495C0038588B /* UrlHandler.swift */; };
+		EE24E7E71CF6316D00044386 /* TorrentLocation.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE24E7E61CF6316D00044386 /* TorrentLocation.swift */; };
 		EE39EF441CE87C1700600767 /* Event.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE39EF431CE87C1700600767 /* Event.swift */; };
 		EE39EF481CE8AB9500600767 /* BadgeController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE39EF471CE8AB9500600767 /* BadgeController.swift */; };
 		EE39EF4A1CE8ADDF00600767 /* DownloadedController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE39EF491CE8ADDF00600767 /* DownloadedController.swift */; };
@@ -101,6 +102,7 @@
 		EE21D9711CEE47F00038588B /* torrent-256.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "torrent-256.png"; path = "Assets/torrent-256.png"; sourceTree = SOURCE_ROOT; };
 		EE21D9751CEE495C0038588B /* FilesHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = FilesHandler.swift; path = Controllers/FilesHandler.swift; sourceTree = "<group>"; };
 		EE21D9761CEE495C0038588B /* UrlHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = UrlHandler.swift; path = Controllers/UrlHandler.swift; sourceTree = "<group>"; };
+		EE24E7E61CF6316D00044386 /* TorrentLocation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TorrentLocation.swift; sourceTree = "<group>"; };
 		EE39EF431CE87C1700600767 /* Event.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Event.swift; path = Library/Event.swift; sourceTree = "<group>"; };
 		EE39EF471CE8AB9500600767 /* BadgeController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = BadgeController.swift; path = Controllers/BadgeController.swift; sourceTree = "<group>"; };
 		EE39EF491CE8ADDF00600767 /* DownloadedController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = DownloadedController.swift; path = Controllers/DownloadedController.swift; sourceTree = "<group>"; };
@@ -249,6 +251,7 @@
 				11F0A1F71B8E51B70055BB8E /* ConnectionSettings.swift */,
 				11F0A1F91B8E51FF0055BB8E /* TorrentServerType.swift */,
 				EECA74671CF44ADE00DB67A9 /* TorrentFile.swift */,
+				EE24E7E61CF6316D00044386 /* TorrentLocation.swift */,
 			);
 			name = Models;
 			sourceTree = "<group>";
@@ -415,6 +418,7 @@
 				EE21D9781CEE495C0038588B /* UrlHandler.swift in Sources */,
 				EECA74681CF44ADE00DB67A9 /* TorrentFile.swift in Sources */,
 				11F0A1F01B8E50130055BB8E /* TorrentStatus.swift in Sources */,
+				EE24E7E71CF6316D00044386 /* TorrentLocation.swift in Sources */,
 				EE7D64ED1CE71E510034CF4E /* SectionsDiff.swift in Sources */,
 				EE4067751CEA62860043F6DE /* TransmissionConnectManager.swift in Sources */,
 				11F1C8341B85DC9A00D6CF44 /* TorrentTableHeaderView.swift in Sources */,

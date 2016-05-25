@@ -53,4 +53,8 @@ struct TransmissionRpc {
     func deleteTorrents(ids: [Int], deleteLocalData: Bool) -> String {
         return RpcRequest(method: "torrent-remove", arguments: ["ids": ids, "delete-local-data": deleteLocalData]).toJson()
     }
+    
+    func moveTorrents(ids: [Int], location: String) -> String {
+        return RpcRequest(method: "torrent-set-location", arguments: ["ids": ids, "location": location, "move": true]).toJson()
+    }
 }

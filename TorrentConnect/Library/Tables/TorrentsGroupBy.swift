@@ -7,25 +7,15 @@
 //
 
 struct TorrentsGroupBy {
-    let other = "Other"
-    let movies = "Movies"
-    let shows = "Shows"
-    let music = "Music"
- 
     private func byDownloadDirKeySelector(element: Torrent) -> String {
-        if (element.downloadDir == "/downloads/movies") {
-            return movies
+        let locations = TorrentLocations.all()
+        for location in locations {
+            if location.inLocation(element.downloadDir) {
+                return location.name
+            }
         }
         
-        if (element.downloadDir == "/downloads/shows") {
-            return shows
-        }
-        
-        if (element.downloadDir == "/downloads/music") {
-            return music
-        }
-        
-        return other
+        return "Others"
     }
     
     func byDownloadDir() -> (([Torrent]) -> [(String, [Torrent])]) {

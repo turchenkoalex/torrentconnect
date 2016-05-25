@@ -132,4 +132,13 @@ struct EventQueue {
             }, error: requestError)
         }
     }
+    
+    public func moveTorrents(ids: [Int], location: String, success: () -> ()) {
+        if let connection = _connection {
+            self._adapter.move(connection, ids: ids, location: location, success: {
+                self.fetchTorrents()
+                success()
+            }, error: requestError)
+        }
+    }
 }

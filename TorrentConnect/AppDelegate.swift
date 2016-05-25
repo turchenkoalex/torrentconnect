@@ -49,6 +49,7 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSUserNotificationCenterDele
     
     func userNotificationCenter(center: NSUserNotificationCenter, didActivateNotification notification: NSUserNotification) {
         center.removeDeliveredNotification(notification)
+        NSApplication.sharedApplication().windows.first?.makeKeyAndOrderFront(NSApplication.sharedApplication())
     }
     
     func application(sender: NSApplication, openFile filename: String) -> Bool {

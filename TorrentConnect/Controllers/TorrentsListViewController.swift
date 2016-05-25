@@ -10,6 +10,7 @@ import Cocoa
 
 class TorrentsListViewController: NSViewController {
 
+    @IBOutlet weak var pathMenu: NSMenu!
     @IBOutlet weak var tableView: NSTableView!
     @IBOutlet weak var searchField: NSSearchField!
     @IBOutlet weak var segmentedController: NSSegmentedControl!
@@ -30,6 +31,17 @@ class TorrentsListViewController: NSViewController {
         TransmissionConnectManager.sharedInstance.fetchTorrentsEvent.addHandler(self, handler: TorrentsListViewController.fetchTorrents)
         
         TransmissionConnectManager.sharedInstance.connect()
+        
+        setupMenu()
+    }
+    
+    func setupMenu() {
+        let locations = TorrentLocations.all()
+        for location in locations {
+            let item = NSMenuItem(title: location.name, action: #selector(moveTorrents), keyEquivalent: "")
+            item.representedObject = location.location
+            pathMenu.addItem(item)
+        }
     }
     
     func setupController(selectBehaviour: SelectBehaviourDelegate) {
@@ -186,7 +198,7 @@ extension TorrentsListViewController: NSTableViewDelegate, NSTableViewDataSource
         return !self._sections.isGroup(row)
     }
     
-    func tableViewSelectionDidChange(notification: NSNotification) {
+    func selectedTorrents() -> [Torrent] {
         let selection = tableView.selectedRowIndexes
         var items = [Torrent]()
         for index in selection {
@@ -194,12 +206,35 @@ extension TorrentsListViewController: NSTableViewDelegate, NSTableViewDataSource
                 items.append(torrent)
             }
         }
-        _selectBehaviour?.select(items)
+        
+        return items
+    }
+    
+    func tableViewSelectionDidChange(notification: NSNotification) {
+        _selectBehaviour?.select(selectedTorrents())
     }
     
     func onDeselectTorrents() {
         dispatch_async(dispatch_get_main_queue()) {
             self.tableView.deselectAll(self)
+        }
+    }
+    
+    func moveTorrents(item: NSMenuItem) {
+        var ids = [Int]()
+        let clickedRow = tableView.clickedRow
+        if clickedRow != -1 && !tableView.isRowSelected(clickedRow) {
+            if let torrent = _sections.elementAt(clickedRow) {
+                ids.append(torrent.id)
+            }
+        } else {
+            ids = selectedTorrents().map { $0.id }
+        }
+        
+        if let location = item.representedObject as? String {
+            TransmissionConnectManager.sharedInstance.moveTorrents(ids, location: location) {
+                
+            }
         }
     }
 }

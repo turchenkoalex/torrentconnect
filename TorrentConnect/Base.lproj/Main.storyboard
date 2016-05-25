@@ -973,6 +973,7 @@
                                             <connections>
                                                 <outlet property="dataSource" destination="hRJ-cd-Ik9" id="2dE-4d-e8O"/>
                                                 <outlet property="delegate" destination="hRJ-cd-Ik9" id="qtW-og-ygl"/>
+                                                <outlet property="menu" destination="yai-hZ-KC7" id="Myj-J7-mMS"/>
                                             </connections>
                                         </tableView>
                                     </subviews>
@@ -1045,12 +1046,14 @@
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="pathMenu" destination="yai-hZ-KC7" id="HcR-tA-oCU"/>
                         <outlet property="searchField" destination="lFk-4t-rOt" id="Hln-WD-KfP"/>
                         <outlet property="segmentedController" destination="asd-eI-zAt" id="A6k-f2-cLR"/>
                         <outlet property="tableView" destination="Zgo-wH-SRP" id="wMF-jK-nyu"/>
                     </connections>
                 </viewController>
                 <customObject id="eZ7-hk-RJZ" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
+                <menu id="yai-hZ-KC7"/>
             </objects>
             <point key="canvasLocation" x="-355" y="1229"/>
         </scene>
@@ -1154,7 +1157,7 @@
                             <scrollView autohidesScrollers="YES" horizontalLineScroll="19" horizontalPageScroll="10" verticalLineScroll="19" verticalPageScroll="10" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="M6E-A4-8jI">
                                 <rect key="frame" x="20" y="63" width="370" height="271"/>
                                 <clipView key="contentView" id="6ge-OL-gEl">
-                                    <rect key="frame" x="1" y="23" width="368" height="247"/>
+                                    <rect key="frame" x="1" y="0.0" width="368" height="270"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
                                         <outlineView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" multipleSelection="NO" autosaveColumns="NO" rowSizeStyle="automatic" headerView="6VJ-JP-NUI" viewBased="YES" indentationPerLevel="16" outlineTableColumn="hgU-9m-f0W" id="ZTA-5R-93k">
@@ -1241,7 +1244,7 @@
                                     <rect key="frame" x="1" y="119" width="223" height="15"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                 </scroller>
-                                <scroller key="verticalScroller" hidden="YES" verticalHuggingPriority="750" doubleValue="1" horizontal="NO" id="TmI-NP-RQ4">
+                                <scroller key="verticalScroller" hidden="YES" verticalHuggingPriority="750" horizontal="NO" id="TmI-NP-RQ4">
                                     <rect key="frame" x="224" y="17" width="15" height="102"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                 </scroller>
