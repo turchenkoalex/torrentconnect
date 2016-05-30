@@ -20,41 +20,41 @@ struct RpcRequest {
 }
 
 struct TransmissionRpc {
-    func getSessionId() -> String {
-        return RpcRequest(method: "session-get", arguments: [:]).toJson()
+    func getSessionId() -> RpcRequest {
+        return RpcRequest(method: "session-get", arguments: [:])
     }
     
-    func getTorrents() -> String {
-        let fields = ["id", "name", "status", "comment", "percentDone", "downloadDir", "rateDownload", "rateUpload", "totalSize", "leftUntilDone", "queuePosition"]
-        return RpcRequest(method: "torrent-get", arguments: ["fields": fields]).toJson()
+    func getTorrents() -> RpcRequest {
+        let fields = ["id", "name", "status", "percentDone", "downloadDir", "rateDownload", "rateUpload", "totalSize", "leftUntilDone", "queuePosition"]
+        return RpcRequest(method: "torrent-get", arguments: ["fields": fields])
     }
     
-    func getTorrentFiles(ids: [Int]) -> String {
+    func getTorrentFiles(ids: [Int]) -> RpcRequest {
         let fields = ["id", "files", "fileStats"]
-        return RpcRequest(method: "torrent-get", arguments: ["ids": ids, "fields": fields]).toJson()
+        return RpcRequest(method: "torrent-get", arguments: ["ids": ids, "fields": fields])
     }
     
-    func stopTorrents(ids: [Int]) -> String {
-        return RpcRequest(method: "torrent-stop", arguments: ["ids": ids]).toJson()
+    func stopTorrents(ids: [Int]) -> RpcRequest {
+        return RpcRequest(method: "torrent-stop", arguments: ["ids": ids])
     }
     
-    func startTorrents(ids: [Int]) -> String {
-        return RpcRequest(method: "torrent-start", arguments: ["ids": ids]).toJson()
+    func startTorrents(ids: [Int]) -> RpcRequest {
+        return RpcRequest(method: "torrent-start", arguments: ["ids": ids])
     }
     
-    func addTorrent(url url: String, paused: Bool) -> String {
-        return RpcRequest(method: "torrent-add", arguments: ["paused": paused, "filename": url]).toJson()
+    func addTorrent(url url: String, paused: Bool) -> RpcRequest {
+        return RpcRequest(method: "torrent-add", arguments: ["paused": paused, "filename": url])
     }
     
-    func addTorrent(metainfo metainfo: String, paused: Bool) -> String {
-        return RpcRequest(method: "torrent-add", arguments: ["paused": paused, "metainfo": metainfo]).toJson()
+    func addTorrent(metainfo metainfo: String, paused: Bool) -> RpcRequest {
+        return RpcRequest(method: "torrent-add", arguments: ["paused": paused, "metainfo": metainfo])
     }
     
-    func deleteTorrents(ids: [Int], deleteLocalData: Bool) -> String {
-        return RpcRequest(method: "torrent-remove", arguments: ["ids": ids, "delete-local-data": deleteLocalData]).toJson()
+    func deleteTorrents(ids: [Int], deleteLocalData: Bool) -> RpcRequest {
+        return RpcRequest(method: "torrent-remove", arguments: ["ids": ids, "delete-local-data": deleteLocalData])
     }
     
-    func moveTorrents(ids: [Int], location: String) -> String {
-        return RpcRequest(method: "torrent-set-location", arguments: ["ids": ids, "location": location, "move": true]).toJson()
+    func moveTorrents(ids: [Int], location: String) -> RpcRequest {
+        return RpcRequest(method: "torrent-set-location", arguments: ["ids": ids, "location": location, "move": true])
     }
 }

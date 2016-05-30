@@ -60,7 +60,6 @@ class TorrentDetailsViewController: NSViewController {
         }
         
         injectedType = type
-        
         self.insertChildViewController(controller, atIndex: 0)
         if (self.view.subviews.count > 1) {
             self.view.subviews.removeAtIndex(1)
@@ -72,7 +71,6 @@ class TorrentDetailsViewController: NSViewController {
         if (self.childViewControllers.count > 1) {
             self.removeChildViewControllerAtIndex(1)
         }
-        
     }
     
     func hide() {

@@ -17,7 +17,6 @@ struct TransmissionParser {
             let status = json?["status"] as? Int,
             let percentDone = json?["percentDone"] as? Double,
             let downloadDir = json?["downloadDir"] as? String,
-            let comment = json?["comment"] as? String,
             let position = json?["queuePosition"] as? Int
             else {
                     return nil
@@ -29,14 +28,13 @@ struct TransmissionParser {
             status: TorrentStatus(rawValue: status)!,
             progress: percentDone,
             downloadDir: downloadDir,
-            comment: comment,
             position: position)
     }
     
     private func parseTorrentFiles(o: AnyObject?) -> [TorrentFile]? {
         let json = JSON(o)
         guard
-            let id = json?["id"] as? Int,
+            let torrentId = json?["id"] as? Int,
             let jsonFiles = json?["files"] as? NSArray,
             let jsonStats = json?["fileStats"] as? NSArray
         else {
@@ -45,9 +43,9 @@ struct TransmissionParser {
         
         var files = [TorrentFile]()
         
-        for (index, jsonFile) in jsonFiles.enumerate() {
-            let jsonStat = jsonStats.objectAtIndex(index)
-            if let file = parseTorrentFile(id, file: jsonFile, stats: jsonStat) {
+        for (id, jsonFile) in jsonFiles.enumerate() {
+            let jsonStat = jsonStats.objectAtIndex(id)
+            if let file = parseTorrentFile(id, torrentId: torrentId, file: jsonFile, stats: jsonStat) {
                 files.append(file)
             }
         }
@@ -55,7 +53,7 @@ struct TransmissionParser {
         return files
     }
     
-    private func parseTorrentFile(id: Int, file: AnyObject?, stats: AnyObject?) -> TorrentFile? {
+    private func parseTorrentFile(id: Int, torrentId: Int, file: AnyObject?, stats: AnyObject?) -> TorrentFile? {
         let json = JSON(file)
         guard
             let name = json?["name"] as? String,
@@ -68,7 +66,8 @@ struct TransmissionParser {
         let wants = JSON(stats)?["wanted"] as? Bool ?? false
         
         return TorrentFile(
-            torrentId: id,
+            id: id,
+            torrentId: torrentId,
             name: name,
             length: length,
             bytesCompleted: bytesCompleted,

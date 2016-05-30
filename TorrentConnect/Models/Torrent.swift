@@ -12,7 +12,6 @@ public struct Torrent: Equatable {
     let status: TorrentStatus
     let progress: Double
     let downloadDir: String
-    let comment: String
     let position: Int
 }
 
@@ -24,7 +23,6 @@ extension Torrent: FullyEquatable {
             && self.progress == value.progress
             && self.status == value.status
             && self.downloadDir == value.downloadDir
-            && self.comment == value.comment
             && self.position == value.position
     }
 }

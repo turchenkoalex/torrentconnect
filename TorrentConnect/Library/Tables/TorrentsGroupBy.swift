@@ -29,7 +29,7 @@ struct TorrentsGroupBy {
         case .Seed:
             return "Seed"
         default:
-            if (element.progress < 100) {
+            if (element.progress < 1) {
                 return "Wait"
             } else {
                 return "Completed"

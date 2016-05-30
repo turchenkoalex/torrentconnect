@@ -7,6 +7,7 @@
 //
 
 public struct TorrentFile {
+    let id: Int
     let torrentId: Int
     let name: String
     let length: Int
