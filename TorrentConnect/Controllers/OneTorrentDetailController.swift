@@ -18,26 +18,26 @@ class OneTorrentDetailController: NSViewController {
     var torrent = Torrent(id: 0, name: "", status: .Download, progress: 0, downloadDir: "", position: 0)
     var files = [TorrentFile]()
     
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do view setup here.
-        
     }
     
     func setupModel(model: Torrent) {
+        let changed = torrent.id != model.id
         torrent = model
         
         torrentName.stringValue = torrent.name
         torrentName.toolTip = torrent.name
         progressLabel.doubleValue = torrent.progress
         
-        files = []
-        
         self.updateStartStopButton()
         
-        dispatch_async(dispatch_get_main_queue()) {
-            self.filesOutline.reloadData()
+        if changed {
+            files = []
+            dispatch_async(dispatch_get_main_queue()) {
+                self.filesOutline.reloadData()
+            }
         }
         
         TransmissionConnectManager.sharedInstance.getFiles([torrent.id]) { files in
@@ -81,40 +81,67 @@ class OneTorrentDetailController: NSViewController {
     }
 }
 
-@objc class myobj : NSObject {
-    let file: NSString
-    let size: NSNumber
-    init(torrentFile: TorrentFile) {
-        file = NSString(string: torrentFile.name)
-        size = NSNumber(integer: torrentFile.length)
-    }
-}
-
 extension OneTorrentDetailController: NSOutlineViewDelegate, NSOutlineViewDataSource {
     func outlineView(outlineView: NSOutlineView, numberOfChildrenOfItem item: AnyObject?) -> Int {
         return files.count
     }
-    
+
     func outlineView(outlineView: NSOutlineView, isItemExpandable item: AnyObject) -> Bool {
         return false
     }
-    
+
     func outlineView(outlineView: NSOutlineView, child index: Int, ofItem item: AnyObject?) -> AnyObject {
-        return myobj(torrentFile: files[index])
+        return index
+    }
+
+    func outlineView(outlineView: NSOutlineView, objectValueForTableColumn tableColumn: NSTableColumn?, byItem item: AnyObject?) -> AnyObject? {
+
+        if let index = item as? Int {
+            let torrentFile = self.files[index]
+            
+            if tableColumn?.identifier == "file" {
+                return torrentFile.name
+            }
+            if tableColumn?.identifier == "size" {
+                return torrentFile.length
+            }
+            if tableColumn?.identifier == "wants" {
+                return torrentFile.wants
+            }
+            if tableColumn?.identifier == "progress" {
+                return Double(torrentFile.bytesCompleted) / Double(torrentFile.length)
+            }
+        }
+        
+        return nil
     }
     
-    func outlineView(outlineView: NSOutlineView, objectValueForTableColumn tableColumn: NSTableColumn?, byItem item: AnyObject?) -> AnyObject? {
+    func outlineView(outlineView: NSOutlineView, setObjectValue object: AnyObject?, forTableColumn tableColumn: NSTableColumn?, byItem item: AnyObject?) {
         
-//        if let o = item as? myobj {
-//            if tableColumn?.identifier == "file" {
-//                return o.file
-//            }
-//            if tableColumn?.identifier == "size" {
-//                return o.size
-//            }
-//            
-//        }
-        
-        return ""
+        if let index = item as? Int {
+
+            guard
+                tableColumn?.identifier == "wants",
+                let wants = object as? Bool
+                else {
+                    return
+            }
+            let torrentFile = self.files[index]
+            
+            self.files[index] = TorrentFile(id: torrentFile.id, torrentId: torrentFile.torrentId, name: torrentFile.name
+                , length: torrentFile.length, bytesCompleted: torrentFile.bytesCompleted, wants: wants)
+            var wanted : [Int] = []
+            var unwanted : [Int] = []
+            
+            if wants {
+                wanted.append(torrentFile.id)
+            } else {
+                unwanted.append(torrentFile.id)
+            }
+            
+            TransmissionConnectManager.sharedInstance.wantFiles(forTorrent: torrent.id, wanted: wanted, unwanted: unwanted) {
+                
+            }
+        }
     }
 }

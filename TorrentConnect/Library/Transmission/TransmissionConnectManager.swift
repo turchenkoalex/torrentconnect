@@ -141,4 +141,13 @@ struct EventQueue {
             }, error: requestError)
         }
     }
+    
+    public func wantFiles(forTorrent id: Int, wanted: [Int], unwanted: [Int], success: () -> ()) {
+        if let connection = _connection {
+            self._adapter.setFiles(connection, id: id, wanted: wanted, unwanted: unwanted, success: {
+                //self.fetchTorrents()
+                success()
+            }, error: requestError)
+        }
+    }
 }

@@ -14,6 +14,7 @@ class TorrentTableCellView: NSTableCellView {
     @IBOutlet weak var progressLabel: NSTextField!
     @IBOutlet weak var imageButton: NSButton!
     private var viewInitialized = false
+    @IBOutlet weak var progressWidth: NSLayoutConstraint!
     
     private var _id: Int = 0
     private var _status: TorrentStatus = TorrentStatus.Stopped
@@ -75,13 +76,17 @@ class TorrentTableCellView: NSTableCellView {
         _previousStatus = torrent.status
         _progress = torrent.progress
         
-        textField!.stringValue = torrent.name
-        if (torrent.progress < 1) {
-            progressLabel.doubleValue = torrent.progress
-            progressLabel.hidden = false
-        } else {
-            progressLabel.stringValue = ""
-            progressLabel.hidden = true
+        dispatch_async(dispatch_get_main_queue()) {
+            self.textField!.stringValue = torrent.name
+            if (torrent.progress < 1) {
+                if self.progressLabel.doubleValue != torrent.progress {
+                    self.progressLabel.doubleValue = torrent.progress
+                }
+                self.progressWidth.constant = 80
+            } else {
+                self.progressLabel.stringValue = ""
+                self.progressWidth.constant = 0
+            }
         }
         imageButton.image = torrentStateImage()
     }

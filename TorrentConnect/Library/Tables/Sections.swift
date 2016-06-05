@@ -49,6 +49,10 @@ struct Sections<Element: Equatable where Element: FullyEquatable> {
         
         return false
     }
+    
+    func isElement(index: Int) -> Bool {
+        return !isGroup(index)
+    }
 
     func elementAt(index: Int) -> Element? {
         if let position = positionAt(index) {

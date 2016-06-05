@@ -114,4 +114,8 @@ extension TransmissionAdapter {
     func move(connection: TransmissionServerConnection, ids: [Int], location: String, success: () -> (), error: (RequestError) -> ()) {
         authorizedRequest(connection, request: rpc.moveTorrents(ids, location: location), success: { _ in }, error: error)
     }
+    
+    func setFiles(connection: TransmissionServerConnection, id: Int, wanted: [Int], unwanted: [Int], success: () -> (), error: (RequestError) -> ()) {
+        authorizedRequest(connection, request: rpc.wantFiles(forTorrent: id, wanted: wanted, unwanted: unwanted), success: { _ in success() }, error: error)
+    }
 }

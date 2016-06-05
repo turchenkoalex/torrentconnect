@@ -57,4 +57,16 @@ struct TransmissionRpc {
     func moveTorrents(ids: [Int], location: String) -> RpcRequest {
         return RpcRequest(method: "torrent-set-location", arguments: ["ids": ids, "location": location, "move": true])
     }
+    
+    func wantFiles(forTorrent id: Int, wanted: [Int], unwanted: [Int]) -> RpcRequest {
+        var args: [String : JsonPrintable] = ["ids": [id]]
+        if wanted.count > 0 {
+            args["files-wanted"] = wanted
+        }
+        if unwanted.count > 0 {
+            args["files-unwanted"] = unwanted
+        }
+        
+        return RpcRequest(method: "torrent-set", arguments: args)
+    }
 }
