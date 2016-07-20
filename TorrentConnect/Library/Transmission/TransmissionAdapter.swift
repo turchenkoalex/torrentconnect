@@ -18,10 +18,32 @@ struct TransmissionAdapter {
     let parser = TransmissionParser()
     let rpc = TransmissionRpc()
     
+    private let _credentialsManager = CredentialsManager()
+    
+    private func getBasicHeader(host: String, port: Int) -> String? {
+        if let credentials = _credentialsManager.getCredentials(host, port: port) {
+            let loginString = "\(credentials.username):\(credentials.password)"
+            let loginData = loginString.dataUsingEncoding(NSUTF8StringEncoding)
+            let base64EncodedCredential = loginData!.base64EncodedStringWithOptions(NSDataBase64EncodingOptions.Encoding64CharacterLineLength)
+            return "Basic \(base64EncodedCredential)"
+        }
+        
+        return nil
+    }
+    
+    private func setupAuthorization(request: NSMutableURLRequest) {
+        if let url = request.URL {
+            if let basicHeader = getBasicHeader(url.host!, port: url.port!.integerValue) {
+                request.setValue(basicHeader, forHTTPHeaderField: "Authorization")
+            }
+        }
+    }
+    
     private func postRequest(url: NSURL, request: RpcRequest, completionHandler: (NSData?, NSURLResponse?, NSError?) -> Void) {
         let urlRequest = NSMutableURLRequest(URL: url)
         urlRequest.HTTPMethod = "POST"
         urlRequest.HTTPBody = request.toJson().dataUsingEncoding(NSUTF8StringEncoding)
+        setupAuthorization(urlRequest)
         
         let requestTask = NSURLSession.sharedSession().dataTaskWithRequest(urlRequest, completionHandler: completionHandler)
         requestTask.resume()
@@ -34,10 +56,11 @@ struct TransmissionAdapter {
         let urlRequest = NSMutableURLRequest(URL: url)
         urlRequest.HTTPMethod = "POST"
         urlRequest.HTTPBody = body.dataUsingEncoding(NSUTF8StringEncoding)
+        setupAuthorization(urlRequest)
         urlRequest.setValue(sessionId, forHTTPHeaderField: "X-Transmission-Session-Id")
         let requestTask = NSURLSession.sharedSession().dataTaskWithRequest(urlRequest) { data, response, _ in
             if let response = response as? NSHTTPURLResponse {
-                if response.statusCode == 409 {
+                if response.statusCode == 409 || response.statusCode == 401 {
                     error(RequestError.AuthorizationError)
                     return
                 }
@@ -58,6 +81,8 @@ extension TransmissionAdapter {
             if let sessionId = self.parser.getSessionId(response) {
                 let connection = TransmissionServerConnection(settings: settings, sessionId: sessionId)
                 success(connection)
+            } else {
+                error(.AuthorizationError)
             }
         }
     }

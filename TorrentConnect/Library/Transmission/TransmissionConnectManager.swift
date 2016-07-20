@@ -30,6 +30,7 @@ struct EventQueue {
     private var _connection: TransmissionServerConnection?
     private let _adapter = TransmissionAdapter()
     private var _timer: NSTimer?
+    private var _connectAttemps: Int = 0
     
     public let fetchTorrentsEvent = Event<[Torrent]>()
     
@@ -43,11 +44,24 @@ struct EventQueue {
     }
     
     func connect() {
+        print("connect attemp")
+        
+        //self._connectAttemps += 1
+        
+//        if (self._connectAttemps > 10) {
+//            print("Maximum connect attempts")
+//            _timer?.invalidate()
+//            return
+//        }
+        
         _timer = NSTimer.scheduledTimerWithTimeInterval(3, target: self, selector: #selector(TransmissionConnectManager.fetchTorrents), userInfo: nil, repeats: true)
         _adapter.connect(getSettings(), success: connectSuccess, error: connectError)
     }
     
     func connectSuccess(connection: TransmissionServerConnection) {
+        print("connect success")
+        
+        self._connectAttemps = 0
         self._connection = connection
         self._events.invoke()
         self.fetchTorrents()

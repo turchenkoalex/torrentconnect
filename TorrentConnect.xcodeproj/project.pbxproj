@@ -32,6 +32,7 @@
 		11F1C83D1B85DCC800D6CF44 /* TorrentSplitViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11F1C83A1B85DCC800D6CF44 /* TorrentSplitViewController.swift */; };
 		11F1C83F1B85E17700D6CF44 /* TorrentDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11F1C83E1B85E17700D6CF44 /* TorrentDetailsViewController.swift */; };
 		11FD0D931B85F9F500D1ADC5 /* TorrentTableCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11FD0D921B85F9F500D1ADC5 /* TorrentTableCellView.swift */; };
+		EE0481DA1D40018500C677BC /* CredentialsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE0481D91D40018500C677BC /* CredentialsManager.swift */; };
 		EE1A0CF11CEF874A0040DB92 /* OneTorrentDetailController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE1A0CF01CEF874A0040DB92 /* OneTorrentDetailController.swift */; };
 		EE21D9721CEE47F00038588B /* torrent-256.png in Resources */ = {isa = PBXBuildFile; fileRef = EE21D9711CEE47F00038588B /* torrent-256.png */; };
 		EE21D9771CEE495C0038588B /* FilesHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE21D9751CEE495C0038588B /* FilesHandler.swift */; };
@@ -98,6 +99,7 @@
 		11F1C83A1B85DCC800D6CF44 /* TorrentSplitViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = TorrentSplitViewController.swift; path = Controllers/TorrentSplitViewController.swift; sourceTree = "<group>"; };
 		11F1C83E1B85E17700D6CF44 /* TorrentDetailsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = TorrentDetailsViewController.swift; path = Controllers/TorrentDetailsViewController.swift; sourceTree = "<group>"; };
 		11FD0D921B85F9F500D1ADC5 /* TorrentTableCellView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = TorrentTableCellView.swift; path = Views/TorrentTableCellView.swift; sourceTree = "<group>"; };
+		EE0481D91D40018500C677BC /* CredentialsManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CredentialsManager.swift; sourceTree = "<group>"; };
 		EE1A0CF01CEF874A0040DB92 /* OneTorrentDetailController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = OneTorrentDetailController.swift; path = Controllers/OneTorrentDetailController.swift; sourceTree = "<group>"; };
 		EE21D9711CEE47F00038588B /* torrent-256.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "torrent-256.png"; path = "Assets/torrent-256.png"; sourceTree = SOURCE_ROOT; };
 		EE21D9751CEE495C0038588B /* FilesHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = FilesHandler.swift; path = Controllers/FilesHandler.swift; sourceTree = "<group>"; };
@@ -227,6 +229,7 @@
 				11F0A1F11B8E50320055BB8E /* Either.swift */,
 				EE39EF431CE87C1700600767 /* Event.swift */,
 				EE39EF4D1CEA251400600767 /* JsonPrintable.swift */,
+				EE0481D91D40018500C677BC /* CredentialsManager.swift */,
 			);
 			name = Library;
 			sourceTree = "<group>";
@@ -387,6 +390,7 @@
 				EE21D9771CEE495C0038588B /* FilesHandler.swift in Sources */,
 				EE39EF441CE87C1700600767 /* Event.swift in Sources */,
 				11ED6D0C1B88DE180083ACEC /* ApplicationColors.swift in Sources */,
+				EE0481DA1D40018500C677BC /* CredentialsManager.swift in Sources */,
 				EE1A0CF11CEF874A0040DB92 /* OneTorrentDetailController.swift in Sources */,
 				11ABC7141B8BA6DF0039C3DF /* AssetIdentifiers.swift in Sources */,
 				EE92DBA01CE5D1C6005F89BA /* TorrentsGroupBy.swift in Sources */,
@@ -544,7 +548,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_IDENTITY = "Mac Developer";
+				CODE_SIGN_IDENTITY = "Developer ID Application";
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Mac Developer";
 				COMBINE_HIDPI_IMAGES = YES;
 				INFOPLIST_FILE = TorrentConnect/Info.plist;
@@ -559,7 +563,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_IDENTITY = "Mac Developer";
+				CODE_SIGN_IDENTITY = "Developer ID Application";
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Mac Developer";
 				COMBINE_HIDPI_IMAGES = YES;
 				INFOPLIST_FILE = TorrentConnect/Info.plist;

@@ -15,9 +15,7 @@ class ConnectionOptionsViewController: NSViewController {
     @IBOutlet weak var usernameField: NSTextField!
     @IBOutlet weak var passwordField: NSSecureTextField!
     
-    private func getSpace(host host: String, port: Int) -> NSURLProtectionSpace {
-        return NSURLProtectionSpace(host: host, port: port, protocol: "http", realm: "Transmission", authenticationMethod: NSURLAuthenticationMethodDefault)
-    }
+    private let _credentialsManager = CredentialsManager()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -28,10 +26,9 @@ class ConnectionOptionsViewController: NSViewController {
         if let host = defaults.stringForKey("host") {
             hostField.stringValue = host
             
-            let space = getSpace(host: host, port: port)
-            if let credential = NSURLCredentialStorage.sharedCredentialStorage().defaultCredentialForProtectionSpace(space) {
-                usernameField.stringValue = credential.user!
-                passwordField.stringValue = credential.password!
+            if let credentials = _credentialsManager.getCredentials(host, port: port) {
+                usernameField.stringValue = credentials.username
+                passwordField.stringValue = credentials.password
             }
         }
         portField.integerValue = port
@@ -43,9 +40,8 @@ class ConnectionOptionsViewController: NSViewController {
         defaults.setObject(hostField.stringValue, forKey: "host")
         defaults.setInteger(portField.integerValue, forKey: "port")
         if (usernameField.stringValue != "") {
-            let space = getSpace(host: hostField.stringValue, port: portField.integerValue)
-            let credential = NSURLCredential(user: usernameField.stringValue, password: passwordField.stringValue, persistence: .Permanent)
-            NSURLCredentialStorage.sharedCredentialStorage().setDefaultCredential(credential, forProtectionSpace: space)
+            let credentials = Credentials(username: usernameField.stringValue, password: passwordField.stringValue)
+            _credentialsManager.setCredentials(hostField.stringValue, port: portField.integerValue, credentials: credentials)
         }
     }
 }
