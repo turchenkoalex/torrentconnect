@@ -42,6 +42,8 @@ class TorrentsListViewController: NSViewController {
             item.representedObject = location.location
             pathMenu.addItem(item)
         }
+        pathMenu.addItem(NSMenuItem.separatorItem())
+        pathMenu.addItem(NSMenuItem(title: "Trash", action: #selector(trashTorrents), keyEquivalent: ""))
     }
     
     func setupController(selectBehaviour: SelectBehaviourDelegate) {
@@ -220,7 +222,7 @@ extension TorrentsListViewController: NSTableViewDelegate, NSTableViewDataSource
         }
     }
     
-    func moveTorrents(item: NSMenuItem) {
+    func proceededClickTorrents() -> [Int] {
         var ids = [Int]()
         let clickedRow = tableView.clickedRow
         if clickedRow != -1 && !tableView.isRowSelected(clickedRow) {
@@ -231,10 +233,21 @@ extension TorrentsListViewController: NSTableViewDelegate, NSTableViewDataSource
             ids = selectedTorrents().map { $0.id }
         }
         
+        return ids
+    }
+    
+    func moveTorrents(item: NSMenuItem) {
+        let ids = self.proceededClickTorrents()
         if let location = item.representedObject as? String {
             TransmissionConnectManager.sharedInstance.moveTorrents(ids, location: location) {
                 
             }
+        }
+    }
+    
+    func trashTorrents(item: NSMenuItem) {
+        let ids = self.proceededClickTorrents()
+        TransmissionConnectManager.sharedInstance.deleteTorrents(ids) {
         }
     }
 }
