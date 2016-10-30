@@ -1,9 +1,10 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="10117" systemVersion="15G31" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" initialViewController="B8D-0N-5wS">
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="11542" systemVersion="16B2555" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" initialViewController="B8D-0N-5wS">
     <dependencies>
         <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="10117"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="11542"/>
         <capability name="box content view" minToolsVersion="7.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
         <capability name="stacking Non-gravity area distributions on NSStackView" minToolsVersion="7.0" minSystemVersion="10.11"/>
     </dependencies>
     <scenes>
@@ -839,7 +840,7 @@
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
                                         <tableView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" columnReordering="NO" columnResizing="NO" autosaveColumns="NO" rowHeight="48" rowSizeStyle="automatic" viewBased="YES" id="Zgo-wH-SRP">
-                                            <rect key="frame" x="0.0" y="0.0" width="400" height="0.0"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="400" height="386"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <size key="intercellSpacing" width="3" height="2"/>
                                             <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
@@ -915,10 +916,10 @@
                                                             <rect key="frame" x="1" y="29" width="397" height="48"/>
                                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                                             <subviews>
-                                                                <textField autoresizesSubviews="NO" horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="8Yx-K4-o3u">
+                                                                <textField autoresizesSubviews="NO" horizontalHuggingPriority="251" verticalHuggingPriority="750" horizontalCompressionResistancePriority="751" translatesAutoresizingMaskIntoConstraints="NO" id="8Yx-K4-o3u">
                                                                     <rect key="frame" x="310" y="7" width="84" height="34"/>
                                                                     <constraints>
-                                                                        <constraint firstAttribute="width" constant="80" identifier="progressWidth" id="oJq-4w-gGW"/>
+                                                                        <constraint firstAttribute="width" relation="lessThanOrEqual" constant="80" id="b72-1t-yZz"/>
                                                                     </constraints>
                                                                     <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" baseWritingDirection="leftToRight" alignment="right" title="100 %" usesSingleLineMode="YES" id="z7Y-Pu-VAf">
                                                                         <numberFormatter key="formatter" formatterBehavior="default10_4" numberStyle="percent" minimumIntegerDigits="1" maximumIntegerDigits="2000000000" id="QrC-LZ-g5G">
@@ -929,11 +930,8 @@
                                                                         <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                                                     </textFieldCell>
                                                                 </textField>
-                                                                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="NSc-bF-dBd" userLabel="Title Field">
+                                                                <textField horizontalHuggingPriority="252" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="NSc-bF-dBd" userLabel="Title Field">
                                                                     <rect key="frame" x="50" y="15" width="256" height="17"/>
-                                                                    <constraints>
-                                                                        <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="252" id="84Z-LR-yqF"/>
-                                                                    </constraints>
                                                                     <textFieldCell key="cell" lineBreakMode="truncatingTail" sendsActionOnEndEditing="YES" title="Title" id="SPK-bU-PDB">
                                                                         <font key="font" size="13" name=".HelveticaNeueDeskInterface-Bold"/>
                                                                         <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
@@ -959,15 +957,14 @@
                                                                 <constraint firstItem="NSc-bF-dBd" firstAttribute="centerY" secondItem="a4z-jO-6WW" secondAttribute="centerY" id="EcK-Xm-4sf"/>
                                                                 <constraint firstItem="WzN-vh-hoe" firstAttribute="leading" secondItem="a4z-jO-6WW" secondAttribute="leading" constant="10" id="dhu-EK-qjU"/>
                                                                 <constraint firstAttribute="trailing" secondItem="8Yx-K4-o3u" secondAttribute="trailing" constant="5" id="jNy-QB-1mo"/>
-                                                                <constraint firstItem="8Yx-K4-o3u" firstAttribute="leading" secondItem="NSc-bF-dBd" secondAttribute="trailing" constant="8" id="kBt-DO-bbf"/>
                                                                 <constraint firstItem="8Yx-K4-o3u" firstAttribute="centerY" secondItem="a4z-jO-6WW" secondAttribute="centerY" id="vnZ-dA-epj"/>
                                                                 <constraint firstItem="NSc-bF-dBd" firstAttribute="leading" secondItem="WzN-vh-hoe" secondAttribute="trailing" constant="10" id="yWm-Et-jxg"/>
                                                                 <constraint firstItem="WzN-vh-hoe" firstAttribute="centerY" secondItem="a4z-jO-6WW" secondAttribute="centerY" id="zSF-Vk-Zi4"/>
+                                                                <constraint firstItem="8Yx-K4-o3u" firstAttribute="leading" secondItem="NSc-bF-dBd" secondAttribute="trailing" constant="8" id="zb6-Rr-yO9"/>
                                                             </constraints>
                                                             <connections>
                                                                 <outlet property="imageButton" destination="WzN-vh-hoe" id="azF-cv-8rG"/>
                                                                 <outlet property="progressLabel" destination="8Yx-K4-o3u" id="ufY-3f-s6N"/>
-                                                                <outlet property="progressWidth" destination="oJq-4w-gGW" id="Qfo-kR-XtD"/>
                                                                 <outlet property="textField" destination="NSc-bF-dBd" id="ORW-Wg-lRy"/>
                                                             </connections>
                                                         </customView>
@@ -1210,7 +1207,6 @@
                                             </connections>
                                         </outlineView>
                                     </subviews>
-                                    <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
                                 </clipView>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="370" id="GhO-ns-2ex"/>
@@ -1355,7 +1351,7 @@
                                     <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                                 </textFieldCell>
                             </textField>
-                            <box title="Statistics" borderType="line" translatesAutoresizingMaskIntoConstraints="NO" id="Ggm-hs-VJ1">
+                            <box borderType="line" title="Statistics" translatesAutoresizingMaskIntoConstraints="NO" id="Ggm-hs-VJ1">
                                 <rect key="frame" x="17" y="89" width="277" height="204"/>
                                 <view key="contentView" id="Zad-35-Imi">
                                     <rect key="frame" x="1" y="1" width="275" height="188"/>
@@ -1435,8 +1431,6 @@
                                     <constraint firstAttribute="width" constant="271" id="2Io-fl-xu5"/>
                                     <constraint firstAttribute="height" constant="200" id="uH9-Y8-6iC"/>
                                 </constraints>
-                                <color key="borderColor" white="0.0" alpha="0.41999999999999998" colorSpace="calibratedWhite"/>
-                                <color key="fillColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                             </box>
                         </subviews>
                         <constraints>

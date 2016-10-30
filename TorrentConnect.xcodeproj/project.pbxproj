@@ -12,7 +12,6 @@
 		11AB2C091B85D2F500AAA99A /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11AB2C081B85D2F500AAA99A /* AppDelegate.swift */; };
 		11AB2C0D1B85D2F500AAA99A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 11AB2C0C1B85D2F500AAA99A /* Assets.xcassets */; };
 		11AB2C101B85D2F500AAA99A /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 11AB2C0E1B85D2F500AAA99A /* Main.storyboard */; };
-		11AB2C1B1B85D2F500AAA99A /* TorrentConnectTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11AB2C1A1B85D2F500AAA99A /* TorrentConnectTests.swift */; };
 		11ABC7141B8BA6DF0039C3DF /* AssetIdentifiers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11ABC7131B8BA6DF0039C3DF /* AssetIdentifiers.swift */; };
 		11ED6D0C1B88DE180083ACEC /* ApplicationColors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11ED6D0B1B88DE180083ACEC /* ApplicationColors.swift */; };
 		11F0A1E71B8E4E5E0055BB8E /* TransmissionAdapter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11F0A1E61B8E4E5E0055BB8E /* TransmissionAdapter.swift */; };
@@ -46,7 +45,6 @@
 		EE4067731CEA62760043F6DE /* TorrentFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE4067721CEA62760043F6DE /* TorrentFilter.swift */; };
 		EE4067751CEA62860043F6DE /* TransmissionConnectManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE4067741CEA62860043F6DE /* TransmissionConnectManager.swift */; };
 		EE7D64ED1CE71E510034CF4E /* SectionsDiff.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE7D64EC1CE71E510034CF4E /* SectionsDiff.swift */; };
-		EE7D64EF1CE72D9D0034CF4E /* LevinstainTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE7D64EE1CE72D9D0034CF4E /* LevinstainTests.swift */; };
 		EE7D64F11CE73CEA0034CF4E /* Levinstain.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE7D64F01CE73CEA0034CF4E /* Levinstain.swift */; };
 		EE7D64F31CE790CC0034CF4E /* Row.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE7D64F21CE790CC0034CF4E /* Row.swift */; };
 		EE7D64F71CE7D33B0034CF4E /* FullyEquatable.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE7D64F61CE7D33B0034CF4E /* FullyEquatable.swift */; };
@@ -78,8 +76,6 @@
 		11AB2C0F1B85D2F500AAA99A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		11AB2C111B85D2F500AAA99A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		11AB2C161B85D2F500AAA99A /* TorrentConnectTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TorrentConnectTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		11AB2C1A1B85D2F500AAA99A /* TorrentConnectTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TorrentConnectTests.swift; sourceTree = "<group>"; };
-		11AB2C1C1B85D2F500AAA99A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		11ABC7131B8BA6DF0039C3DF /* AssetIdentifiers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AssetIdentifiers.swift; path = Library/AssetIdentifiers.swift; sourceTree = "<group>"; };
 		11ED6D0B1B88DE180083ACEC /* ApplicationColors.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ApplicationColors.swift; path = Views/ApplicationColors.swift; sourceTree = "<group>"; };
 		11F0A1E61B8E4E5E0055BB8E /* TransmissionAdapter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = TransmissionAdapter.swift; path = Library/Transmission/TransmissionAdapter.swift; sourceTree = "<group>"; };
@@ -113,7 +109,6 @@
 		EE4067721CEA62760043F6DE /* TorrentFilter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = TorrentFilter.swift; path = Library/Tables/TorrentFilter.swift; sourceTree = "<group>"; };
 		EE4067741CEA62860043F6DE /* TransmissionConnectManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = TransmissionConnectManager.swift; path = Library/Transmission/TransmissionConnectManager.swift; sourceTree = "<group>"; };
 		EE7D64EC1CE71E510034CF4E /* SectionsDiff.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SectionsDiff.swift; path = Library/Tables/SectionsDiff.swift; sourceTree = "<group>"; };
-		EE7D64EE1CE72D9D0034CF4E /* LevinstainTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LevinstainTests.swift; sourceTree = "<group>"; };
 		EE7D64F01CE73CEA0034CF4E /* Levinstain.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Levinstain.swift; path = Library/Tables/Levinstain.swift; sourceTree = "<group>"; };
 		EE7D64F21CE790CC0034CF4E /* Row.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Row.swift; path = Library/Tables/Row.swift; sourceTree = "<group>"; };
 		EE7D64F61CE7D33B0034CF4E /* FullyEquatable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = FullyEquatable.swift; path = Library/Tables/FullyEquatable.swift; sourceTree = "<group>"; };
@@ -148,7 +143,6 @@
 			isa = PBXGroup;
 			children = (
 				11AB2C071B85D2F500AAA99A /* TorrentConnect */,
-				11AB2C191B85D2F500AAA99A /* TorrentConnectTests */,
 				11AB2C061B85D2F500AAA99A /* Products */,
 			);
 			sourceTree = "<group>";
@@ -176,16 +170,6 @@
 				11AB2C111B85D2F500AAA99A /* Info.plist */,
 			);
 			path = TorrentConnect;
-			sourceTree = "<group>";
-		};
-		11AB2C191B85D2F500AAA99A /* TorrentConnectTests */ = {
-			isa = PBXGroup;
-			children = (
-				11AB2C1A1B85D2F500AAA99A /* TorrentConnectTests.swift */,
-				11AB2C1C1B85D2F500AAA99A /* Info.plist */,
-				EE7D64EE1CE72D9D0034CF4E /* LevinstainTests.swift */,
-			);
-			path = TorrentConnectTests;
 			sourceTree = "<group>";
 		};
 		11F0A1E51B8E4E200055BB8E /* Transmission */ = {
@@ -320,12 +304,13 @@
 		11AB2BFD1B85D2F500AAA99A /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0700;
+				LastUpgradeCheck = 0810;
 				ORGANIZATIONNAME = "Turchenko Alexander";
 				TargetAttributes = {
 					11AB2C041B85D2F500AAA99A = {
 						CreatedOnToolsVersion = 7.0;
 						DevelopmentTeam = P2CB6739FK;
+						LastSwiftMigration = 0800;
 						SystemCapabilities = {
 							com.apple.ApplicationGroups.Mac = {
 								enabled = 0;
@@ -337,6 +322,7 @@
 					};
 					11AB2C151B85D2F500AAA99A = {
 						CreatedOnToolsVersion = 7.0;
+						LastSwiftMigration = 0800;
 						TestTargetID = 11AB2C041B85D2F500AAA99A;
 					};
 				};
@@ -437,8 +423,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				EE7D64EF1CE72D9D0034CF4E /* LevinstainTests.swift in Sources */,
-				11AB2C1B1B85D2F500AAA99A /* TorrentConnectTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -477,8 +461,10 @@
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				CODE_SIGN_IDENTITY = "";
@@ -521,8 +507,10 @@
 				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				CODE_SIGN_IDENTITY = "";
@@ -541,6 +529,7 @@
 				MACOSX_DEPLOYMENT_TARGET = 10.11;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = macosx;
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
 			};
 			name = Release;
 		};
@@ -551,11 +540,13 @@
 				CODE_SIGN_IDENTITY = "Developer ID Application";
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Mac Developer";
 				COMBINE_HIDPI_IMAGES = YES;
+				DEVELOPMENT_TEAM = P2CB6739FK;
 				INFOPLIST_FILE = TorrentConnect/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.turchenkoalex.TorrentConnect;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
+				SWIFT_VERSION = 2.3;
 			};
 			name = Debug;
 		};
@@ -566,11 +557,13 @@
 				CODE_SIGN_IDENTITY = "Developer ID Application";
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Mac Developer";
 				COMBINE_HIDPI_IMAGES = YES;
+				DEVELOPMENT_TEAM = P2CB6739FK;
 				INFOPLIST_FILE = TorrentConnect/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.turchenkoalex.TorrentConnect;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
+				SWIFT_VERSION = 2.3;
 			};
 			name = Release;
 		};
@@ -583,6 +576,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.turchenkoalex.TorrentConnectTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 2.3;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/TorrentConnect.app/Contents/MacOS/TorrentConnect";
 			};
 			name = Debug;
@@ -596,6 +590,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.turchenkoalex.TorrentConnectTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 2.3;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/TorrentConnect.app/Contents/MacOS/TorrentConnect";
 			};
 			name = Release;

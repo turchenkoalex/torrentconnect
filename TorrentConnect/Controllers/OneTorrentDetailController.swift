@@ -97,6 +97,11 @@ extension OneTorrentDetailController: NSOutlineViewDelegate, NSOutlineViewDataSo
     func outlineView(outlineView: NSOutlineView, objectValueForTableColumn tableColumn: NSTableColumn?, byItem item: AnyObject?) -> AnyObject? {
 
         if let index = item as? Int {
+            
+            if self.files.count <= index {
+                return nil
+            }
+            
             let torrentFile = self.files[index]
             
             if tableColumn?.identifier == "file" {

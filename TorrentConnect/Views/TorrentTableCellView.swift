@@ -76,18 +76,22 @@ class TorrentTableCellView: NSTableCellView {
         _previousStatus = torrent.status
         _progress = torrent.progress
         
-        dispatch_async(dispatch_get_main_queue()) {
-            self.textField!.stringValue = torrent.name
+//        dispatch_async(dispatch_get_main_queue()) {
+            if (self.textField!.stringValue != torrent.name) {
+                self.textField!.stringValue = torrent.name
+            }
             if (torrent.progress < 1) {
                 if self.progressLabel.doubleValue != torrent.progress {
+                    Swift.print("Set progress " + String(torrent.progress))
                     self.progressLabel.doubleValue = torrent.progress
                 }
-                self.progressWidth.constant = 80
             } else {
-                self.progressLabel.stringValue = ""
-                self.progressWidth.constant = 0
+                if (self.progressLabel.stringValue != "") {
+                    self.progressLabel.stringValue = ""
+                    Swift.print("Set progress empty")
+                }
             }
-        }
+//        }
         imageButton.image = torrentStateImage()
     }
     
