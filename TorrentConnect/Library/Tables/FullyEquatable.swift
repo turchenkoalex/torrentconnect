@@ -7,5 +7,5 @@
 //
 
 protocol FullyEquatable {
-    func isFullyEqual(value: Self) -> Bool
+    func isFullyEqual(_ value: Self) -> Bool
 }

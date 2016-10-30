@@ -9,21 +9,21 @@
 import Foundation
 
 struct FilesHandler {
-    func openFile(filename: String) -> Bool {
+    func openFile(_ filename: String) -> Bool {
         addFile(filename)
         return true
     }
     
-    func openFiles(filenames: [String]) {
+    func openFiles(_ filenames: [String]) {
         for filename in filenames {
             addFile(filename)
         }
     }
     
-    func addFile(filename: String) {
+    func addFile(_ filename: String) {
         TransmissionConnectManager.sharedInstance.addTorrent(filename: filename) {
-            let fileUrl = NSURL(fileURLWithPath: filename)
-            try! NSFileManager.defaultManager().trashItemAtURL(fileUrl, resultingItemURL: nil)
+            let fileUrl = URL(fileURLWithPath: filename)
+            try! FileManager.default.trashItem(at: fileUrl, resultingItemURL: nil)
         }
     }
 }

@@ -9,13 +9,14 @@
 import Foundation
 
 class DownloadedController {
-    private var _active = [Int]()
+    fileprivate var _active = [Int]()
+    fileprivate var _attachedHandler: Disposable?
     
     func inject() {
-        TransmissionConnectManager.sharedInstance.fetchTorrentsEvent.addHandler(self, handler: DownloadedController.fetchTorrents)
+        _attachedHandler = TransmissionConnectManager.sharedInstance.fetchTorrentsEvent.addHandler(self, handler: DownloadedController.fetchTorrents)
     }
     
-    func fetchTorrents(torrents: [Torrent]) {
+    func fetchTorrents(_ torrents: [Torrent]) {
         let downloaded = torrents.filter { $0.progress == 1 }.map { $0.id }
         for id in downloaded {
             if _active.contains(id) {
@@ -28,12 +29,12 @@ class DownloadedController {
         _active = torrents.filter { $0.progress < 1 }.map { $0.id }
     }
     
-    func notify(torrent: Torrent) {
+    func notify(_ torrent: Torrent) {
         let notification = NSUserNotification()
         notification.subtitle = "Download complete";
         notification.informativeText = "Torrent " + torrent.name + " already downloaded!";
         notification.soundName = NSUserNotificationDefaultSoundName;
         notification.userInfo = ["id": torrent.id];
-        NSUserNotificationCenter.defaultUserNotificationCenter().deliverNotification(notification)
+        NSUserNotificationCenter.default.deliver(notification)
     }
 }

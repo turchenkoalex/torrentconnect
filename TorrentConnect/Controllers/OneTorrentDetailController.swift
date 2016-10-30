@@ -15,7 +15,7 @@ class OneTorrentDetailController: NSViewController {
     @IBOutlet weak var torrentName: NSTextField!
     
     var hide: () -> () = { }
-    var torrent = Torrent(id: 0, name: "", status: .Download, progress: 0, downloadDir: "", position: 0)
+    var torrent = Torrent(id: 0, name: "", status: .download, progress: 0, downloadDir: "", position: 0)
     var files = [TorrentFile]()
     
     override func viewDidLoad() {
@@ -23,7 +23,7 @@ class OneTorrentDetailController: NSViewController {
         // Do view setup here.
     }
     
-    func setupModel(model: Torrent) {
+    func setupModel(_ model: Torrent) {
         let changed = torrent.id != model.id
         torrent = model
         
@@ -35,14 +35,14 @@ class OneTorrentDetailController: NSViewController {
         
         if changed {
             files = []
-            dispatch_async(dispatch_get_main_queue()) {
+            DispatchQueue.main.async {
                 self.filesOutline.reloadData()
             }
         }
         
         TransmissionConnectManager.sharedInstance.getFiles([torrent.id]) { files in
             self.files = files
-            dispatch_async(dispatch_get_main_queue()) {
+            DispatchQueue.main.async {
                 self.filesOutline.reloadData()
             }
         }
@@ -50,31 +50,31 @@ class OneTorrentDetailController: NSViewController {
     
     
     func updateStartStopButton() {
-        let title = (self.torrent.status == .Stopped) ? "Start" : "Stop"
-        dispatch_async(dispatch_get_main_queue()) {
+        let title = (self.torrent.status == .stopped) ? "Start" : "Stop"
+        DispatchQueue.main.async {
             self.startStopButton.title = title
         }
     }
     
-    @IBAction func deleteClick(sender: AnyObject) {
+    @IBAction func deleteClick(_ sender: AnyObject) {
         TransmissionConnectManager.sharedInstance.deleteTorrents([torrent.id]) {
             self.hide()
         }
     }
     
-    func changeTorrentStatus(status: TorrentStatus) {
+    func changeTorrentStatus(_ status: TorrentStatus) {
         self.torrent = Torrent(id: torrent.id, name: torrent.name, status: status, progress: torrent.progress, downloadDir: torrent.downloadDir, position: torrent.position)
     }
     
-    @IBAction func startStopClick(sender: AnyObject) {
-        if (self.torrent.status == .Stopped) {
+    @IBAction func startStopClick(_ sender: AnyObject) {
+        if (self.torrent.status == .stopped) {
             TransmissionConnectManager.sharedInstance.startTorrents([torrent.id]) {
-                self.changeTorrentStatus(.Download)
+                self.changeTorrentStatus(.download)
                 self.updateStartStopButton()
             }
         } else {
             TransmissionConnectManager.sharedInstance.stopTorrents([torrent.id]) {
-                self.changeTorrentStatus(.Stopped)
+                self.changeTorrentStatus(.stopped)
                 self.updateStartStopButton()
             }
         }
@@ -82,19 +82,19 @@ class OneTorrentDetailController: NSViewController {
 }
 
 extension OneTorrentDetailController: NSOutlineViewDelegate, NSOutlineViewDataSource {
-    func outlineView(outlineView: NSOutlineView, numberOfChildrenOfItem item: AnyObject?) -> Int {
+    func outlineView(_ outlineView: NSOutlineView, numberOfChildrenOfItem item: Any?) -> Int {
         return files.count
     }
 
-    func outlineView(outlineView: NSOutlineView, isItemExpandable item: AnyObject) -> Bool {
+    func outlineView(_ outlineView: NSOutlineView, isItemExpandable item: Any) -> Bool {
         return false
     }
 
-    func outlineView(outlineView: NSOutlineView, child index: Int, ofItem item: AnyObject?) -> AnyObject {
+    func outlineView(_ outlineView: NSOutlineView, child index: Int, ofItem item: Any?) -> Any {
         return index
     }
 
-    func outlineView(outlineView: NSOutlineView, objectValueForTableColumn tableColumn: NSTableColumn?, byItem item: AnyObject?) -> AnyObject? {
+    func outlineView(_ outlineView: NSOutlineView, objectValueFor tableColumn: NSTableColumn?, byItem item: Any?) -> Any? {
 
         if let index = item as? Int {
             
@@ -121,7 +121,7 @@ extension OneTorrentDetailController: NSOutlineViewDelegate, NSOutlineViewDataSo
         return nil
     }
     
-    func outlineView(outlineView: NSOutlineView, setObjectValue object: AnyObject?, forTableColumn tableColumn: NSTableColumn?, byItem item: AnyObject?) {
+    func outlineView(_ outlineView: NSOutlineView, setObjectValue object: Any?, for tableColumn: NSTableColumn?, byItem item: Any?) {
         
         if let index = item as? Int {
 

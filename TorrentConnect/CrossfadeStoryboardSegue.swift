@@ -13,10 +13,10 @@ class CrossfadeStoryboardSegue: NSStoryboardSegue {
         // build from-to and parent-child view controller relationships
         let sourceViewController  = self.sourceController as! NSViewController
         let destinationViewController = self.destinationController as! NSViewController
-        let containerViewController = sourceViewController.parentViewController! as NSViewController
+        let containerViewController = sourceViewController.parent! as NSViewController
         
         // add destinationViewController as child
-        containerViewController.insertChildViewController(destinationViewController, atIndex: 1)
+        containerViewController.insertChildViewController(destinationViewController, at: 1)
         
         // get the size of destinationViewController
         let targetSize = destinationViewController.view.frame.size
@@ -28,7 +28,7 @@ class CrossfadeStoryboardSegue: NSStoryboardSegue {
         destinationViewController.view.wantsLayer = true
         
         //perform transition
-        containerViewController.transitionFromViewController(sourceViewController, toViewController: destinationViewController, options: .None, completionHandler: nil)
+        containerViewController.transition(from: sourceViewController, to: destinationViewController, options: NSViewControllerTransitionOptions(), completionHandler: nil)
         
         //resize view controllers
         sourceViewController.view.animator().setFrameSize(targetSize)
@@ -43,6 +43,6 @@ class CrossfadeStoryboardSegue: NSStoryboardSegue {
         containerViewController.view.window?.setFrame(newWindowRect, display: true, animate: true)
         
         // lose the sourceViewController, it's no longer visible
-        containerViewController.removeChildViewControllerAtIndex(0)
+        containerViewController.removeChildViewController(at: 0)
     }
 }

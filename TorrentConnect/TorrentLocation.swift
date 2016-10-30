@@ -10,8 +10,8 @@ struct TorrentLocation {
     let name: String
     let location: String
     
-    func inLocation(val: String) -> Bool {
-        return val.containsString(location)
+    func inLocation(_ val: String) -> Bool {
+        return val.contains(location)
     }
 }
 

@@ -19,8 +19,8 @@ class TorrentDetailsViewController: NSViewController {
             return manyTorrentsController!
         }
         
-        manyTorrentsController = self.storyboard?.instantiateControllerWithIdentifier("manyTorrents") as? ManyTorrentsDetailController
-        manyTorrentsController?.view.autoresizingMask = [.ViewHeightSizable, .ViewWidthSizable]
+        manyTorrentsController = self.storyboard?.instantiateController(withIdentifier: "manyTorrents") as? ManyTorrentsDetailController
+        manyTorrentsController?.view.autoresizingMask = [.viewHeightSizable, .viewWidthSizable]
         manyTorrentsController?.hide = self.hide
         return manyTorrentsController!
     }
@@ -30,8 +30,8 @@ class TorrentDetailsViewController: NSViewController {
             return oneTorrentController!
         }
         
-        oneTorrentController = self.storyboard?.instantiateControllerWithIdentifier("oneTorrent") as? OneTorrentDetailController
-        oneTorrentController?.view.autoresizingMask = [.ViewHeightSizable, .ViewWidthSizable]
+        oneTorrentController = self.storyboard?.instantiateController(withIdentifier: "oneTorrent") as? OneTorrentDetailController
+        oneTorrentController?.view.autoresizingMask = [.viewHeightSizable, .viewWidthSizable]
         oneTorrentController?.hide = self.hide
         return oneTorrentController!
         
@@ -42,34 +42,34 @@ class TorrentDetailsViewController: NSViewController {
         self.view.autoresizesSubviews = true
     }
     
-    func showOneTorrent(torrent: Torrent) {
+    func showOneTorrent(_ torrent: Torrent) {
         let ctrl = getOneTorrentController()
         ctrl.setupModel(torrent)
         injectController(ctrl, type: 1)
     }
     
-    func showManyTorrents(torrents: [Torrent]) {
+    func showManyTorrents(_ torrents: [Torrent]) {
         let ctrl = getManyTorrentsController()
         ctrl.setupModel(torrents)
         injectController(ctrl, type: 2)
     }
     
-    func injectController(controller: NSViewController, type: Int) {
+    func injectController(_ controller: NSViewController, type: Int) {
         if (type == injectedType) {
             return
         }
         
         injectedType = type
-        self.insertChildViewController(controller, atIndex: 0)
+        self.insertChildViewController(controller, at: 0)
         if (self.view.subviews.count > 1) {
-            self.view.subviews.removeAtIndex(1)
+            self.view.subviews.remove(at: 1)
         }
         
         self.view.frame = controller.view.frame
         self.view.addSubview(controller.view)
 
         if (self.childViewControllers.count > 1) {
-            self.removeChildViewControllerAtIndex(1)
+            self.removeChildViewController(at: 1)
         }
     }
     
@@ -77,7 +77,7 @@ class TorrentDetailsViewController: NSViewController {
         self.selectBehaviour?.deselect()
     }
     
-    @IBAction func closeDetails(sender: AnyObject) {
+    @IBAction func closeDetails(_ sender: AnyObject) {
         self.selectBehaviour?.deselect()
     }
 }

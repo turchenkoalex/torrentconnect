@@ -7,7 +7,7 @@
 //
 
 struct TorrentsGroupBy {
-    private func byDownloadDirKeySelector(element: Torrent) -> String {
+    fileprivate func byDownloadDirKeySelector(_ element: Torrent) -> String {
         let locations = TorrentLocations.all()
         for location in locations {
             if location.inLocation(element.downloadDir) {
@@ -22,11 +22,11 @@ struct TorrentsGroupBy {
         return GroupBy(keySelector: self.byDownloadDirKeySelector).groupBy
     }
     
-    private func byStateKeySelector(element: Torrent) -> String {
+    fileprivate func byStateKeySelector(_ element: Torrent) -> String {
         switch element.status {
-        case .Download:
+        case .download:
             return "Download"
-        case .Seed:
+        case .seed:
             return "Seed"
         default:
             if (element.progress < 1) {

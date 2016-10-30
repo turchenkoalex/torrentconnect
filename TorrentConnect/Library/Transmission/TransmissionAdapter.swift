@@ -9,59 +9,62 @@
 import Foundation
 
 enum RequestError {
-    case AuthorizationError
-    case ParseError
-    case FileError(String)
+    case authorizationError
+    case parseError
+    case fileError(String)
 }
 
 struct TransmissionAdapter {
     let parser = TransmissionParser()
     let rpc = TransmissionRpc()
     
-    private let _credentialsManager = CredentialsManager()
+    fileprivate let _credentialsManager = CredentialsManager()
     
-    private func getBasicHeader(host: String, port: Int) -> String? {
+    fileprivate func getBasicHeader(_ host: String, port: Int) -> String? {
         if let credentials = _credentialsManager.getCredentials(host, port: port) {
             let loginString = "\(credentials.username):\(credentials.password)"
-            let loginData = loginString.dataUsingEncoding(NSUTF8StringEncoding)
-            let base64EncodedCredential = loginData!.base64EncodedStringWithOptions(NSDataBase64EncodingOptions.Encoding64CharacterLineLength)
+            let loginData = loginString.data(using: String.Encoding.utf8)
+            let base64EncodedCredential = loginData!.base64EncodedString(options: NSData.Base64EncodingOptions.lineLength64Characters)
             return "Basic \(base64EncodedCredential)"
         }
         
         return nil
     }
     
-    private func setupAuthorization(request: NSMutableURLRequest) {
-        if let url = request.URL {
-            if let basicHeader = getBasicHeader(url.host!, port: url.port!.integerValue) {
-                request.setValue(basicHeader, forHTTPHeaderField: "Authorization")
+    fileprivate func setupAuthorization(_ request: URLRequest) -> URLRequest {
+        var newRequst = request
+        if let url = newRequst.url {
+            if let basicHeader = getBasicHeader(url.host!, port: (url as NSURL).port!.intValue) {
+                newRequst.setValue(basicHeader, forHTTPHeaderField: "Authorization")
             }
         }
+        
+        return newRequst
     }
     
-    private func postRequest(url: NSURL, request: RpcRequest, completionHandler: (NSData?, NSURLResponse?, NSError?) -> Void) {
-        let urlRequest = NSMutableURLRequest(URL: url)
-        urlRequest.HTTPMethod = "POST"
-        urlRequest.HTTPBody = request.toJson().dataUsingEncoding(NSUTF8StringEncoding)
-        setupAuthorization(urlRequest)
+    fileprivate func postRequest(_ url: URL, request: RpcRequest, completionHandler: @escaping (Data?, URLResponse?, Error?) -> Void) {
+        var urlRequest = URLRequest(url: url)
+        urlRequest.httpMethod = "POST"
+        urlRequest.httpBody = request.toJson().data(using: String.Encoding.utf8)
+        urlRequest = setupAuthorization(urlRequest)
         
-        let requestTask = NSURLSession.sharedSession().dataTaskWithRequest(urlRequest, completionHandler: completionHandler)
+        let requestTask = URLSession.shared.dataTask(with: urlRequest, completionHandler: completionHandler)
         requestTask.resume()
     }
     
-    private func authorizedRequest(connection: TransmissionServerConnection, request: RpcRequest, success: (NSData) -> (), error: (RequestError) -> ()) {
+    fileprivate func authorizedRequest(_ connection: TransmissionServerConnection, request: RpcRequest, success: @escaping (Data) -> (), error: @escaping (RequestError) -> ()) {
         let url = connection.settings.getServerUrl()
         let sessionId = connection.sessionId
         let body = request.toJson()
-        let urlRequest = NSMutableURLRequest(URL: url)
-        urlRequest.HTTPMethod = "POST"
-        urlRequest.HTTPBody = body.dataUsingEncoding(NSUTF8StringEncoding)
-        setupAuthorization(urlRequest)
+        var urlRequest = URLRequest(url: url as URL)
+        urlRequest.httpMethod = "POST"
+        urlRequest.httpBody = body.data(using: String.Encoding.utf8)
+        urlRequest = setupAuthorization(urlRequest)
         urlRequest.setValue(sessionId, forHTTPHeaderField: "X-Transmission-Session-Id")
-        let requestTask = NSURLSession.sharedSession().dataTaskWithRequest(urlRequest) { data, response, _ in
-            if let response = response as? NSHTTPURLResponse {
+        let requestTask = URLSession.shared.dataTask(with: urlRequest, completionHandler: { data, response, _ in
+            if let response = response as? HTTPURLResponse {
                 if response.statusCode == 409 || response.statusCode == 401 {
-                    error(RequestError.AuthorizationError)
+                    error(RequestError.authorizationError)
                     return
                 }
             }
@@ -69,78 +72,78 @@ struct TransmissionAdapter {
             if let data = data {
                 success(data)
             }
-        }
+        }) 
         requestTask.resume()
     }
 }
 
 extension TransmissionAdapter {
-    func connect(settings: ConnectionSettings, success: (TransmissionServerConnection) -> (), error: (RequestError) -> ()) {
+    func connect(_ settings: ConnectionSettings, success: @escaping (TransmissionServerConnection) -> (), error: @escaping (RequestError) -> ()) {
         let url = settings.getServerUrl()
-        postRequest(url, request: rpc.getSessionId()) { _, response, _ in
+        postRequest(url as URL, request: rpc.getSessionId()) { _, response, _ in
             if let sessionId = self.parser.getSessionId(response) {
                 let connection = TransmissionServerConnection(settings: settings, sessionId: sessionId)
                 success(connection)
             } else {
-                error(.AuthorizationError)
+                error(.authorizationError)
             }
         }
     }
     
-    func torrents(connection: TransmissionServerConnection, success: ([Torrent]) -> (), error: (RequestError) -> ()) {
+    func torrents(_ connection: TransmissionServerConnection, success: @escaping ([Torrent]) -> (), error: @escaping (RequestError) -> ()) {
         self.authorizedRequest(connection, request: rpc.getTorrents(), success: { data in
             switch self.parser.getTorrents(data) {
-            case .First(let torrents):
+            case .first(let torrents):
                 success(torrents)
-            case .Second(let requestError):
+            case .second(let requestError):
                 error(requestError)
             }
         }, error: error)
     }
     
-    func stop(connection: TransmissionServerConnection, ids: [Int], success: () -> (), error: (RequestError) -> ()) {
+    func stop(_ connection: TransmissionServerConnection, ids: [Int], success: @escaping () -> (), error: @escaping (RequestError) -> ()) {
         self.authorizedRequest(connection, request: rpc.stopTorrents(ids), success: { _ in success() }, error: error)
     }
     
-    func start(connection: TransmissionServerConnection, ids: [Int], success: () -> (), error: (RequestError) -> ()) {
+    func start(_ connection: TransmissionServerConnection, ids: [Int], success: @escaping () -> (), error: @escaping (RequestError) -> ()) {
         self.authorizedRequest(connection, request: rpc.startTorrents(ids), success: { _ in success() }, error: error)
     }
     
-    func add(connection: TransmissionServerConnection, url: String, paused: Bool, success: () -> (), error: (RequestError) -> ()) {
+    func add(_ connection: TransmissionServerConnection, url: String, paused: Bool, success: @escaping () -> (), error: @escaping (RequestError) -> ()) {
         self.authorizedRequest(connection, request: rpc.addTorrent(url: url, paused: paused), success: { _ in success() }, error: error)
     }
     
-    func add(connection: TransmissionServerConnection, filename: String, paused: Bool, success: () -> (), error: (RequestError) -> ()) {
-        let trydata = NSData(contentsOfFile: filename)
+    func add(_ connection: TransmissionServerConnection, filename: String, paused: Bool, success: @escaping () -> (), error: @escaping (RequestError) -> ()) {
+        let trydata = try? Data(contentsOf: URL(fileURLWithPath: filename))
         
         if let data = trydata {
-            let metainfo = data.base64EncodedStringWithOptions(NSDataBase64EncodingOptions.EncodingEndLineWithLineFeed)
+            let metainfo = data.base64EncodedString(options: NSData.Base64EncodingOptions.endLineWithLineFeed)
             self.authorizedRequest(connection, request: rpc.addTorrent(metainfo: metainfo, paused: paused), success: { _ in success() }, error: error)
             return
         }
-        error(.FileError(filename))
+        error(.fileError(filename))
     }
     
-    func delete(connection: TransmissionServerConnection, ids: [Int], deleteLocalData: Bool, success: () -> (), error: (RequestError) -> ()) {
+    func delete(_ connection: TransmissionServerConnection, ids: [Int], deleteLocalData: Bool, success: @escaping () -> (), error: @escaping (RequestError) -> ()) {
         authorizedRequest(connection, request: rpc.deleteTorrents(ids, deleteLocalData: deleteLocalData), success: { _ in success() }, error: error)
     }
     
-    func files(connection: TransmissionServerConnection, ids: [Int], success: ([TorrentFile]) -> (), error: (RequestError) -> ()) {
+    func files(_ connection: TransmissionServerConnection, ids: [Int], success: @escaping ([TorrentFile]) -> (), error: @escaping (RequestError) -> ()) {
         authorizedRequest(connection, request: rpc.getTorrentFiles(ids), success: { data in
             switch self.parser.getTorrentFiles(data) {
-            case .First(let files):
+            case .first(let files):
                 success(files)
-            case .Second(let requestError):
+            case .second(let requestError):
                 error(requestError)
             }
         }, error: error)
     }
     
-    func move(connection: TransmissionServerConnection, ids: [Int], location: String, success: () -> (), error: (RequestError) -> ()) {
+    func move(_ connection: TransmissionServerConnection, ids: [Int], location: String, success: @escaping () -> (), error: @escaping (RequestError) -> ()) {
         authorizedRequest(connection, request: rpc.moveTorrents(ids, location: location), success: { _ in }, error: error)
     }
     
-    func setFiles(connection: TransmissionServerConnection, id: Int, wanted: [Int], unwanted: [Int], success: () -> (), error: (RequestError) -> ()) {
+    func setFiles(_ connection: TransmissionServerConnection, id: Int, wanted: [Int], unwanted: [Int], success: @escaping () -> (), error: @escaping (RequestError) -> ()) {
         authorizedRequest(connection, request: rpc.wantFiles(forTorrent: id, wanted: wanted, unwanted: unwanted), success: { _ in success() }, error: error)
     }
 }

@@ -7,10 +7,10 @@
 //
 
 enum LevinstainOperation {
-    case None
-    case Insert
-    case Delete
-    case Replace
+    case none
+    case insert
+    case delete
+    case replace
 }
 
 struct LevinstainItem<Element> {
@@ -24,17 +24,17 @@ struct LevinstainItem<Element> {
 
 struct Levinstain {
     
-    func solve<Element : Equatable>(left: [Element], right: [Element]) -> [[LevinstainItem<Element>]] {
+    func solve<Element : Equatable>(_ left: [Element], right: [Element]) -> [[LevinstainItem<Element>]] {
         
         let n = left.count
         let m = right.count
         
-        let emptyValue = LevinstainItem<Element>(left: nil, right: nil, leftIndex: nil, rightIndex: nil, cost: 0, operation: .None)
-        let row = [LevinstainItem<Element>](count: m+1, repeatedValue: emptyValue)
-        var matrix = [[LevinstainItem<Element>]](count: n+1, repeatedValue: row)
+        let emptyValue = LevinstainItem<Element>(left: nil, right: nil, leftIndex: nil, rightIndex: nil, cost: 0, operation: .none)
+        let row = [LevinstainItem<Element>](repeating: emptyValue, count: m+1)
+        var matrix = [[LevinstainItem<Element>]](repeating: row, count: n+1)
         
-        for i in 1...n { matrix[i][0] = LevinstainItem<Element>(left: left[i-1], right: nil, leftIndex: i-1, rightIndex: nil, cost: i, operation: .Delete) }
-        for j in 1...m { matrix[0][j] = LevinstainItem<Element>(left: nil, right: right[j-1], leftIndex: nil, rightIndex: j-1, cost: j, operation: .Insert) }
+        for i in 1...n { matrix[i][0] = LevinstainItem<Element>(left: left[i-1], right: nil, leftIndex: i-1, rightIndex: nil, cost: i, operation: .delete) }
+        for j in 1...m { matrix[0][j] = LevinstainItem<Element>(left: nil, right: right[j-1], leftIndex: nil, rightIndex: j-1, cost: j, operation: .insert) }
         
         for i in 1...n {
             let l = left[i-1]
@@ -48,11 +48,11 @@ struct Levinstain {
                 let replaceCost = matrix[i-1][j-1].cost + cost
                 
                 if(insertCost < deleteCost && insertCost < replaceCost) {
-                    matrix[i][j] = LevinstainItem<Element>(left: nil, right: r, leftIndex: nil, rightIndex: j-1, cost: insertCost + 1, operation: .Insert)
+                    matrix[i][j] = LevinstainItem<Element>(left: nil, right: r, leftIndex: nil, rightIndex: j-1, cost: insertCost + 1, operation: .insert)
                 } else if (deleteCost < replaceCost) {
-                    matrix[i][j] = LevinstainItem<Element>(left: l, right: nil, leftIndex: i-1, rightIndex: nil, cost: deleteCost + 1, operation: .Delete)
+                    matrix[i][j] = LevinstainItem<Element>(left: l, right: nil, leftIndex: i-1, rightIndex: nil, cost: deleteCost + 1, operation: .delete)
                 } else {
-                    let operation = (cost == 0) ? LevinstainOperation.None : LevinstainOperation.Replace
+                    let operation = (cost == 0) ? LevinstainOperation.none : LevinstainOperation.replace
                     matrix[i][j] = LevinstainItem<Element>(left: l, right: r, leftIndex: i-1, rightIndex: j-1, cost: replaceCost, operation: operation)
                 }
             }
@@ -61,7 +61,7 @@ struct Levinstain {
         return matrix
     }
     
-    func findPath<Element : Equatable>(left: [Element], right: [Element]) -> [LevinstainItem<Element>] {
+    func findPath<Element : Equatable>(_ left: [Element], right: [Element]) -> [LevinstainItem<Element>] {
         var path = [LevinstainItem<Element>]()
         let matrix = solve(left, right: right)
         var i = left.count
@@ -71,24 +71,24 @@ struct Levinstain {
             let step = matrix[i][j]
             path.append(step)
             switch step.operation {
-            case .None, .Replace:
+            case .none, .replace:
                 i -= 1;
                 j -= 1;
                 break
-            case .Delete:
+            case .delete:
                 i -= 1
                 break
-            case .Insert:
+            case .insert:
                 j -= 1
                 break
             }
             
         } while (i != 0 || j != 0)
         
-        return path.reverse()
+        return path.reversed()
     }
     
-    func distance<Element : Equatable>(left: [Element], right: [Element]) -> Int {
+    func distance<Element : Equatable>(_ left: [Element], right: [Element]) -> Int {
         let matrix = solve(left, right: right)
         return matrix[left.count][right.count].cost
     }

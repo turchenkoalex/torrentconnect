@@ -13,13 +13,12 @@ class TorrentTableCellView: NSTableCellView {
     static let DefaultHeight: CGFloat = 56
     @IBOutlet weak var progressLabel: NSTextField!
     @IBOutlet weak var imageButton: NSButton!
-    private var viewInitialized = false
-    @IBOutlet weak var progressWidth: NSLayoutConstraint!
+    fileprivate var viewInitialized = false
     
-    private var _id: Int = 0
-    private var _status: TorrentStatus = TorrentStatus.Stopped
-    private var _previousStatus: TorrentStatus = TorrentStatus.Stopped
-    private var _progress: Double = 0
+    fileprivate var _id: Int = 0
+    fileprivate var _status: TorrentStatus = TorrentStatus.stopped
+    fileprivate var _previousStatus: TorrentStatus = TorrentStatus.stopped
+    fileprivate var _progress: Double = 0
     
     func initializeView() {
         if (viewInitialized) {
@@ -27,22 +26,22 @@ class TorrentTableCellView: NSTableCellView {
         }
         viewInitialized = true
         
-        let trackingArea = NSTrackingArea(rect: imageButton.bounds, options: [.MouseEnteredAndExited, .ActiveAlways], owner: self, userInfo: nil)
+        let trackingArea = NSTrackingArea(rect: imageButton.bounds, options: [.mouseEnteredAndExited, .activeAlways], owner: self, userInfo: nil)
         imageButton.addTrackingArea(trackingArea)
     }
 
-    override func mouseEntered(theEvent: NSEvent) {
+    override func mouseEntered(with theEvent: NSEvent) {
         imageButton.image = torrentActionImage()
     }
     
-    override func mouseExited(theEvent: NSEvent) {
+    override func mouseExited(with theEvent: NSEvent) {
         imageButton.image = torrentStateImage()
     }
     
     func torrentActionImage() -> NSImage {
         var imageAsset: NSImage.AssetIdentifier
         switch(_status) {
-        case .Stopped:
+        case .stopped:
             imageAsset = .Play
         default:
             imageAsset = .Pause
@@ -54,9 +53,9 @@ class TorrentTableCellView: NSTableCellView {
     func torrentStateImage() -> NSImage {
         var imageAsset: NSImage.AssetIdentifier
         switch(_status) {
-        case .Download:
+        case .download:
             imageAsset = .Download
-        case .Seed:
+        case .seed:
             imageAsset = .Upload
         default:
             if (_progress < 1) {
@@ -68,7 +67,7 @@ class TorrentTableCellView: NSTableCellView {
         return NSImage(assetIdentifier: imageAsset)
     }
     
-    func setupView(torrent: Torrent) {
+    func setupView(_ torrent: Torrent) {
         initializeView()
         
         _id = torrent.id
@@ -101,7 +100,7 @@ class TorrentTableCellView: NSTableCellView {
         }
         set (value) {
             super.backgroundStyle = value
-            if (value == NSBackgroundStyle.Dark) {
+            if (value == NSBackgroundStyle.dark) {
                 setAsSelected()
             } else {
                 setAsUnselected()
@@ -110,16 +109,16 @@ class TorrentTableCellView: NSTableCellView {
     }
 
     func setAsSelected() {
-        textField?.textColor = NSColor.whiteColor()
+        textField?.textColor = NSColor.white
     }
 
     func setAsUnselected() {
-        textField?.textColor = NSColor.labelColor()
+        textField?.textColor = NSColor.labelColor
     }
     
-    override func drawRect(dirtyRect: NSRect) {
+    override func draw(_ dirtyRect: NSRect) {
         if (dirtyRect.size.height < bounds.size.height) {
-            super.drawRect(dirtyRect)
+            super.draw(dirtyRect)
             return
         }
         
@@ -138,21 +137,21 @@ class TorrentTableCellView: NSTableCellView {
             selectionPath.stroke()
             selectionPath.fill()
             
-            NSColor.blackColor().setStroke()
-            NSColor.lightGrayColor().setFill()
+            NSColor.black.setStroke()
+            NSColor.lightGray.setFill()
         }
     }
     
-    @IBAction func startStopClick(sender: AnyObject) {
+    @IBAction func startStopClick(_ sender: AnyObject) {
         switch(_status) {
-        case .Stopped:
+        case .stopped:
             TransmissionConnectManager.sharedInstance.startTorrents([_id]) {
                 if (self._progress < 1) {
-                    self._status = .Download
+                    self._status = .download
                 } else {
-                    self._status = .Seed
+                    self._status = .seed
                 }
-                dispatch_async(dispatch_get_main_queue()) {
+                DispatchQueue.main.async {
                     self.imageButton.image = self.torrentActionImage()
                 }
             }
@@ -160,8 +159,8 @@ class TorrentTableCellView: NSTableCellView {
         default:
             _previousStatus = _status
             TransmissionConnectManager.sharedInstance.stopTorrents([_id]) {
-                self._status = .Stopped
-                dispatch_async(dispatch_get_main_queue()) {
+                self._status = .stopped
+                DispatchQueue.main.async {
                     self.imageButton.image = self.torrentActionImage()
                 }
             }

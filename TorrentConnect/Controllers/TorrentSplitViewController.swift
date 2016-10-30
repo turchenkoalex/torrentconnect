@@ -9,8 +9,8 @@
 import Cocoa
 
 protocol SelectBehaviourDelegate {
-    func open(model: Torrent)
-    func select(models: [Torrent])
+    func open(_ model: Torrent)
+    func select(_ models: [Torrent])
     func deselect()
 }
 
@@ -24,18 +24,18 @@ class TorrentSplitViewController: NSSplitViewController, SelectBehaviourDelegate
     }
     
     func detailsHided() -> Bool {
-        return splitViewItems[1].animator().collapsed
+        return splitViewItems[1].animator().isCollapsed
     }
     
     func showDetails() {
-        dispatch_async(dispatch_get_main_queue()) {
-            self.splitViewItems[1].animator().collapsed = false
+        DispatchQueue.main.async {
+            self.splitViewItems[1].animator().isCollapsed = false
         }
     }
     
     func hideDetails() {
-        dispatch_async(dispatch_get_main_queue()) {
-            self.splitViewItems[1].animator().collapsed = true
+        DispatchQueue.main.async {
+            self.splitViewItems[1].animator().isCollapsed = true
         }
     }
     
@@ -44,7 +44,7 @@ class TorrentSplitViewController: NSSplitViewController, SelectBehaviourDelegate
         listController?.setupController(self)
     }
     
-    func setupDetailsController(models: [Torrent]) {
+    func setupDetailsController(_ models: [Torrent]) {
         let detailsController = splitViewItems[1].viewController as? TorrentDetailsViewController
         detailsController?.selectBehaviour = self
         if (models.count == 1) {
@@ -54,12 +54,12 @@ class TorrentSplitViewController: NSSplitViewController, SelectBehaviourDelegate
         }
     }
     
-    func open(model: Torrent) {
+    func open(_ model: Torrent) {
         setupDetailsController([model])
         showDetails()
     }
     
-    func select(models: [Torrent]) {
+    func select(_ models: [Torrent]) {
         if models.isEmpty {
             hideDetails()
             return

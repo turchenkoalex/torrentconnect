@@ -29,32 +29,32 @@ struct TransmissionRpc {
         return RpcRequest(method: "torrent-get", arguments: ["fields": fields])
     }
     
-    func getTorrentFiles(ids: [Int]) -> RpcRequest {
+    func getTorrentFiles(_ ids: [Int]) -> RpcRequest {
         let fields = ["id", "files", "fileStats"]
         return RpcRequest(method: "torrent-get", arguments: ["ids": ids, "fields": fields])
     }
     
-    func stopTorrents(ids: [Int]) -> RpcRequest {
+    func stopTorrents(_ ids: [Int]) -> RpcRequest {
         return RpcRequest(method: "torrent-stop", arguments: ["ids": ids])
     }
     
-    func startTorrents(ids: [Int]) -> RpcRequest {
+    func startTorrents(_ ids: [Int]) -> RpcRequest {
         return RpcRequest(method: "torrent-start", arguments: ["ids": ids])
     }
     
-    func addTorrent(url url: String, paused: Bool) -> RpcRequest {
+    func addTorrent(url: String, paused: Bool) -> RpcRequest {
         return RpcRequest(method: "torrent-add", arguments: ["paused": paused, "filename": url])
     }
     
-    func addTorrent(metainfo metainfo: String, paused: Bool) -> RpcRequest {
+    func addTorrent(metainfo: String, paused: Bool) -> RpcRequest {
         return RpcRequest(method: "torrent-add", arguments: ["paused": paused, "metainfo": metainfo])
     }
     
-    func deleteTorrents(ids: [Int], deleteLocalData: Bool) -> RpcRequest {
+    func deleteTorrents(_ ids: [Int], deleteLocalData: Bool) -> RpcRequest {
         return RpcRequest(method: "torrent-remove", arguments: ["ids": ids, "delete-local-data": deleteLocalData])
     }
     
-    func moveTorrents(ids: [Int], location: String) -> RpcRequest {
+    func moveTorrents(_ ids: [Int], location: String) -> RpcRequest {
         return RpcRequest(method: "torrent-set-location", arguments: ["ids": ids, "location": location, "move": true])
     }
     

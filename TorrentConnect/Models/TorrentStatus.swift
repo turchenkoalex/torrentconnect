@@ -9,11 +9,11 @@
 import Foundation
 
 enum TorrentStatus: Int {
-    case Stopped       = 0
-    case WaitCheck     = 1
-    case Check         = 2
-    case WaitDownload  = 3
-    case Download      = 4
-    case WaitSeed      = 5
-    case Seed          = 6
+    case stopped       = 0
+    case waitCheck     = 1
+    case check         = 2
+    case waitDownload  = 3
+    case download      = 4
+    case waitSeed      = 5
+    case seed          = 6
 }

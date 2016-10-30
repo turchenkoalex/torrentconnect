@@ -23,35 +23,35 @@ class ManyTorrentsDetailController: NSViewController {
         // Do view setup here.
     }
     
-    func setupModel(torrents: [Torrent]) {
+    func setupModel(_ torrents: [Torrent]) {
         ids = torrents.map { $0.id }
         progressLabel.doubleValue = totalProgress(torrents.map { $0.progress })
         
-        let stoppedCount = torrents.filter({ $0.status == .Stopped }).count
+        let stoppedCount = torrents.filter({ $0.status == .stopped }).count
         
         torrentCountLabel.integerValue = torrents.count
         activedLabel.integerValue = torrents.count - stoppedCount
         stoppedLabel.integerValue = stoppedCount
     }
     
-    func totalProgress(items: [Double]) -> Double {
-        let sum = items.reduce(0, combine: (+))
+    func totalProgress(_ items: [Double]) -> Double {
+        let sum = items.reduce(0, (+))
         return sum / Double(items.count)
     }
     
-    @IBAction func deleteAllClick(sender: AnyObject) {
+    @IBAction func deleteAllClick(_ sender: AnyObject) {
         TransmissionConnectManager.sharedInstance.deleteTorrents(ids) {
             self.hide()
         }
     }
     
-    @IBAction func pauseAllClick(sender: AnyObject) {
+    @IBAction func pauseAllClick(_ sender: AnyObject) {
         TransmissionConnectManager.sharedInstance.stopTorrents(ids) {
             
         }
     }
     
-    @IBAction func startAllClick(sender: AnyObject) {
+    @IBAction func startAllClick(_ sender: AnyObject) {
         TransmissionConnectManager.sharedInstance.startTorrents(ids) {
             
         }

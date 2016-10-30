@@ -9,7 +9,7 @@
 import Foundation
 
 struct ConnectionSettings {
-    let torrentServerType: TorrentServerType = .Transmission
+    let torrentServerType: TorrentServerType = .transmission
     let scheme: String
     let host: String
     let port: Int
@@ -17,12 +17,12 @@ struct ConnectionSettings {
 }
 
 extension ConnectionSettings {
-    func getServerUrl() -> NSURL {
-        let component = NSURLComponents()
+    func getServerUrl() -> URL {
+        var component = URLComponents()
         component.scheme = scheme
         component.host = host
         component.port = port
         component.path = path
-        return component.URL!
+        return component.url!
     }
 }

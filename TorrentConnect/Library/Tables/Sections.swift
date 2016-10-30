@@ -6,22 +6,22 @@
 //  Copyright © 2016 Turchenko Alexander. All rights reserved.
 //
 
-struct Sections<Element: Equatable where Element: FullyEquatable> {
-    private let _sections: [Section<Element>]
-    private let _counts: [Int]
-    private let _totalCount: Int
+struct Sections<Element: Equatable> where Element: FullyEquatable {
+    fileprivate let _sections: [Section<Element>]
+    fileprivate let _counts: [Int]
+    fileprivate let _totalCount: Int
     
     init(sections: [Section<Element>]) {
         _sections = sections
         _counts = sections.map { $0.collapsed ? 0 : $0.elements.count }
-        _totalCount = _counts.reduce(0, combine: (+)) + _counts.count
+        _totalCount = _counts.reduce(0, (+)) + _counts.count
     }
     
     var totalCount: Int { return self._totalCount }
     
     var sectionsCount: Int { return self._sections.count }
     
-    func positionAt(index: Int) -> (section: Int, element: Int)? {
+    func positionAt(_ index: Int) -> (section: Int, element: Int)? {
         
         if (index < 0) {
             return nil
@@ -29,7 +29,7 @@ struct Sections<Element: Equatable where Element: FullyEquatable> {
         
         var bound = 0
         
-        for (section, count) in _counts.enumerate() {
+        for (section, count) in _counts.enumerated() {
             let previousBound = bound
             bound += count + 1
             
@@ -42,7 +42,7 @@ struct Sections<Element: Equatable where Element: FullyEquatable> {
         return nil
     }
     
-    func isGroup(index: Int) -> Bool {
+    func isGroup(_ index: Int) -> Bool {
         if let position = self.positionAt(index) {
             return position.element == 0
         }
@@ -50,11 +50,11 @@ struct Sections<Element: Equatable where Element: FullyEquatable> {
         return false
     }
     
-    func isElement(index: Int) -> Bool {
+    func isElement(_ index: Int) -> Bool {
         return !isGroup(index)
     }
 
-    func elementAt(index: Int) -> Element? {
+    func elementAt(_ index: Int) -> Element? {
         if let position = positionAt(index) {
             if (position.element > 0) {
                 return _sections[position.section].elements[position.element - 1]
@@ -63,7 +63,7 @@ struct Sections<Element: Equatable where Element: FullyEquatable> {
         return nil
     }
     
-    func sectionAt(index: Int) -> Section<Element>? {
+    func sectionAt(_ index: Int) -> Section<Element>? {
         if let position = positionAt(index) {
             if (position.element == 0) {
                 let section = _sections[position.section]
@@ -73,8 +73,8 @@ struct Sections<Element: Equatable where Element: FullyEquatable> {
         return nil
     }
     
-    func toggleSection(title: String) -> Sections {
-        for (index, section) in _sections.enumerate() {
+    func toggleSection(_ title: String) -> Sections {
+        for (index, section) in _sections.enumerated() {
             if section.title == title {
                 var sections = _sections;
                 sections[index] = Section(title: section.title, collapsed: !section.collapsed, elements: section.elements)
@@ -84,7 +84,7 @@ struct Sections<Element: Equatable where Element: FullyEquatable> {
         return self
     }
     
-    func sectionAt(title: String) -> Section<Element>? {
+    func sectionAt(_ title: String) -> Section<Element>? {
         for section in _sections {
             if section.title == title {
                 return section;
@@ -93,7 +93,7 @@ struct Sections<Element: Equatable where Element: FullyEquatable> {
         return nil
     }
     
-    func isCollapsed(title: String) -> Bool {
+    func isCollapsed(_ title: String) -> Bool {
         if let section = sectionAt(title) {
             return section.collapsed
         }
@@ -104,9 +104,10 @@ struct Sections<Element: Equatable where Element: FullyEquatable> {
     func getRows() -> [Row<Section<Element>, Element>] {
         var rows = [Row<Section<Element>, Element>]()
         for section in _sections {
-            rows.append(Row(value: .First(section)))
+            rows.append(Row(value: .first(section)))
             if (!section.collapsed) {
-                rows.appendContentsOf(section.elements.map { Row<Section<Element>, Element>(value: .Second($0)) })
+                let elms = section.elements.map { Row<Section<Element>, Element>(value: .second($0)) }
+                rows.append(contentsOf: elms)
             }
         }
         return rows

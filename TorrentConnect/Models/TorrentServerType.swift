@@ -9,5 +9,5 @@
 import Foundation
 
 enum TorrentServerType {
-    case Transmission
+    case transmission
 }

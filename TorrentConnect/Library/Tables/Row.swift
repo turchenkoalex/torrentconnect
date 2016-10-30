@@ -6,26 +6,26 @@
 //  Copyright © 2016 Turchenko Alexander. All rights reserved.
 //
 
-struct Row<Group, Element where Group: Equatable, Group: FullyEquatable, Element: Equatable, Element: FullyEquatable> {
+struct Row<Group, Element> where Group: Equatable, Group: FullyEquatable, Element: Equatable, Element: FullyEquatable {
     let value: Either<Group, Element>
 }
 
 extension Row: Equatable, FullyEquatable {
-    func isFullyEqual(value: Row<Group, Element>) -> Bool {
+    func isFullyEqual(_ value: Row<Group, Element>) -> Bool {
         let lhs = self.value
         let rhs = value.value
      
         switch lhs {
-        case let .First(lf):
+        case let .first(lf):
             switch rhs {
-            case let .First(rf):
+            case let .first(rf):
                 return lf.isFullyEqual(rf)
             default:
                 return false
             }
-        case let .Second(ls):
+        case let .second(ls):
             switch rhs {
-            case let .Second(rs):
+            case let .second(rs):
                 return ls.isFullyEqual(rs)
             default:
                 return false

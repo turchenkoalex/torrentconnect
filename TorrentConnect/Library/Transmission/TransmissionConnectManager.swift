@@ -11,7 +11,7 @@ import Foundation
 struct EventQueue {
     var _events: [() -> ()] = []
     
-    mutating func add(event: () -> ()) {
+    mutating func add(_ event: @escaping () -> ()) {
         _events.append(event)
     }
     
@@ -22,23 +22,23 @@ struct EventQueue {
     }
 }
 
-@objc public class TransmissionConnectManager: NSObject {
+@objc open class TransmissionConnectManager: NSObject {
     
-    private var _events = EventQueue()
-    public static let sharedInstance = TransmissionConnectManager()
+    fileprivate var _events = EventQueue()
+    open static let sharedInstance = TransmissionConnectManager()
     
-    private var _connection: TransmissionServerConnection?
-    private let _adapter = TransmissionAdapter()
-    private var _timer: NSTimer?
-    private var _connectAttemps: Int = 0
+    fileprivate var _connection: TransmissionServerConnection?
+    fileprivate let _adapter = TransmissionAdapter()
+    fileprivate var _timer: Timer?
+    fileprivate var _connectAttemps: Int = 0
     
-    public let fetchTorrentsEvent = Event<[Torrent]>()
+    open let fetchTorrentsEvent = Event<[Torrent]>()
     
     func getSettings() -> ConnectionSettings {
         
-        let defaults = NSUserDefaults.standardUserDefaults()
-        let host = defaults.stringForKey("host") ?? "127.0.0.1"
-        let port = defaults.integerForKey("port")
+        let defaults = UserDefaults.standard
+        let host = defaults.string(forKey: "host") ?? "127.0.0.1"
+        let port = defaults.integer(forKey: "port")
         
         return ConnectionSettings(scheme: "http", host: host, port: port, path: "/transmission/rpc")
     }
@@ -54,11 +54,11 @@ struct EventQueue {
 //            return
 //        }
         
-        _timer = NSTimer.scheduledTimerWithTimeInterval(3, target: self, selector: #selector(TransmissionConnectManager.fetchTorrents), userInfo: nil, repeats: true)
+        _timer = Timer.scheduledTimer(timeInterval: 3, target: self, selector: #selector(TransmissionConnectManager.fetchTorrents), userInfo: nil, repeats: true)
         _adapter.connect(getSettings(), success: connectSuccess, error: connectError)
     }
     
-    func connectSuccess(connection: TransmissionServerConnection) {
+    func connectSuccess(_ connection: TransmissionServerConnection) {
         print("connect success")
         
         self._connectAttemps = 0
@@ -67,11 +67,11 @@ struct EventQueue {
         self.fetchTorrents()
     }
     
-    func connectError(error: RequestError) {
+    func connectError(_ error: RequestError) {
         print(error)
     }
     
-    public func fetchTorrents() {
+    open func fetchTorrents() {
         if let connection = _connection {
             self._adapter.torrents(connection, success: self.fetchTorrentsSuccess, error: requestError)
         } else {
@@ -79,36 +79,36 @@ struct EventQueue {
         }
     }
     
-    func fetchTorrentsSuccess(torrents: [Torrent]) {
+    func fetchTorrentsSuccess(_ torrents: [Torrent]) {
         fetchTorrentsEvent.raise(torrents)
     }
     
-    func requestError(error: RequestError) {
+    func requestError(_ error: RequestError) {
         switch error {
-        case .AuthorizationError:
+        case .authorizationError:
             connect()
         default:
             print(error)
         }
     }
     
-    public func startTorrents(ids: [Int], success: () -> ()) {
+    open func startTorrents(_ ids: [Int], success: @escaping () -> ()) {
         if let connection = _connection {
             self._adapter.start(connection, ids: ids, success: success, error: requestError)
         }
     }
     
-    public func stopTorrents(ids: [Int], success: () -> ()) {
+    open func stopTorrents(_ ids: [Int], success: @escaping () -> ()) {
         if let connection = _connection {
             self._adapter.stop(connection, ids: ids, success: success, error: requestError)
         }
     }
     
-    private func isPausedSetting() -> Bool {
+    fileprivate func isPausedSetting() -> Bool {
         return false
     }
     
-    public func addTorrent(url url: String, success: () -> ()) {
+    open func addTorrent(url: String, success: @escaping () -> ()) {
         if let connection = _connection {
             self._adapter.add(connection, url: url, paused: isPausedSetting(), success: success, error: requestError)
         } else {
@@ -118,7 +118,7 @@ struct EventQueue {
         }
     }
     
-    public func addTorrent(filename filename: String, success: () -> ()) {
+    open func addTorrent(filename: String, success: @escaping () -> ()) {
         if let connection = _connection {
             self._adapter.add(connection, filename: filename, paused: isPausedSetting(), success: success, error: requestError)
         } else {
@@ -128,17 +128,17 @@ struct EventQueue {
         }
     }
     
-    public func getFiles(ids: [Int], success: ([TorrentFile]) -> ()) {
+    open func getFiles(_ ids: [Int], success: @escaping ([TorrentFile]) -> ()) {
         if let connection = _connection {
             self._adapter.files(connection, ids: ids, success: success, error: requestError)
         }
     }
     
-    private func isDeleteLocalData() -> Bool {
+    fileprivate func isDeleteLocalData() -> Bool {
         return true
     }
     
-    public func deleteTorrents(ids: [Int], success: () -> ()) {
+    open func deleteTorrents(_ ids: [Int], success: @escaping () -> ()) {
         if let connection = _connection {
             self._adapter.delete(connection, ids: ids, deleteLocalData: isDeleteLocalData(), success: {
                 success()
@@ -147,7 +147,7 @@ struct EventQueue {
         }
     }
     
-    public func moveTorrents(ids: [Int], location: String, success: () -> ()) {
+    open func moveTorrents(_ ids: [Int], location: String, success: @escaping () -> ()) {
         if let connection = _connection {
             self._adapter.move(connection, ids: ids, location: location, success: {
                 self.fetchTorrents()
@@ -156,7 +156,7 @@ struct EventQueue {
         }
     }
     
-    public func wantFiles(forTorrent id: Int, wanted: [Int], unwanted: [Int], success: () -> ()) {
+    open func wantFiles(forTorrent id: Int, wanted: [Int], unwanted: [Int], success: @escaping () -> ()) {
         if let connection = _connection {
             self._adapter.setFiles(connection, id: id, wanted: wanted, unwanted: unwanted, success: {
                 //self.fetchTorrents()

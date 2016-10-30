@@ -25,7 +25,7 @@
 		11F1C82E1B85DC6200D6CF44 /* Torrent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11F1C82A1B85DC6200D6CF44 /* Torrent.swift */; };
 		11F1C8331B85DC9A00D6CF44 /* BorderedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11F1C8301B85DC9A00D6CF44 /* BorderedView.swift */; };
 		11F1C8341B85DC9A00D6CF44 /* TorrentTableHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11F1C8311B85DC9A00D6CF44 /* TorrentTableHeaderView.swift */; };
-		11F1C8371B85DCB500D6CF44 /* OptJSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11F1C8361B85DCB500D6CF44 /* OptJSON.swift */; };
+		11F1C8371B85DCB500D6CF44 /* SwiftyJSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11F1C8361B85DCB500D6CF44 /* SwiftyJSON.swift */; };
 		11F1C83B1B85DCC800D6CF44 /* RootWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11F1C8381B85DCC800D6CF44 /* RootWindowController.swift */; };
 		11F1C83C1B85DCC800D6CF44 /* TorrentsListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11F1C8391B85DCC800D6CF44 /* TorrentsListViewController.swift */; };
 		11F1C83D1B85DCC800D6CF44 /* TorrentSplitViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11F1C83A1B85DCC800D6CF44 /* TorrentSplitViewController.swift */; };
@@ -89,7 +89,7 @@
 		11F1C82A1B85DC6200D6CF44 /* Torrent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Torrent.swift; path = Models/Torrent.swift; sourceTree = "<group>"; };
 		11F1C8301B85DC9A00D6CF44 /* BorderedView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = BorderedView.swift; path = Views/BorderedView.swift; sourceTree = "<group>"; };
 		11F1C8311B85DC9A00D6CF44 /* TorrentTableHeaderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = TorrentTableHeaderView.swift; path = Views/TorrentTableHeaderView.swift; sourceTree = "<group>"; };
-		11F1C8361B85DCB500D6CF44 /* OptJSON.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = OptJSON.swift; path = Library/OptJSON.swift; sourceTree = "<group>"; };
+		11F1C8361B85DCB500D6CF44 /* SwiftyJSON.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SwiftyJSON.swift; path = Library/SwiftyJSON.swift; sourceTree = "<group>"; };
 		11F1C8381B85DCC800D6CF44 /* RootWindowController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = RootWindowController.swift; path = Controllers/RootWindowController.swift; sourceTree = "<group>"; };
 		11F1C8391B85DCC800D6CF44 /* TorrentsListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = TorrentsListViewController.swift; path = Controllers/TorrentsListViewController.swift; sourceTree = "<group>"; };
 		11F1C83A1B85DCC800D6CF44 /* TorrentSplitViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = TorrentSplitViewController.swift; path = Controllers/TorrentSplitViewController.swift; sourceTree = "<group>"; };
@@ -208,7 +208,7 @@
 			children = (
 				EE92DB9E1CE5D189005F89BA /* Tables */,
 				11F0A1E51B8E4E200055BB8E /* Transmission */,
-				11F1C8361B85DCB500D6CF44 /* OptJSON.swift */,
+				11F1C8361B85DCB500D6CF44 /* SwiftyJSON.swift */,
 				11ABC7131B8BA6DF0039C3DF /* AssetIdentifiers.swift */,
 				11F0A1F11B8E50320055BB8E /* Either.swift */,
 				EE39EF431CE87C1700600767 /* Event.swift */,
@@ -310,7 +310,7 @@
 					11AB2C041B85D2F500AAA99A = {
 						CreatedOnToolsVersion = 7.0;
 						DevelopmentTeam = P2CB6739FK;
-						LastSwiftMigration = 0800;
+						LastSwiftMigration = 0810;
 						SystemCapabilities = {
 							com.apple.ApplicationGroups.Mac = {
 								enabled = 0;
@@ -389,7 +389,7 @@
 				EE92DBA21CE5D27C005F89BA /* Section.swift in Sources */,
 				11F0A1F21B8E50320055BB8E /* Either.swift in Sources */,
 				EE92DA551CF04E6D00145A43 /* ManyTorrentsDetailController.swift in Sources */,
-				11F1C8371B85DCB500D6CF44 /* OptJSON.swift in Sources */,
+				11F1C8371B85DCB500D6CF44 /* SwiftyJSON.swift in Sources */,
 				11F0A1F41B8E505A0055BB8E /* TransmissionParser.swift in Sources */,
 				EE39EF4E1CEA251400600767 /* JsonPrintable.swift in Sources */,
 				EE39EF4A1CE8ADDF00600767 /* DownloadedController.swift in Sources */,
@@ -486,7 +486,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				MACOSX_DEPLOYMENT_TARGET = 10.11;
+				MACOSX_DEPLOYMENT_TARGET = 10.12;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = macosx;
@@ -514,7 +514,7 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				CODE_SIGN_IDENTITY = "";
-				COPY_PHASE_STRIP = NO;
+				COPY_PHASE_STRIP = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
@@ -526,7 +526,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				MACOSX_DEPLOYMENT_TARGET = 10.11;
+				MACOSX_DEPLOYMENT_TARGET = 10.12;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = macosx;
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
@@ -546,7 +546,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.turchenkoalex.TorrentConnect;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
-				SWIFT_VERSION = 2.3;
+				SWIFT_VERSION = 3.0;
 			};
 			name = Debug;
 		};
@@ -563,7 +563,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.turchenkoalex.TorrentConnect;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
-				SWIFT_VERSION = 2.3;
+				SWIFT_VERSION = 3.0;
 			};
 			name = Release;
 		};

@@ -11,17 +11,17 @@ import Cocoa
 @NSApplicationMain
 class AppDelegate: NSObject, NSApplicationDelegate, NSUserNotificationCenterDelegate {
 
-    private let _badgeController = BadgeController()
-    private let _downloadedController = DownloadedController()
-    private let _urlHandler = UrlHandler()
-    private let _filesHandler = FilesHandler()
+    fileprivate let _badgeController = BadgeController()
+    fileprivate let _downloadedController = DownloadedController()
+    fileprivate let _urlHandler = UrlHandler()
+    fileprivate let _filesHandler = FilesHandler()
     
-    func applicationDidFinishLaunching(aNotification: NSNotification) {
+    func applicationDidFinishLaunching(_ aNotification: Notification) {
         // Insert code here to initialize your application
         
-        NSUserNotificationCenter.defaultUserNotificationCenter().delegate = self
+        NSUserNotificationCenter.default.delegate = self
         
-        NSUserDefaults.standardUserDefaults().registerDefaults([
+        UserDefaults.standard.register(defaults: [
             "host": "localhost",
             "port": 9091])
         
@@ -29,34 +29,34 @@ class AppDelegate: NSObject, NSApplicationDelegate, NSUserNotificationCenterDele
         _downloadedController.inject()
     }
     
-    func applicationWillFinishLaunching(notification: NSNotification) {
-        let eventManager = NSAppleEventManager.sharedAppleEventManager()
+    func applicationWillFinishLaunching(_ notification: Notification) {
+        let eventManager = NSAppleEventManager.shared()
         eventManager.setEventHandler(_urlHandler, andSelector: #selector(UrlHandler.openUrlEvent), forEventClass: AEEventClass(kInternetEventClass), andEventID: AEEventID(kAEGetURL))
     }
 
-    func applicationWillTerminate(aNotification: NSNotification) {
+    func applicationWillTerminate(_ aNotification: Notification) {
         // Insert code here to tear down your application
     }
 
-    func applicationShouldHandleReopen(sender: NSApplication, hasVisibleWindows flag: Bool) -> Bool {
+    func applicationShouldHandleReopen(_ sender: NSApplication, hasVisibleWindows flag: Bool) -> Bool {
         sender.windows.first?.makeKeyAndOrderFront(sender)
         return true
     }
 
-    func userNotificationCenter(center: NSUserNotificationCenter, shouldPresentNotification notification: NSUserNotification) -> Bool {
+    func userNotificationCenter(_ center: NSUserNotificationCenter, shouldPresent notification: NSUserNotification) -> Bool {
         return true
     }
     
-    func userNotificationCenter(center: NSUserNotificationCenter, didActivateNotification notification: NSUserNotification) {
+    func userNotificationCenter(_ center: NSUserNotificationCenter, didActivate notification: NSUserNotification) {
         center.removeDeliveredNotification(notification)
-        NSApplication.sharedApplication().windows.first?.makeKeyAndOrderFront(NSApplication.sharedApplication())
+        NSApplication.shared().windows.first?.makeKeyAndOrderFront(NSApplication.shared())
     }
     
-    func application(sender: NSApplication, openFile filename: String) -> Bool {
+    func application(_ sender: NSApplication, openFile filename: String) -> Bool {
         return _filesHandler.openFile(filename)
     }
     
-    func application(sender: NSApplication, openFiles filenames: [String]) {
+    func application(_ sender: NSApplication, openFiles filenames: [String]) {
         _filesHandler.openFiles(filenames)
     }
 }

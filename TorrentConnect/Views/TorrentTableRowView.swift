@@ -10,16 +10,16 @@ import Cocoa
 
 class TorrentTableRowView: NSTableRowView {
 
-    override func drawSelectionInRect(dirtyRect: NSRect) {
-        if (selectionHighlightStyle == NSTableViewSelectionHighlightStyle.None) {
+    override func drawSelection(in dirtyRect: NSRect) {
+        if (selectionHighlightStyle == NSTableViewSelectionHighlightStyle.none) {
             return
         }
         
         NSColor.applicationHighlightedTableLine().setStroke()
         NSColor.applicationHighlightedTableBackground().setFill()
         
-        NSColor.blackColor().setStroke()
-        NSColor.lightGrayColor().setFill()
+        NSColor.black.setStroke()
+        NSColor.lightGray.setFill()
         
         let selectionPath = NSBezierPath(rect: bounds)
         selectionPath.lineWidth = 0.05

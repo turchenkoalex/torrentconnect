@@ -7,22 +7,22 @@
 //
 
 enum Either<TFirst, TSecond> {
-    case First(TFirst)
-    case Second(TSecond)
+    case first(TFirst)
+    case second(TSecond)
 }
 
 func ==<TFirst: Equatable, TSecond: Equatable>(lhs: Either<TFirst, TSecond>, rhs: Either<TFirst, TSecond>) -> Bool {
     switch lhs {
-    case let .First(lf):
+    case let .first(lf):
         switch rhs {
-        case let .First(rf):
+        case let .first(rf):
             return lf == rf
         default:
             return false
         }
-    case let .Second(ls):
+    case let .second(ls):
         switch rhs {
-        case let .Second(rs):
+        case let .second(rs):
             return ls == rs
         default:
             return false

@@ -9,8 +9,8 @@
 import Foundation
 
 class UrlHandler {
-    @objc func openUrlEvent(event: NSAppleEventDescriptor, replyEvent: NSAppleEventDescriptor) {
-        if let url = event.paramDescriptorForKeyword(AEKeyword(keyDirectObject))?.stringValue {
+    @objc func openUrlEvent(_ event: NSAppleEventDescriptor, replyEvent: NSAppleEventDescriptor) {
+        if let url = event.paramDescriptor(forKeyword: AEKeyword(keyDirectObject))?.stringValue {
             TransmissionConnectManager.sharedInstance.addTorrent(url: url, success: { 
                 
             })

@@ -35,7 +35,7 @@ extension Bool: JsonPrintable {
 extension Optional where Wrapped: JsonPrintable {
     func toJson() -> String {
         switch self {
-        case let .Some(wrapped):
+        case let .some(wrapped):
             return wrapped.toJson()
         default:
             return "null"
@@ -46,26 +46,26 @@ extension Optional where Wrapped: JsonPrintable {
 extension Dictionary: JsonPrintable {
     func toJson() -> String {
         let pairs = self.map { (key, value) in
-            return (String(key), JsonValue(value: (value as? JsonPrintable)))
+            return (String(describing: key), JsonValue(value: (value as? JsonPrintable)))
         }.map { (key, value) in
             return key.toJson() + ":" + value.toJson()
         }
-        return "{" + pairs.joinWithSeparator(",") + "}"
+        return "{" + pairs.joined(separator: ",") + "}"
     }
 }
 
 extension Array: JsonPrintable {
     func toJson() -> String {
         let items = self.map { JsonValue(value: ($0 as? JsonPrintable)).toJson() }
-        return "[" + items.joinWithSeparator(",") + "]"
+        return "[" + items.joined(separator: ",") + "]"
     }
 }
 
-func toJson(jsonTuple: (String, JsonPrintable)) -> String {
+func toJson(_ jsonTuple: (String, JsonPrintable)) -> String {
     return toJson(jsonTuple.0, jsonTuple.1)
 }
 
-func toJson(name: String, value: JsonPrintable) -> String {
+func toJson(_ name: String, value: JsonPrintable) -> String {
     return name.toJson() + ":" + value.toJson()
 }
 

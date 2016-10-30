@@ -14,12 +14,12 @@ class TorrentTableHeaderView: NSTableCellView {
     @IBOutlet weak var countLabel: NSButton!
     @IBOutlet weak var toggler: NSButton!
     
-    private var _title: String!
-    private var _toggleSection: () -> () = { () in }
-    private var _collapsed: Bool = false
-    private var _count: Int = 0
+    fileprivate var _title: String!
+    fileprivate var _toggleSection: () -> () = { () in }
+    fileprivate var _collapsed: Bool = false
+    fileprivate var _count: Int = 0
     
-    func setupView(model: Section<Torrent>, toggleSection: () -> ()) {
+    func setupView(_ model: Section<Torrent>, toggleSection: @escaping () -> ()) {
         _title = model.title
         _collapsed = model.collapsed
         _toggleSection = toggleSection
@@ -28,7 +28,7 @@ class TorrentTableHeaderView: NSTableCellView {
         updateControls()
     }
     
-    private func updateControls() {
+    fileprivate func updateControls() {
         textField!.stringValue = _title
         countLabel!.title = String(_count)
         if (_collapsed) {
@@ -38,15 +38,15 @@ class TorrentTableHeaderView: NSTableCellView {
         }
     }
     
-    @IBAction func countClick(sender: AnyObject) {
+    @IBAction func countClick(_ sender: AnyObject) {
         _toggleSection()
     }
     
-    @IBAction func toggleClick(sender: AnyObject) {
+    @IBAction func toggleClick(_ sender: AnyObject) {
         _toggleSection()
     }
     
-    override func drawRect(dirtyRect: NSRect) {
+    override func draw(_ dirtyRect: NSRect) {
         NSColor.applicationHighlightedTableTransparentLine().setStroke()
         NSColor.applicationHighlightedTableTransparentBackground().setFill()
         let selectionPath = NSBezierPath(rect: bounds)

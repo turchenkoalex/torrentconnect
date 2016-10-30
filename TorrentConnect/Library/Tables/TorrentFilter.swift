@@ -9,7 +9,7 @@
 extension String {
     
     subscript (i: Int) -> Character {
-        return self[self.startIndex.advancedBy(i)]
+        return self[self.characters.index(self.startIndex, offsetBy: i)]
     }
     
     subscript (i: Int) -> String {
@@ -17,8 +17,8 @@ extension String {
     }
     
     subscript (r: Range<Int>) -> String {
-        let start = startIndex.advancedBy(r.startIndex)
-        let end = start.advancedBy(r.endIndex - r.startIndex)
+        let start = characters.index(startIndex, offsetBy: r.lowerBound)
+        let end = characters.index(start, offsetBy: r.upperBound - r.lowerBound)
         return self[Range(start ..< end)]
     }
 }
@@ -26,33 +26,34 @@ extension String {
 struct TorrentFilter {
     let levinstain = Levinstain()
     
-    func containsFilter(value: String) -> (Torrent -> Bool) {
-        return { torrent in return torrent.name.lowercaseString.containsString(value) }
+    func containsFilter(_ value: String) -> ((Torrent) -> Bool) {
+        return { torrent in return torrent.name.lowercased().contains(value) }
     }
     
-    func fuzzyFilter(value: String) -> (Torrent -> Bool) {
+    func fuzzyFilter(_ value: String) -> ((Torrent) -> Bool) {
         let valueLength = value.utf8.count
         let left = value.characters.map { $0 }
         
         return { torrent in
-            var name = torrent.name.lowercaseString
+            var name = torrent.name.lowercased()
             
-            if (name.containsString(value)) {
+            if (name.contains(value)) {
                 return true
             }
             
             if (name.utf8.count < valueLength) {
                 return false
             } else {
-                name = name[0...valueLength-1]
+                let end = name.index(name.startIndex, offsetBy: valueLength - 1)
+                name = name.substring(to: end)
             }
             
             return self.levinstain.distance(left, right: name.characters.map { $0 }) < 3
         }
     }
     
-    func filter(value: String, torrents: [Torrent]) -> [Torrent] {
-        let lowerValue = value.lowercaseString
+    func filter(_ value: String, torrents: [Torrent]) -> [Torrent] {
+        let lowerValue = value.lowercased()
         if (value.isEmpty) {
             return torrents
         }

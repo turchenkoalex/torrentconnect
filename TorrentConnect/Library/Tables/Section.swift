@@ -13,7 +13,7 @@ struct Section<Element> {
 }
 
 extension Section: Equatable, FullyEquatable {
-    func isFullyEqual(value: Section) -> Bool {
+    func isFullyEqual(_ value: Section) -> Bool {
         return self.title == value.title
             && self.collapsed == value.collapsed
             && self.elements.count == value.elements.count

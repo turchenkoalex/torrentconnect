@@ -7,9 +7,9 @@
 //
 
 struct GroupBy<Group: Hashable, Element> {
-    let keySelector: (Element -> Group)
+    let keySelector: ((Element) -> Group)
     
-    func groupBy(elements: [Element]) -> [(Group, [Element])] {
+    func groupBy(_ elements: [Element]) -> [(Group, [Element])] {
         var sections = [Group : (Group, [Element])]()
         
         for element in elements {

@@ -9,15 +9,15 @@
 import Foundation
 
 struct TransmissionParser {
-    private func parseTorrent(o: AnyObject?) -> Torrent? {
-        let json = JSON(o)
+    fileprivate func parseTorrent(_ json: JSON) -> Torrent? {
+        
         guard
-            let id = json?["id"] as? Int,
-            let name = json?["name"] as? String,
-            let status = json?["status"] as? Int,
-            let percentDone = json?["percentDone"] as? Double,
-            let downloadDir = json?["downloadDir"] as? String,
-            let position = json?["queuePosition"] as? Int
+            let id = json["id"].int,
+            let name = json["name"].string,
+            let status = json["status"].int,
+            let percentDone = json["percentDone"].double,
+            let downloadDir = json["downloadDir"].string,
+            let position = json["queuePosition"].int
             else {
                     return nil
             }
@@ -31,20 +31,19 @@ struct TransmissionParser {
             position: position)
     }
     
-    private func parseTorrentFiles(o: AnyObject?) -> [TorrentFile]? {
-        let json = JSON(o)
+    fileprivate func parseTorrentFiles(_ json: JSON) -> [TorrentFile]? {
         guard
-            let torrentId = json?["id"] as? Int,
-            let jsonFiles = json?["files"] as? NSArray,
-            let jsonStats = json?["fileStats"] as? NSArray
+            let torrentId = json["id"].int,
+            let jsonFiles = json["files"].array,
+            let jsonStats = json["fileStats"].array
         else {
             return nil
         }
         
         var files = [TorrentFile]()
         
-        for (id, jsonFile) in jsonFiles.enumerate() {
-            let jsonStat = jsonStats.objectAtIndex(id)
+        for (id, jsonFile) in jsonFiles.enumerated() {
+            let jsonStat = jsonStats[id]
             if let file = parseTorrentFile(id, torrentId: torrentId, file: jsonFile, stats: jsonStat) {
                 files.append(file)
             }
@@ -53,17 +52,16 @@ struct TransmissionParser {
         return files
     }
     
-    private func parseTorrentFile(id: Int, torrentId: Int, file: AnyObject?, stats: AnyObject?) -> TorrentFile? {
-        let json = JSON(file)
+    fileprivate func parseTorrentFile(_ id: Int, torrentId: Int, file: JSON, stats: JSON) -> TorrentFile? {
         guard
-            let name = json?["name"] as? String,
-            let length = json?["length"] as? Int,
-            let bytesCompleted = json?["bytesCompleted"] as? Int
+            let name = file["name"].string,
+            let length = file["length"].int,
+            let bytesCompleted = file["bytesCompleted"].int
             else {
                 return nil
         }
         
-        let wants = JSON(stats)?["wanted"] as? Bool ?? false
+        let wants = stats["wanted"].bool ?? false
         
         return TorrentFile(
             id: id,
@@ -74,8 +72,8 @@ struct TransmissionParser {
             wants: wants)
     }
     
-    func getSessionId(response: NSURLResponse?) -> String? {
-        if let response = response as? NSHTTPURLResponse {
+    func getSessionId(_ response: URLResponse?) -> String? {
+        if let response = response as? HTTPURLResponse {
             if response.statusCode == 409 {
                 if let sessionId = response.allHeaderFields["X-Transmission-Session-Id"] as? String {
                     return sessionId
@@ -85,43 +83,40 @@ struct TransmissionParser {
         return nil
     }
     
-    private func getObjects<T>(data: NSData, section: String, parseItem: (AnyObject?) -> (T?)) -> Either<[T], RequestError> {
-        do {
-            let json = try NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions.MutableContainers)
-            if JSON(json)?["result"] as? String == "success" {
-                if let jsonItems = JSON(json)?["arguments"]?[section] as? NSArray {
-                    var items = [T]()
-                    for jsonItem in jsonItems {
-                        if let item = parseItem(jsonItem) {
-                            items.append(item)
-                        }
+    fileprivate func getObjects<T>(_ data: Data, section: String, parseItem: (JSON) -> (T?)) -> Either<[T], RequestError> {
+        let json = JSON(data: data)
+        if json["result"].stringValue == "success" {
+            if let arguments = json["arguments"][section].array {
+                var items = [T]()
+                for argument in arguments {
+                    if let item = parseItem(argument) {
+                        items.append(item)
                     }
-                    return .First(items)
                 }
+                return .first(items)
             }
-            return .Second(.ParseError)
-        } catch {
-            return .Second(.ParseError)
+            return .first([T]())
         }
+        return .second(.parseError)
     }
     
-    func getTorrents(data: NSData) -> Either<[Torrent], RequestError> {
+    func getTorrents(_ data: Data) -> Either<[Torrent], RequestError> {
         return getObjects(data, section: "torrents", parseItem: parseTorrent)
     }
     
-    private func acc(acc: [TorrentFile], val: [TorrentFile]) -> [TorrentFile] {
+    fileprivate func acc(_ acc: [TorrentFile], val: [TorrentFile]) -> [TorrentFile] {
         var newAcc = [TorrentFile](acc)
-        newAcc.appendContentsOf(val)
+        newAcc.append(contentsOf: val)
         return newAcc
     }
     
-    func getTorrentFiles(data: NSData) -> Either<[TorrentFile], RequestError> {
+    func getTorrentFiles(_ data: Data) -> Either<[TorrentFile], RequestError> {
         let allFiles = getObjects(data, section: "torrents", parseItem: parseTorrentFiles)
         switch allFiles {
-        case .First(let torrents):
-            return .First(torrents.reduce([], combine: acc))
-        case .Second(let error):
-            return .Second(error)
+        case .first(let torrents):
+            return .first(torrents.reduce([], acc))
+        case .second(let error):
+            return .second(error)
         }
     }
 }

@@ -16,7 +16,7 @@ public struct Torrent: Equatable {
 }
 
 extension Torrent: FullyEquatable {
-    func isFullyEqual(value: Torrent) -> Bool {
+    func isFullyEqual(_ value: Torrent) -> Bool {
         return
             self.id == value.id
             && self.name == value.name

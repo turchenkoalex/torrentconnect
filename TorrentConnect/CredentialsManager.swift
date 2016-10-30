@@ -14,13 +14,13 @@ struct Credentials {
 }
 
 struct CredentialsManager {
-    private func getSpace(host host: String, port: Int) -> NSURLProtectionSpace {
-        return NSURLProtectionSpace(host: host, port: port, protocol: "http", realm: "Transmission", authenticationMethod: NSURLAuthenticationMethodDefault)
+    fileprivate func getSpace(host: String, port: Int) -> URLProtectionSpace {
+        return URLProtectionSpace(host: host, port: port, protocol: "http", realm: "Transmission", authenticationMethod: NSURLAuthenticationMethodDefault)
     }
     
-    func getCredentials(host: String, port: Int) -> Credentials? {
+    func getCredentials(_ host: String, port: Int) -> Credentials? {
         let space = getSpace(host: host, port: port)
-        if let credential = NSURLCredentialStorage.sharedCredentialStorage().defaultCredentialForProtectionSpace(space) {
+        if let credential = URLCredentialStorage.shared.defaultCredential(for: space) {
             let username = credential.user!
             let password = credential.password!
             
@@ -30,9 +30,9 @@ struct CredentialsManager {
         return nil
     }
     
-    func setCredentials(host: String, port: Int, credentials: Credentials) {
+    func setCredentials(_ host: String, port: Int, credentials: Credentials) {
         let space = getSpace(host: host, port: port)
-        let credential = NSURLCredential(user: credentials.username, password: credentials.password, persistence: .Permanent)
-        NSURLCredentialStorage.sharedCredentialStorage().setDefaultCredential(credential, forProtectionSpace: space)
+        let credential = URLCredential(user: credentials.username, password: credentials.password, persistence: .permanent)
+        URLCredentialStorage.shared.setDefaultCredential(credential, for: space)
     }
 }

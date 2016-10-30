@@ -15,20 +15,21 @@ class TorrentsListViewController: NSViewController {
     @IBOutlet weak var searchField: NSSearchField!
     @IBOutlet weak var segmentedController: NSSegmentedControl!
 
-    private var _tableController: TableController<Torrent>!
-    private let _torrentsGroupBy = TorrentsGroupBy()
-    private var _sections = Sections<Torrent>(sections: [])
-    private var _selectBehaviour: SelectBehaviourDelegate?
-    private var _torrents = [Torrent]()
-    private let _torrentFilter = TorrentFilter()
-    private var filterText = ""
+    fileprivate var _tableController: TableController<Torrent>!
+    fileprivate let _torrentsGroupBy = TorrentsGroupBy()
+    fileprivate var _sections = Sections<Torrent>(sections: [])
+    fileprivate var _selectBehaviour: SelectBehaviourDelegate?
+    fileprivate var _torrents = [Torrent]()
+    fileprivate let _torrentFilter = TorrentFilter()
+    fileprivate var filterText = ""
+    fileprivate var _attachedHandler: Disposable?
     
     override func viewDidLoad() {
         super.viewDidLoad()
         self._tableController = TableController(groupBy: _torrentsGroupBy.byDownloadDir())
         self.tableView.doubleAction = #selector(self.doubleClick)
         
-        TransmissionConnectManager.sharedInstance.fetchTorrentsEvent.addHandler(self, handler: TorrentsListViewController.fetchTorrents)
+        _attachedHandler = TransmissionConnectManager.sharedInstance.fetchTorrentsEvent.addHandler(self, handler: TorrentsListViewController.fetchTorrents)
         
         TransmissionConnectManager.sharedInstance.connect()
         
@@ -42,21 +43,21 @@ class TorrentsListViewController: NSViewController {
             item.representedObject = location.location
             pathMenu.addItem(item)
         }
-        pathMenu.addItem(NSMenuItem.separatorItem())
+        pathMenu.addItem(NSMenuItem.separator())
         pathMenu.addItem(NSMenuItem(title: "Trash", action: #selector(trashTorrents), keyEquivalent: ""))
     }
     
-    func setupController(selectBehaviour: SelectBehaviourDelegate) {
+    func setupController(_ selectBehaviour: SelectBehaviourDelegate) {
         _selectBehaviour = selectBehaviour
     }
     
-    func prepeareTorrents(torrents: [Torrent]) -> [Torrent] {
+    func prepeareTorrents(_ torrents: [Torrent]) -> [Torrent] {
         let filtered = self._torrentFilter.filter(filterText, torrents: torrents)
-        let sorted = filtered.sort { $0.0.name < $0.1.name }
+        let sorted = filtered.sorted { $0.0.name < $0.1.name }
         return sorted
     }
     
-    func fetchTorrents(torrents: [Torrent]) {
+    func fetchTorrents(_ torrents: [Torrent]) {
         self._torrents = torrents
         self.showTorrents()
     }
@@ -67,12 +68,12 @@ class TorrentsListViewController: NSViewController {
         applySections(sections)
     }
     
-    func toggleSection(section: Section<Torrent>) {
+    func toggleSection(_ section: Section<Torrent>) {
         let sections = _sections.toggleSection(section.title)
         applySections(sections)
     }
     
-    func applySections(sections: Sections<Torrent>) {
+    func applySections(_ sections: Sections<Torrent>) {
         let changes = SectionsDiff.getChanges(_sections, right: sections)
         _sections = sections
         
@@ -88,26 +89,26 @@ class TorrentsListViewController: NSViewController {
         let deletedSet = NSMutableIndexSet()
         
         for i in changes.inserted {
-            insertedSet.addIndex(i)
+            insertedSet.add(i)
         }
         for i in changes.updated {
-            updatedSet.addIndex(i)
+            updatedSet.add(i)
         }
         for i in changes.deleted {
-            deletedSet.addIndex(i)
+            deletedSet.add(i)
         }
         
-        dispatch_async(dispatch_get_main_queue()) {
+        DispatchQueue.main.async {
             if (insertedSet.count > 0 || deletedSet.count > 0 || updatedSet.count > 0) {
                 self.tableView.beginUpdates()
-                self.tableView.removeRowsAtIndexes(deletedSet, withAnimation: NSTableViewAnimationOptions.SlideUp)
-                self.tableView.insertRowsAtIndexes(insertedSet, withAnimation: NSTableViewAnimationOptions.SlideUp)
-                self.tableView.reloadDataForRowIndexes(updatedSet, columnIndexes: NSIndexSet(index: 0))
+                self.tableView.removeRows(at: deletedSet as IndexSet, withAnimation: NSTableViewAnimationOptions.slideUp)
+                self.tableView.insertRows(at: insertedSet as IndexSet, withAnimation: NSTableViewAnimationOptions.slideUp)
+                self.tableView.reloadData(forRowIndexes: updatedSet as IndexSet, columnIndexes: IndexSet(integer: 0))
                 self.tableView.endUpdates()
             }
             
             for i in changes.sectionsUpdated {
-                if let view = self.tableView.viewAtColumn(0, row: i, makeIfNecessary: true) as? TorrentTableHeaderView {
+                if let view = self.tableView.view(atColumn: 0, row: i, makeIfNecessary: true) as? TorrentTableHeaderView {
                     if let section = self._sections.sectionAt(i) {
                         let toggleSection = { () in
                             self.toggleSection(section)
@@ -117,7 +118,7 @@ class TorrentsListViewController: NSViewController {
                 }
             }
             
-            self.tableViewSelectionDidChange(NSNotification(name: "updates", object: nil))
+            self.tableViewSelectionDidChange(Notification(name: Notification.Name(rawValue: "updates"), object: nil))
             
             if (self._sections.totalCount == 0 || self._sections.totalCount == self._sections.sectionsCount) {
                 self.tableView.reloadData()
@@ -128,19 +129,19 @@ class TorrentsListViewController: NSViewController {
     func doubleClick() {
         let selection = tableView.selectedRowIndexes
         if (selection.count == 1) {
-            if let torrent = self._sections.elementAt(selection.firstIndex) {
+            if let torrent = self._sections.elementAt(selection.first!) {
                 _selectBehaviour?.open(torrent)
             }
             return
         }
     }
     
-    @IBAction func searchTextChanged(sender: AnyObject) {
+    @IBAction func searchTextChanged(_ sender: AnyObject) {
         filterText = self.searchField.stringValue
         self.showTorrents()
     }
     
-    @IBAction func segmentChanged(sender: AnyObject) {
+    @IBAction func segmentChanged(_ sender: AnyObject) {
         let selected = self.segmentedController.selectedSegment
         if (selected == 0) {
             self.segmentedController.setImage(NSImage(assetIdentifier: .Folder), forSegment: 0)
@@ -156,29 +157,29 @@ class TorrentsListViewController: NSViewController {
 }
 
 extension TorrentsListViewController: NSTableViewDelegate, NSTableViewDataSource {
-    func numberOfRowsInTableView(tableView: NSTableView) -> Int {
+    func numberOfRows(in tableView: NSTableView) -> Int {
         return self._sections.totalCount
     }
     
-    func tableView(tableView: NSTableView, isGroupRow row: Int) -> Bool {
+    func tableView(_ tableView: NSTableView, isGroupRow row: Int) -> Bool {
         return self._sections.isGroup(row)
     }
     
-    func tableView(tableView: NSTableView, heightOfRow row: Int) -> CGFloat {
+    func tableView(_ tableView: NSTableView, heightOfRow row: Int) -> CGFloat {
         if (self._sections.isGroup(row)) {
             return TorrentTableHeaderView.DefaultHeight
         }
         return TorrentTableCellView.DefaultHeight
     }
     
-    func tableView(tableView: NSTableView, rowViewForRow row: Int) -> NSTableRowView? {
+    func tableView(_ tableView: NSTableView, rowViewForRow row: Int) -> NSTableRowView? {
         let rowView = TorrentTableRowView()
         return rowView
     }
 
-    func tableView(tableView: NSTableView, viewForTableColumn tableColumn: NSTableColumn?, row: Int) -> NSView? {
+    func tableView(_ tableView: NSTableView, viewFor tableColumn: NSTableColumn?, row: Int) -> NSView? {
         if (self._sections.isGroup(row)) {
-            let headerView = tableView.makeViewWithIdentifier("TorrentTableHeaderView", owner: self) as! TorrentTableHeaderView
+            let headerView = tableView.make(withIdentifier: "TorrentTableHeaderView", owner: self) as! TorrentTableHeaderView
             if let section = self._sections.sectionAt(row) {
                 let toggleSection = { () in
                     self.toggleSection(section)
@@ -188,7 +189,7 @@ extension TorrentsListViewController: NSTableViewDelegate, NSTableViewDataSource
             }
         }
 
-        let cellView = tableView.makeViewWithIdentifier("TorrentTableCellView", owner: self) as! TorrentTableCellView
+        let cellView = tableView.make(withIdentifier: "TorrentTableCellView", owner: self) as! TorrentTableCellView
         if let model = self._sections.elementAt(row) {
             cellView.setupView(model)
         }
@@ -196,7 +197,7 @@ extension TorrentsListViewController: NSTableViewDelegate, NSTableViewDataSource
         return cellView
     }
     
-    func tableView(tableView: NSTableView, shouldSelectRow row: Int) -> Bool {
+    func tableView(_ tableView: NSTableView, shouldSelectRow row: Int) -> Bool {
         return !self._sections.isGroup(row)
     }
     
@@ -212,12 +213,12 @@ extension TorrentsListViewController: NSTableViewDelegate, NSTableViewDataSource
         return items
     }
     
-    func tableViewSelectionDidChange(notification: NSNotification) {
+    func tableViewSelectionDidChange(_ notification: Notification) {
         _selectBehaviour?.select(selectedTorrents())
     }
     
     func onDeselectTorrents() {
-        dispatch_async(dispatch_get_main_queue()) {
+        DispatchQueue.main.async {
             self.tableView.deselectAll(self)
         }
     }
@@ -236,7 +237,7 @@ extension TorrentsListViewController: NSTableViewDelegate, NSTableViewDataSource
         return ids
     }
     
-    func moveTorrents(item: NSMenuItem) {
+    func moveTorrents(_ item: NSMenuItem) {
         let ids = self.proceededClickTorrents()
         if let location = item.representedObject as? String {
             TransmissionConnectManager.sharedInstance.moveTorrents(ids, location: location) {
@@ -245,7 +246,7 @@ extension TorrentsListViewController: NSTableViewDelegate, NSTableViewDataSource
         }
     }
     
-    func trashTorrents(item: NSMenuItem) {
+    func trashTorrents(_ item: NSMenuItem) {
         let ids = self.proceededClickTorrents()
         TransmissionConnectManager.sharedInstance.deleteTorrents(ids) {
         }
