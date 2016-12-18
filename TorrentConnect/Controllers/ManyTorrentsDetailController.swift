@@ -40,19 +40,19 @@ class ManyTorrentsDetailController: NSViewController {
     }
     
     @IBAction func deleteAllClick(_ sender: AnyObject) {
-        TransmissionConnectManager.sharedInstance.deleteTorrents(ids) {
+        TransmissionConnectManager.shared.deleteTorrents(ids) {
             self.hide()
         }
     }
     
     @IBAction func pauseAllClick(_ sender: AnyObject) {
-        TransmissionConnectManager.sharedInstance.stopTorrents(ids) {
+        TransmissionConnectManager.shared.stopTorrents(ids) {
             
         }
     }
     
     @IBAction func startAllClick(_ sender: AnyObject) {
-        TransmissionConnectManager.sharedInstance.startTorrents(ids) {
+        TransmissionConnectManager.shared.startTorrents(ids) {
             
         }
     }

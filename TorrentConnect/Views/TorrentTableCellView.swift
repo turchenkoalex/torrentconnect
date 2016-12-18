@@ -19,7 +19,7 @@ class TorrentTableCellView: NSTableCellView {
     fileprivate var _status: TorrentStatus = TorrentStatus.stopped
     fileprivate var _previousStatus: TorrentStatus = TorrentStatus.stopped
     fileprivate var _progress: Double = 0
-    
+
     func initializeView() {
         if (viewInitialized) {
             return
@@ -39,32 +39,27 @@ class TorrentTableCellView: NSTableCellView {
     }
     
     func torrentActionImage() -> NSImage {
-        var imageAsset: NSImage.AssetIdentifier
         switch(_status) {
         case .stopped:
-            imageAsset = .Play
+            return #imageLiteral(resourceName: "play")
         default:
-            imageAsset = .Pause
+            return #imageLiteral(resourceName: "pause")
         }
-        return NSImage(assetIdentifier: imageAsset)
-        
     }
     
     func torrentStateImage() -> NSImage {
-        var imageAsset: NSImage.AssetIdentifier
         switch(_status) {
         case .download:
-            imageAsset = .Download
+            return #imageLiteral(resourceName: "download")
         case .seed:
-            imageAsset = .Upload
+            return #imageLiteral(resourceName: "upload")
         default:
             if (_progress < 1) {
-                imageAsset = .Wait
+                return #imageLiteral(resourceName: "wait")
             } else {
-                imageAsset = .Completed
+                return #imageLiteral(resourceName: "completed")
             }
         }
-        return NSImage(assetIdentifier: imageAsset)
     }
     
     func setupView(_ torrent: Torrent) {
@@ -75,22 +70,20 @@ class TorrentTableCellView: NSTableCellView {
         _previousStatus = torrent.status
         _progress = torrent.progress
         
-//        dispatch_async(dispatch_get_main_queue()) {
-            if (self.textField!.stringValue != torrent.name) {
-                self.textField!.stringValue = torrent.name
+        if (self.textField!.stringValue != torrent.name) {
+            self.textField!.stringValue = torrent.name
+        }
+        if (torrent.progress < 1) {
+            if self.progressLabel.doubleValue != torrent.progress {
+                self.progressLabel.doubleValue = torrent.progress
             }
-            if (torrent.progress < 1) {
-                if self.progressLabel.doubleValue != torrent.progress {
-                    Swift.print("Set progress " + String(torrent.progress))
-                    self.progressLabel.doubleValue = torrent.progress
-                }
-            } else {
-                if (self.progressLabel.stringValue != "") {
-                    self.progressLabel.stringValue = ""
-                    Swift.print("Set progress empty")
-                }
+        } else {
+            if (self.progressLabel.stringValue != "") {
+                self.progressLabel.stringValue = ""
             }
-//        }
+        }
+    
+//        recalcDownloadFrames()
         imageButton.image = torrentStateImage()
     }
     
@@ -123,8 +116,8 @@ class TorrentTableCellView: NSTableCellView {
         }
         
         if (_progress < 1) {
-            NSColor.applicationHighlightedTableBackground().setStroke()
-            NSColor.applicationHighlightedTableBackground().setFill()
+            NSColor.applicationGrayColor().setFill()
+            NSColor.applicationGrayColor().setStroke()
             
             let x = dirtyRect.size.width * CGFloat(_progress)
             let progressRect = NSRect(
@@ -145,7 +138,7 @@ class TorrentTableCellView: NSTableCellView {
     @IBAction func startStopClick(_ sender: AnyObject) {
         switch(_status) {
         case .stopped:
-            TransmissionConnectManager.sharedInstance.startTorrents([_id]) {
+            TransmissionConnectManager.shared.startTorrents([_id]) {
                 if (self._progress < 1) {
                     self._status = .download
                 } else {
@@ -158,7 +151,7 @@ class TorrentTableCellView: NSTableCellView {
             
         default:
             _previousStatus = _status
-            TransmissionConnectManager.sharedInstance.stopTorrents([_id]) {
+            TransmissionConnectManager.shared.stopTorrents([_id]) {
                 self._status = .stopped
                 DispatchQueue.main.async {
                     self.imageButton.image = self.torrentActionImage()

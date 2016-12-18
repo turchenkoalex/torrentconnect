@@ -14,7 +14,7 @@ class BadgeController {
     fileprivate var _attachedHandler: Disposable?
     
     func inject() {
-        _attachedHandler = TransmissionConnectManager.sharedInstance.fetchTorrentsEvent.addHandler(self, handler: BadgeController.fetchTorrents)
+        _attachedHandler = TransmissionConnectManager.shared.fetchTorrentsEvent.addHandler(self, handler: BadgeController.fetchTorrents)
     }
     
     func fetchTorrents(_ torrents: [Torrent]) {

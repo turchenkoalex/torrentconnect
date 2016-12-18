@@ -7,6 +7,7 @@
 //
 
 import Cocoa
+import Foundation
 
 extension NSColor {
     static func applicationHighlightedTableBackground() -> NSColor {
@@ -39,5 +40,9 @@ extension NSColor {
     
     static func applicationSecondaryTextColor() -> NSColor {
         return NSColor(red: 145/255, green: 145/255, blue: 142/255, alpha: 1.0)
+    }
+    
+    static func applicationGrayColor() -> NSColor {
+        return NSColor(red: 248/255, green: 248/255, blue: 248/255, alpha: 1.0)
     }
 }

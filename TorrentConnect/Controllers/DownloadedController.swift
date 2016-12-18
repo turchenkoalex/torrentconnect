@@ -13,7 +13,7 @@ class DownloadedController {
     fileprivate var _attachedHandler: Disposable?
     
     func inject() {
-        _attachedHandler = TransmissionConnectManager.sharedInstance.fetchTorrentsEvent.addHandler(self, handler: DownloadedController.fetchTorrents)
+        _attachedHandler = TransmissionConnectManager.shared.fetchTorrentsEvent.addHandler(self, handler: DownloadedController.fetchTorrents)
     }
     
     func fetchTorrents(_ torrents: [Torrent]) {

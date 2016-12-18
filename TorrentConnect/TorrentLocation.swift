@@ -16,11 +16,13 @@ struct TorrentLocation {
 }
 
 struct TorrentLocations {
+    static var locations = [
+        TorrentLocation(name: "Movies", location: "/downloads/movies"),
+        TorrentLocation(name: "Shows", location: "/downloads/shows"),
+        TorrentLocation(name: "Files", location: "/downloads/files")
+    ]
+    
     static func all() -> [TorrentLocation] {
-        return [
-            TorrentLocation(name: "Movies", location: "/downloads/movies"),
-            TorrentLocation(name: "Shows", location: "/downloads/shows"),
-            TorrentLocation(name: "Files", location: "/downloads/files")
-        ]
+        return locations
     }
 }

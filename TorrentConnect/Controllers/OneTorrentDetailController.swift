@@ -40,7 +40,7 @@ class OneTorrentDetailController: NSViewController {
             }
         }
         
-        TransmissionConnectManager.sharedInstance.getFiles([torrent.id]) { files in
+        TransmissionConnectManager.shared.getFiles([torrent.id]) { files in
             self.files = files
             DispatchQueue.main.async {
                 self.filesOutline.reloadData()
@@ -57,7 +57,7 @@ class OneTorrentDetailController: NSViewController {
     }
     
     @IBAction func deleteClick(_ sender: AnyObject) {
-        TransmissionConnectManager.sharedInstance.deleteTorrents([torrent.id]) {
+        TransmissionConnectManager.shared.deleteTorrents([torrent.id]) {
             self.hide()
         }
     }
@@ -68,12 +68,12 @@ class OneTorrentDetailController: NSViewController {
     
     @IBAction func startStopClick(_ sender: AnyObject) {
         if (self.torrent.status == .stopped) {
-            TransmissionConnectManager.sharedInstance.startTorrents([torrent.id]) {
+            TransmissionConnectManager.shared.startTorrents([torrent.id]) {
                 self.changeTorrentStatus(.download)
                 self.updateStartStopButton()
             }
         } else {
-            TransmissionConnectManager.sharedInstance.stopTorrents([torrent.id]) {
+            TransmissionConnectManager.shared.stopTorrents([torrent.id]) {
                 self.changeTorrentStatus(.stopped)
                 self.updateStartStopButton()
             }
@@ -144,7 +144,7 @@ extension OneTorrentDetailController: NSOutlineViewDelegate, NSOutlineViewDataSo
                 unwanted.append(torrentFile.id)
             }
             
-            TransmissionConnectManager.sharedInstance.wantFiles(forTorrent: torrent.id, wanted: wanted, unwanted: unwanted) {
+            TransmissionConnectManager.shared.wantFiles(forTorrent: torrent.id, wanted: wanted, unwanted: unwanted) {
                 
             }
         }

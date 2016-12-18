@@ -21,7 +21,7 @@ struct FilesHandler {
     }
     
     func addFile(_ filename: String) {
-        TransmissionConnectManager.sharedInstance.addTorrent(filename: filename) {
+        TransmissionConnectManager.shared.addTorrent(filename: filename) {
             let fileUrl = URL(fileURLWithPath: filename)
             try! FileManager.default.trashItem(at: fileUrl, resultingItemURL: nil)
         }

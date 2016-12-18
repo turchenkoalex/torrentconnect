@@ -8,24 +8,10 @@
 
 import Foundation
 
-struct EventQueue {
-    var _events: [() -> ()] = []
-    
-    mutating func add(_ event: @escaping () -> ()) {
-        _events.append(event)
-    }
-    
-    mutating func invoke() {
-        while (_events.count > 0) {
-            _events.removeFirst()()
-        }
-    }
-}
-
 @objc open class TransmissionConnectManager: NSObject {
     
     fileprivate var _events = EventQueue()
-    open static let sharedInstance = TransmissionConnectManager()
+    open static let shared = TransmissionConnectManager()
     
     fileprivate var _connection: TransmissionServerConnection?
     fileprivate let _adapter = TransmissionAdapter()

@@ -48,6 +48,7 @@
 		EE7D64F11CE73CEA0034CF4E /* Levinstain.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE7D64F01CE73CEA0034CF4E /* Levinstain.swift */; };
 		EE7D64F31CE790CC0034CF4E /* Row.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE7D64F21CE790CC0034CF4E /* Row.swift */; };
 		EE7D64F71CE7D33B0034CF4E /* FullyEquatable.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE7D64F61CE7D33B0034CF4E /* FullyEquatable.swift */; };
+		EE9121441DC617A100B7D702 /* EventQueue.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE9121431DC617A100B7D702 /* EventQueue.swift */; };
 		EE92DA551CF04E6D00145A43 /* ManyTorrentsDetailController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE92DA541CF04E6D00145A43 /* ManyTorrentsDetailController.swift */; };
 		EE92DA571CF04E8D00145A43 /* CrossfadeStoryboardSegue.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE92DA561CF04E8D00145A43 /* CrossfadeStoryboardSegue.swift */; };
 		EE92DBA01CE5D1C6005F89BA /* TorrentsGroupBy.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE92DB9F1CE5D1C6005F89BA /* TorrentsGroupBy.swift */; };
@@ -112,6 +113,7 @@
 		EE7D64F01CE73CEA0034CF4E /* Levinstain.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Levinstain.swift; path = Library/Tables/Levinstain.swift; sourceTree = "<group>"; };
 		EE7D64F21CE790CC0034CF4E /* Row.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Row.swift; path = Library/Tables/Row.swift; sourceTree = "<group>"; };
 		EE7D64F61CE7D33B0034CF4E /* FullyEquatable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = FullyEquatable.swift; path = Library/Tables/FullyEquatable.swift; sourceTree = "<group>"; };
+		EE9121431DC617A100B7D702 /* EventQueue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = EventQueue.swift; path = Library/Transmission/EventQueue.swift; sourceTree = "<group>"; };
 		EE92DA541CF04E6D00145A43 /* ManyTorrentsDetailController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ManyTorrentsDetailController.swift; path = Controllers/ManyTorrentsDetailController.swift; sourceTree = "<group>"; };
 		EE92DA561CF04E8D00145A43 /* CrossfadeStoryboardSegue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CrossfadeStoryboardSegue.swift; sourceTree = "<group>"; };
 		EE92DB9F1CE5D1C6005F89BA /* TorrentsGroupBy.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = TorrentsGroupBy.swift; path = Library/Tables/TorrentsGroupBy.swift; sourceTree = "<group>"; };
@@ -180,6 +182,7 @@
 				11F0A1F31B8E505A0055BB8E /* TransmissionParser.swift */,
 				11F0A1FB1B8E59310055BB8E /* TransmissionServerConnection.swift */,
 				EE39EF4B1CE8E63B00600767 /* TransmissionRpc.swift */,
+				EE9121431DC617A100B7D702 /* EventQueue.swift */,
 			);
 			name = Transmission;
 			sourceTree = "<group>";
@@ -407,6 +410,7 @@
 				11596A3D1B865B67001AB1CC /* TorrentTableRowView.swift in Sources */,
 				EE21D9781CEE495C0038588B /* UrlHandler.swift in Sources */,
 				EECA74681CF44ADE00DB67A9 /* TorrentFile.swift in Sources */,
+				EE9121441DC617A100B7D702 /* EventQueue.swift in Sources */,
 				11F0A1F01B8E50130055BB8E /* TorrentStatus.swift in Sources */,
 				EE24E7E71CF6316D00044386 /* TorrentLocation.swift in Sources */,
 				EE7D64ED1CE71E510034CF4E /* SectionsDiff.swift in Sources */,

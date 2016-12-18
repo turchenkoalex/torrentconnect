@@ -29,9 +29,9 @@ class TorrentsListViewController: NSViewController {
         self._tableController = TableController(groupBy: _torrentsGroupBy.byDownloadDir())
         self.tableView.doubleAction = #selector(self.doubleClick)
         
-        _attachedHandler = TransmissionConnectManager.sharedInstance.fetchTorrentsEvent.addHandler(self, handler: TorrentsListViewController.fetchTorrents)
+        _attachedHandler = TransmissionConnectManager.shared.fetchTorrentsEvent.addHandler(self, handler: TorrentsListViewController.fetchTorrents)
         
-        TransmissionConnectManager.sharedInstance.connect()
+        TransmissionConnectManager.shared.connect()
         
         setupMenu()
     }
@@ -224,31 +224,26 @@ extension TorrentsListViewController: NSTableViewDelegate, NSTableViewDataSource
     }
     
     func proceededClickTorrents() -> [Int] {
-        var ids = [Int]()
         let clickedRow = tableView.clickedRow
         if clickedRow != -1 && !tableView.isRowSelected(clickedRow) {
             if let torrent = _sections.elementAt(clickedRow) {
-                ids.append(torrent.id)
+                return [torrent.id]
             }
         } else {
-            ids = selectedTorrents().map { $0.id }
+            return selectedTorrents().map { $0.id }
         }
-        
-        return ids
+        return []
     }
     
     func moveTorrents(_ item: NSMenuItem) {
         let ids = self.proceededClickTorrents()
         if let location = item.representedObject as? String {
-            TransmissionConnectManager.sharedInstance.moveTorrents(ids, location: location) {
-                
-            }
+            TransmissionConnectManager.shared.moveTorrents(ids, location: location) { }
         }
     }
     
     func trashTorrents(_ item: NSMenuItem) {
         let ids = self.proceededClickTorrents()
-        TransmissionConnectManager.sharedInstance.deleteTorrents(ids) {
-        }
+        TransmissionConnectManager.shared.deleteTorrents(ids) { }
     }
 }
